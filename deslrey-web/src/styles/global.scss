@@ -1,0 +1,178 @@
+@import "./base.scss";
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+p,
+blockquote,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+pre,
+form,
+fieldset,
+legend,
+button,
+input,
+textarea,
+th,
+td {
+    margin: 0;
+    padding: 0;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+    font: 12px/1.5tahoma, arial, \5b8b\4f53;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: 100%;
+    scroll-margin-top: 90px;
+}
+
+address,
+cite,
+dfn,
+em,
+var {
+    font-style: normal;
+}
+
+code,
+kbd,
+pre,
+samp {
+    font-family: couriernew, courier, monospace;
+}
+
+small {
+    font-size: 12px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+sup {
+    vertical-align: text-top;
+}
+
+sub {
+    vertical-align: text-bottom;
+}
+
+legend {
+    color: #000;
+}
+
+fieldset,
+img {
+    border: 0;
+}
+
+button,
+input,
+select,
+textarea {
+    font-size: 100%;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+ul {
+    list-style: circle inherit;
+}
+
+ol {
+    list-style: decimal inherit;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: 0.1em;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+html,
+body,
+#__next {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: var(--ct-body-font-family);
+}
+
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    scroll-behavior: smooth;
+    align-items: center;
+}
+
+body {
+    /* 隐藏x轴导航条 */
+    overflow-x: hidden;
+    overflow-y: overlay;
+    background-color: $bodyColor;
+}
+body::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 14px;
+}
+body::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 7px;
+    background-color: $themeColor2;
+}
+body::-webkit-scrollbar-thumb:hover {
+    background-color: $hoverColor;
+}
+body::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    border-radius: 7px;
+    background: rgba(0, 0, 0, 0);
+}
+
+@media screen and (max-width: 1240px) {
+    body::-webkit-scrollbar,
+    div::-webkit-scrollbar {
+        display: none;
+    }
+
+    .ant-message-notice-content {
+        border-radius: 8rem !important;
+        font-size: 16rem !important;
+    }
+}
