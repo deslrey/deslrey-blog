@@ -1,10 +1,10 @@
 .PageBox {
-    background-position: center 0;
+    background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    height: 100%;
     width: 100%;
+    min-height: 100vh;
 }
 
 .bg0 {
