@@ -1,0 +1,85 @@
+@import "../../styles/hovers/_hacks.scss";
+@import "../../styles/hovers/_mixins.scss";
+@import "../../styles/hovers/_options.scss";
+
+/* Underline From Center */
+@mixin underline-from-center {
+    $duration: $mediumDuration;
+
+    @include hacks();
+    position: relative;
+    overflow: hidden;
+
+    &:before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        left: 51%;
+        right: 51%;
+        bottom: 0;
+        background: $activeColor;
+        height: 4px;
+        @include prefixed(transition-property, "left, right");
+        @include prefixed(transition-duration, $duration);
+        @include prefixed(transition-timing-function, ease-out);
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+        &:before {
+            left: 0;
+            right: 0;
+        }
+    }
+}
+
+.NavMain {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #fff;
+    position: relative;
+
+    &:hover {
+        color: $activeColor;
+    }
+    &:before {
+        content: "";
+        position: absolute;
+        left: 51%;
+        right: 51%;
+        bottom: 0;
+        background: $activeColor;
+        height: 2px;
+        transition: left 0.3s ease-out, right 0.3s ease-out;
+    }
+
+    &:hover:before {
+        left: 0;
+        right: 0;
+    }
+}
+
+.icon {
+    font-size: 18px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.underlineFromCenter {
+    @include underline-from-center;
+}
