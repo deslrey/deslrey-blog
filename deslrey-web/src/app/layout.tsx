@@ -2,6 +2,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import type { Metadata } from "next";
 import "@ant-design/v5-patch-for-react-19";
 import "@/styles/global.scss";
+import StyledComponentsRegistry from "@/lib/StyledComponentsRegistry";
 
 export const metadata: Metadata = {
     title: "deslrey",
@@ -16,7 +17,9 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
-                <AntdRegistry>{children}</AntdRegistry>
+                <StyledComponentsRegistry>
+                    <AntdRegistry>{children}</AntdRegistry>
+                </StyledComponentsRegistry>
             </body>
         </html>
     );
