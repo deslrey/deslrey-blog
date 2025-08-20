@@ -1,18 +1,20 @@
+@use "./options" as options;
+
 // prefix declarations
 @mixin prefixed($property, $value) {
-    @if $webkit == true {
+    @if options.$webkit == true {
         -webkit-#{$property}: #{$value};
     }
 
-    @if $moz == true {
+    @if options.$moz == true {
         -moz-#{$property}: #{$value};
     }
 
-    @if $ms == true {
+    @if options.$ms == true {
         -ms-#{$property}: #{$value};
     }
 
-    @if $o == true {
+    @if options.$o == true {
         -o-#{$property}: #{$value};
     }
 
@@ -21,25 +23,25 @@
 
 // prefix keyframes
 @mixin keyframes($name) {
-    @if $webkit == true {
+    @if options.$webkit == true {
         @-webkit-keyframes #{$name} {
             @content;
         }
     }
 
-    @if $moz == true {
+    @if options.$moz == true {
         @-moz-keyframes #{$name} {
             @content;
         }
     }
 
-    @if $ms == true {
+    @if options.$ms == true {
         @-ms-keyframes #{$name} {
             @content;
         }
     }
 
-    @if $o == true {
+    @if options.$o == true {
         @-o-keyframes #{$name} {
             @content;
         }

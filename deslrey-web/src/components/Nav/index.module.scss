@@ -1,12 +1,12 @@
-@import "../../styles/hovers/_hacks.scss";
-@import "../../styles/hovers/_mixins.scss";
-@import "../../styles/hovers/_options.scss";
+@use "../../styles/hovers/_hacks.scss" as hacks;
+@use "../../styles/hovers/_mixins.scss" as mixins;
+@use "../../styles/hovers/_options.scss" as options;
 
 /* Underline From Center */
 @mixin underline-from-center {
-    $duration: $mediumDuration;
+    $duration: options.$mediumDuration;
 
-    @include hacks();
+    @include hacks.hacks();
     position: relative;
     overflow: hidden;
 
@@ -17,11 +17,11 @@
         left: 51%;
         right: 51%;
         bottom: 0;
-        background: $activeColor;
+        background: options.$activeColor;
         height: 4px;
-        @include prefixed(transition-property, "left, right");
-        @include prefixed(transition-duration, $duration);
-        @include prefixed(transition-timing-function, ease-out);
+        @include mixins.prefixed(transition-property, "left, right");
+        @include mixins.prefixed(transition-duration, $duration);
+        @include mixins.prefixed(transition-timing-function, ease-out);
     }
 
     &:hover,
@@ -53,7 +53,7 @@
     position: relative;
 
     &:hover {
-        color: $activeColor;
+        color: options.$activeColor;
     }
     &:before {
         content: "";
@@ -61,7 +61,7 @@
         left: 51%;
         right: 51%;
         bottom: 0;
-        background: $activeColor;
+        background: options.$activeColor;
         height: 2px;
         transition: left 0.3s ease-out, right 0.3s ease-out;
     }
