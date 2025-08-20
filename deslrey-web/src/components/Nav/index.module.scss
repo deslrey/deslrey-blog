@@ -33,13 +33,71 @@
         }
     }
 }
+.NavWrapper {
+    position: relative;
+
+    @media (max-width: 768px) {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(50px);
+        -webkit-backdrop-filter: blur(50px);
+        width: 100%;
+        height: 50px;
+    }
+}
 
 .NavMain {
-    height: 50px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 20px;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    @media (max-width: 768px) {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: 160px;
+        padding: 60px 20px 20px;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: -4px 0 12px rgba(0, 0, 0, 0.3);
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 999;
+    }
+
+    &.open {
+        @media (max-width: 768px) {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+    }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+
+.mobileToggle {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    @media (max-width: 768px) {
+        display: block;
+    }
 }
 
 .navItem {
@@ -55,6 +113,7 @@
     &:hover {
         color: options.$activeColor;
     }
+
     &:before {
         content: "";
         position: absolute;
