@@ -46,13 +46,15 @@
 }
 
 .NavMain {
+    padding: 10px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row; // 水平排列
+    align-items: center;
     gap: 20px;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: center; // 水平居中
 
     @media (max-width: 768px) {
+        flex-direction: column; // 移动端纵向
         position: fixed;
         top: 0;
         right: 0;
