@@ -7,6 +7,12 @@ export interface NavObj {
 
 export const NavList: NavObj[] = [
     {
+        title: "Home",
+        key: "home",
+        icon: "dslrey-home2",
+        link: "/",
+    },
+    {
         title: "Article",
         key: "article",
         icon: "dslrey-paper",
