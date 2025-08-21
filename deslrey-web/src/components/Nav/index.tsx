@@ -7,9 +7,12 @@ import { NavObj, NavList } from "./config";
 import Link from "next/link";
 import Checkbox from "../Checkbox";
 
-const NavItem: React.FC<{ item: NavObj }> = ({ item }) => {
+const NavItem: React.FC<{ item: NavObj; onClick?: () => void }> = ({
+    item,
+    onClick,
+}) => {
     return (
-        <Link href={item.link} className={styles.navItem}>
+        <Link href={item.link} className={styles.navItem} onClick={onClick}>
             <SysIcon type={item.icon} className={styles.icon} />
             <span className={styles.title}>{item.title}</span>
         </Link>
@@ -39,7 +42,11 @@ const Nav: React.FC = () => {
                 className={`${styles.NavMain} ${open ? styles.open : ""}`}
             >
                 {NavList.map((item) => (
-                    <NavItem key={item.key} item={item} />
+                    <NavItem
+                        key={item.key}
+                        item={item}
+                        onClick={() => setOpen(false)}
+                    />
                 ))}
             </div>
         </nav>
