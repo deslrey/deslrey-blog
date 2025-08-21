@@ -4,6 +4,11 @@ import "@ant-design/v5-patch-for-react-19";
 import "@/styles/global.scss";
 import StyledComponentsRegistry from "@/lib/StyledComponentsRegistry";
 
+import Footer from "@/components/Footer";
+import Nav from "@/components/Nav";
+import styles from "./layout.module.scss";
+import classNames from "classnames";
+
 export const metadata: Metadata = {
     title: "deslrey",
     description: "deslrey 个人博客",
@@ -16,9 +21,13 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body>
+            <body className={classNames(styles.PageBox, styles.bg0)}>
                 <StyledComponentsRegistry>
-                    <AntdRegistry>{children}</AntdRegistry>
+                    <AntdRegistry>
+                        <Nav />
+                        {children}
+                        <Footer />
+                    </AntdRegistry>
                 </StyledComponentsRegistry>
             </body>
         </html>
