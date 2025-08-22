@@ -6,19 +6,26 @@ import SysIcon from "../SysIcon";
 import { NavObj, NavList } from "./config";
 import Link from "next/link";
 import Checkbox from "../Checkbox";
+import { usePathname } from "next/navigation";
 
 const NavItem: React.FC<{ item: NavObj; onClick?: () => void }> = ({
     item,
     onClick,
 }) => {
+    const pathname = usePathname();
+    const isActive = pathname === item.link; // 判断是否为当前路由
+
     return (
-        <Link href={item.link} className={styles.navItem} onClick={onClick}>
-            <SysIcon type={item.icon} className={styles.icon} />
+        <Link
+            href={item.link}
+            className={`${styles.navItem} ${isActive ? styles.active : ""}`}
+            onClick={onClick}
+        >
+            {isActive && <SysIcon type={item.icon} className={styles.icon} />}
             <span className={styles.title}>{item.title}</span>
         </Link>
     );
 };
-
 const Nav: React.FC = () => {
     const [open, setOpen] = useState(false);
     const navMainRef = useRef<HTMLDivElement>(null);

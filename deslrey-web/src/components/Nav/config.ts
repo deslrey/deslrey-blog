@@ -7,31 +7,31 @@ export interface NavObj {
 
 export const NavList: NavObj[] = [
     {
-        title: "Home",
+        title: "主页",
         key: "home",
         icon: "dslrey-home2",
         link: "/",
     },
     {
-        title: "Article",
+        title: "文章",
         key: "article",
         icon: "dslrey-paper",
         link: "/article",
     },
     {
-        title: "Archive",
+        title: "归档",
         key: "archive",
         icon: "dslrey-schedule",
         link: "/archive",
     },
     {
-        title: "Category",
+        title: "分类",
         key: "category",
         icon: "dslrey-folder",
         link: "/category",
     },
     {
-        title: "About",
+        title: "关于",
         key: "about",
         icon: "dslrey-timerauto",
         link: "/about",
