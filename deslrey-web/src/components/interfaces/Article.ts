@@ -13,3 +13,8 @@ export interface Classify {
     title: string;
     total: number;
 }
+
+export interface Tag {
+    title: string;
+    total: number;
+}

@@ -1,5 +1,13 @@
-import { Article, Classify } from "@/components/interfaces/Article";
+import { Article, Classify, Tag } from "@/components/interfaces/Article";
 import dayjs from "dayjs";
+
+export const TagList: Tag[] = [
+    { title: "Ant", total: 4 },
+    { title: "React Native", total: 8 },
+    { title: "Spring Boot", total: 2 },
+    { title: "Gin", total: 4 },
+    { title: "Next.js", total: 5 },
+];
 
 export const ClassifyList: Classify[] = [
     { title: "教程", total: 10 },
