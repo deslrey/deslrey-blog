@@ -1,5 +1,11 @@
-import { Article } from "@/components/interface/Article";
+import { Article, Classify } from "@/components/interfaces/Article";
 import dayjs from "dayjs";
+
+export const ClassifyList: Classify[] = [
+    { title: "教程", total: 10 },
+    { title: "例子", total: 15 },
+    { title: "React", total: 10 },
+];
 
 export const ArticleList: Article[] = [
     {

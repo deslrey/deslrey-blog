@@ -1,0 +1,57 @@
+.classify {
+    width: 100%;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 768px) {
+        padding: 16px;
+    }
+}
+
+.sectionTitle {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #fff;
+
+    @media (max-width: 768px) {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+}
+
+.classifyGrid {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.classifyItem {
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(255, 180, 0, 0.2);
+        color: #ffb400;
+    }
+}
+
+.title {
+    font-weight: 500;
+}
+
+.total {
+    font-size: 13px;
+    color: #aaa;
+}

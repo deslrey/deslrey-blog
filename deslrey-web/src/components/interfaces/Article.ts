@@ -8,3 +8,8 @@ export interface Article {
     readTime: number;
     sticky: boolean;
 }
+
+export interface Classify {
+    title: string;
+    total: number;
+}
