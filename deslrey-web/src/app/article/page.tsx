@@ -12,7 +12,7 @@ const Article = () => {
                     {ArticleList.map((item) => (
                         <Link
                             key={item.id}
-                            href={`/article/${item.id}`}
+                            href={`/blog/${item.id}`}
                             className={styles.item}
                         >
                             <div>
