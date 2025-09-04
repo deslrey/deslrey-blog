@@ -1,16 +1,7 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import "deslrey-go/router"
 
 func main() {
-	router := gin.Default()
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	err := router.Run()
-	if err != nil {
-		return
-	}
+	router.Start()
 }
