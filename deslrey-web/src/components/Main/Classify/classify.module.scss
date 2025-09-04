@@ -42,8 +42,8 @@
     transition: all 0.2s ease;
 
     &:hover {
-        background: rgba(255, 180, 0, 0.2);
-        color: #ffb400;
+        background: rgba(var(--activeColor-rgb), 0.2);
+        color: var(--activeColor);
     }
 }
 

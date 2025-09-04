@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
 import styles from "./layout.module.scss";
 import classNames from "classnames";
+import ColorProvider from "@/components/ColorProvider";
 
 export const metadata: Metadata = {
     title: "deslrey",
@@ -24,9 +25,11 @@ export default function RootLayout({
             <body className={classNames(styles.PageBox, styles.bg0)}>
                 <StyledComponentsRegistry>
                     <AntdRegistry>
-                        <Nav />
-                        {children}
-                        <Footer />
+                        <ColorProvider>
+                            <Nav />
+                            {children}
+                            <Footer />
+                        </ColorProvider>
                     </AntdRegistry>
                 </StyledComponentsRegistry>
             </body>

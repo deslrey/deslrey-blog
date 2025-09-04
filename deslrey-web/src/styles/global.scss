@@ -34,7 +34,10 @@ button,
 input,
 select,
 textarea {
-    font: 12px/1.5tahoma, arial, \5b8b\4f53;
+    font:
+        12px/1.5tahoma,
+        arial,
+        \5b8b\4f53;
 }
 
 h1,
@@ -163,6 +166,11 @@ body::-webkit-scrollbar-track {
     /*滚动条里面轨道*/
     border-radius: 7px;
     background: rgba(0, 0, 0, 0);
+}
+
+:root {
+    --activeColor: #2098d1; // 默认颜色
+    --activeColor-rgb: 32, 152, 209; // 默认 RGB，用于半透明背景
 }
 
 @media screen and (max-width: 1240px) {
