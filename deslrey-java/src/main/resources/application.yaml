@@ -12,6 +12,8 @@ spring:
   elasticsearch:
     uris: 192.168.91.132:9200
 
+mybatis:
+  mapper-locations: classpath:mappers/*.xml
 
 server:
   servlet:
