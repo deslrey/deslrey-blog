@@ -1,5 +1,9 @@
 package org.deslrey.mapper;
 
+import org.deslrey.entity.vo.LatestReleasesVO;
+
+import java.util.List;
+
 /**
  * <br>
  * 文章mapper
@@ -11,4 +15,5 @@ package org.deslrey.mapper;
  */
 public interface ArticleMapper {
 
+    List<LatestReleasesVO> latestReleases();
 }

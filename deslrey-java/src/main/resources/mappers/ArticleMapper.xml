@@ -16,5 +16,11 @@
         <result column="edit" property="edit"/>
         <result column="exist" property="exist"/>
     </resultMap>
+    <select id="latestReleases" resultType="org.deslrey.entity.vo.LatestReleasesVO">
+        select title, update_time
+        from article
+        order by update_time desc limit 5;
+    </select>
+
 
 </mapper>

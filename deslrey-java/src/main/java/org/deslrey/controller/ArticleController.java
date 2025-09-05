@@ -1,7 +1,14 @@
 package org.deslrey.controller;
 
+import org.deslrey.entity.vo.LatestReleasesVO;
+import org.deslrey.result.Results;
+import org.deslrey.service.ArticleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <br>
@@ -15,4 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("article")
 public class ArticleController {
+
+    @Autowired
+    private ArticleService articleService;
+
+    @PostMapping("LatestReleases")
+    public Results<List<LatestReleasesVO>> latestReleases() {
+        return articleService.latestReleases();
+    }
 }
