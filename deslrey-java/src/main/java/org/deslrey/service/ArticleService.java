@@ -1,7 +1,9 @@
 package org.deslrey.service;
 
+import org.deslrey.entity.po.Article;
 import org.deslrey.entity.vo.ArticleVO;
 import org.deslrey.entity.vo.LatestReleasesVO;
+import org.deslrey.result.Results;
 
 import java.util.List;
 
@@ -15,7 +17,9 @@ import java.util.List;
  * @since 2025/9/5 15:37
  */
 public interface ArticleService {
-    List<LatestReleasesVO> latestReleases();
+    Results<List<LatestReleasesVO>> latestReleases();
 
-    List<ArticleVO> getArticlesByPage(int page, int pageSize);
+    Results<List<ArticleVO>> getArticlesByPage(int page, int pageSize);
+
+    Results<Article> detail(Integer id);
 }

@@ -1,5 +1,6 @@
 package org.deslrey.controller;
 
+import org.deslrey.entity.po.Article;
 import org.deslrey.entity.vo.ArticleVO;
 import org.deslrey.entity.vo.LatestReleasesVO;
 import org.deslrey.result.Results;
@@ -25,16 +26,19 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    @GetMapping("detail/{id}")
+    public Results<Article> detail(@PathVariable Integer id) {
+        return articleService.detail(id);
+    }
+
     @GetMapping("list")
     public Results<List<ArticleVO>> articleList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
-        List<ArticleVO> articleVOList = articleService.getArticlesByPage(page, pageSize);
-        return Results.ok(articleVOList);
+        return articleService.getArticlesByPage(page, pageSize);
     }
 
     @PostMapping("LatestReleases")
     public Results<List<LatestReleasesVO>> latestReleases() {
-        List<LatestReleasesVO> latestReleasesVOS = articleService.latestReleases();
-        return Results.ok(latestReleasesVOS);
+        return articleService.latestReleases();
     }
 
 }

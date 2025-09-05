@@ -5,11 +5,13 @@ import org.deslrey.entity.po.Article;
 import org.deslrey.entity.vo.ArticleVO;
 import org.deslrey.entity.vo.LatestReleasesVO;
 import org.deslrey.mapper.ArticleMapper;
+import org.deslrey.result.ResultCodeEnum;
+import org.deslrey.result.Results;
 import org.deslrey.service.ArticleService;
+import org.deslrey.util.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,22 +36,35 @@ public class ArticleServiceImpl implements ArticleService {
      * 查询最新发布的五篇文章
      */
     @Override
-    public List<LatestReleasesVO> latestReleases() {
+    public Results<List<LatestReleasesVO>> latestReleases() {
         List<LatestReleasesVO> latestReleasesVOS = articleMapper.latestReleases();
         if (latestReleasesVOS == null || latestReleasesVOS.isEmpty()) {
-            return new ArrayList<>();
+            return Results.ok();
         }
-        return latestReleasesVOS;
+        return Results.ok(latestReleasesVOS);
     }
 
-    public List<ArticleVO> getArticlesByPage(int page, int pageSize) {
+    public Results<List<ArticleVO>> getArticlesByPage(int page, int pageSize) {
         int offset = (page - 1) * pageSize;
         List<Article> articleList = articleMapper.getArticlesByPage(offset, pageSize);
         if (articleList == null || articleList.isEmpty()) {
-            return new ArrayList<>();
+            return Results.ok();
         }
-        return articleConvert.articleVOList(articleList);
+        return Results.ok(articleConvert.articleVOList(articleList));
 
     }
 
+    @Override
+    public Results<Article> detail(Integer id) {
+        if (NumberUtils.isLessZero(id)) {
+            return Results.fail(ResultCodeEnum.CODE_501);
+        }
+
+        Article article = articleMapper.detail(id);
+        if (article == null) {
+            return Results.fail("查找文章失败");
+        }
+        return Results.ok(article);
+
+    }
 }

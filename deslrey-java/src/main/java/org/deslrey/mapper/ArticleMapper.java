@@ -21,4 +21,5 @@ public interface ArticleMapper {
 
     List<Article> getArticlesByPage(@Param("offset") int offset, @Param("pageSize") int pageSize);
 
+    Article detail(Integer id);
 }

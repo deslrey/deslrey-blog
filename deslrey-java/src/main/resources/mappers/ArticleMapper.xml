@@ -28,6 +28,21 @@
         FROM article
         LIMIT #{pageSize} OFFSET #{offset}
     </select>
+    <select id="detail" resultType="org.deslrey.entity.po.Article" parameterType="java.lang.Integer">
+        select id,
+               title,
+               content,
+               word_count,
+               views,
+               create_time,
+               update_time,
+               category,
+               sticky,
+               edit
+        from article
+        where id = #{id}
+          and exist = 1;
+    </select>
 
 
 </mapper>
