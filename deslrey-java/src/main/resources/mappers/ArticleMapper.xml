@@ -19,7 +19,14 @@
     <select id="latestReleases" resultType="org.deslrey.entity.vo.LatestReleasesVO">
         select title, update_time
         from article
-        order by update_time desc limit 5;
+        order by update_time desc
+        limit 5;
+    </select>
+
+    <select id="getArticlesByPage" resultMap="BaseResultMap">
+        SELECT id, title, views, create_time, category, sticky, edit
+        FROM article
+        LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
 
