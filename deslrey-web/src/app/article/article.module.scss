@@ -2,7 +2,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    // padding: 20px;
+    padding: 20px;
 }
 
 .container {
@@ -13,15 +13,18 @@
 .list {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
 }
-.item {
-    padding: 16px;
-    border-radius: 8px;
-    transition: background 0.3s;
 
+.item {
+    padding: 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
     &:hover {
         background: rgba(42, 42, 42, 0.2);
+        transform: translateY(-4px); // 上浮 4px
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); // 增加浮动阴影
     }
 }
 
@@ -39,12 +42,6 @@
     border: 1px solid rgba(var(--activeColor-rgb), 0.4);
     padding: 2px 6px;
     border-radius: 4px;
-}
-
-.des {
-    margin: 8px 0;
-    color: #ccc;
-    font-size: 14px;
 }
 
 .meta {
