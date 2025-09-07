@@ -1,8 +1,19 @@
-import React from 'react'
+import React, { lazy } from 'react'
+import WithLoading from './components/WithLoading'
+import { Navigate, Route, Routes } from 'react-router-dom'
 
-function App() {
+const Admin = lazy(() => import("./pages/Admin"))
+const Login = lazy(() => import("./pages/Login"))
+
+const App: React.FC = () => {
   return (
-    <div>App</div>
+    <WithLoading>
+      <Routes>
+        <Route path='/' element={<Login />} />
+        <Route path='admin/*' element={<Admin />} />
+        <Route path='*' element={<Navigate to="/" />} />
+      </Routes>
+    </WithLoading>
   )
 }
 
