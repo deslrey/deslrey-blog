@@ -21,13 +21,13 @@ const Home = lazy(() => import('../Admin/Home'))
 
 export const useRoutes = (): RouteType[] => [
     {
-        path: '/home',
+        path: 'home',
         disPlayName: '主页',
         element: <Home />,
         icon: <BiHomeAlt2 />
     },
     {
-        path: '/article',
+        path: 'article',
         disPlayName: '文章',
         element: <Article />,
         icon: <BiDetail />
@@ -39,13 +39,13 @@ export const useRoutes = (): RouteType[] => [
         icon: <BiTaskX />
     },
     {
-        path: '/about',
+        path: 'about',
         disPlayName: '关于',
         element: <About />,
         icon: <BiHomeAlt2 />
     },
     {
-        path: '/addArticle',
+        path: 'addArticle',
         disPlayName: '',
         element: <AddArticle />,
     }
