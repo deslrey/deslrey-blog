@@ -40,12 +40,13 @@ public class DeslreyExceptionHandler {
     /**
      * SpringMVC参数绑定，Validator校验不正确
      */
-    @ExceptionHandler(DeslreyException.class)
+    @ExceptionHandler(BindException.class)
     public Results<String> bindException(BindException ex) {
         FieldError fieldError = ex.getFieldError();
         assert fieldError != null;
         return Results.fail(fieldError.getDefaultMessage());
     }
+
 
     @ExceptionHandler(Exception.class)
     public Results<String> handleException(Exception e) {
