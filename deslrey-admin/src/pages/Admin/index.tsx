@@ -3,6 +3,7 @@ import styles from './index.module.scss'
 import { useRoutes, type RouteType } from './config'
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom'
 import WithLoading from '../../components/WithLoading'
+import Header from '../../components/Header'
 
 const SideItem: React.FC<{ item: RouteType }> = ({ item }) => {
     if (!item.disPlayName) {
@@ -25,7 +26,7 @@ const Admin: React.FC = () => {
     return (
         <div className={styles.mainBox}>
             <div className={styles.handlerBox}>
-                顶部
+                <Header />
             </div>
             <div className={styles.lastBox}>
                 <div className={styles.sideBox}>
