@@ -2,6 +2,8 @@ import React, { lazy } from 'react'
 import WithLoading from './components/WithLoading'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
+import './styles/global.scss'
+
 const Admin = lazy(() => import("./pages/Admin"))
 const Login = lazy(() => import("./pages/Login"))
 
