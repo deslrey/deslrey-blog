@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './index.module.scss'
 import { useRoutes, type RouteType } from './config'
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom'
@@ -6,23 +6,22 @@ import WithLoading from '../../components/WithLoading'
 import Header from '../../components/Header'
 
 const SideItem: React.FC<{ item: RouteType }> = ({ item }) => {
-    if (!item.disPlayName) {
+    if (!item.disPlayName)
         return null
-    }
-
     return (
-        <NavLink to={`/admin/${item.path}`}>
-            <div className={styles.sideItem}>
-                {item.icon && <span className={styles.icon}>{item.icon}</span>}
-                <span className={styles.label}>{item.disPlayName}</span>
-            </div>
+        <NavLink
+            to={`/admin/${item.path}`}
+            className={({ isActive }) => isActive ? `${styles.sideItem} ${styles.active}` : styles.sideItem}
+        >
+            {item.icon && <span className={styles.icon}>{item.icon}</span>}
+            <span className={styles.label}>{item.disPlayName}</span>
         </NavLink>
     )
 }
 
 const Admin: React.FC = () => {
     const sideList = useRoutes()
-
+    
     return (
         <div className={styles.mainBox}>
             <div className={styles.handlerBox}>
