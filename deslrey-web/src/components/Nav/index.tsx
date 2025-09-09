@@ -7,6 +7,7 @@ import { NavObj, NavList } from "./config";
 import Link from "next/link";
 import Checkbox from "../Checkbox";
 import { usePathname } from "next/navigation";
+import BlogTitle from "../BlogTitle";
 
 const NavItem: React.FC<{ item: NavObj; onClick?: () => void }> = ({
     item,
@@ -32,6 +33,9 @@ const Nav: React.FC = () => {
 
     return (
         <nav className={styles.NavWrapper}>
+
+            {/* <BlogTitle /> */}
+
             {/* 移动端汉堡按钮 */}
             <div className={styles.mobileToggle}>
                 <Checkbox open={open} onToggle={setOpen} />
