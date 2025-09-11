@@ -1,7 +1,11 @@
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import type { Metadata } from "next";
 import "@ant-design/v5-patch-for-react-19";
-import "@/styles/global.scss";
+import 'bytemd/dist/index.css';
+import 'highlight.js/styles/github.css';
+import '@/styles/global.scss';
+import '@/styles/markdown/bytemd.scss'
+
 import StyledComponentsRegistry from "@/lib/StyledComponentsRegistry";
 
 import Footer from "@/components/Footer";
@@ -22,7 +26,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={classNames(styles.PageBox, styles.bg0)}>
+            <body className={classNames(styles.PageBox, styles.bg1)}>
                 <StyledComponentsRegistry>
                     <AntdRegistry>
                         <ColorProvider>
