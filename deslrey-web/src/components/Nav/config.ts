@@ -25,12 +25,6 @@ export const NavList: NavObj[] = [
         link: "/archive",
     },
     {
-        title: "分类",
-        key: "category",
-        icon: "dslrey-folder",
-        link: "/category",
-    },
-    {
         title: "关于",
         key: "about",
         icon: "dslrey-timerauto",
