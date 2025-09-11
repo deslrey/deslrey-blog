@@ -36,6 +36,7 @@
 .NavWrapper {
     // display: flex;
     position: relative;
+    z-index: 2000;
 
     @media (max-width: 768px) {
         background: rgba(255, 255, 255, 0.15);
@@ -58,11 +59,10 @@
     @media (max-width: 768px) {
         flex-direction: column; // 移动端纵向
         position: fixed;
-        top: 0;
+        top: 50px;
         right: 0;
-        height: 100vh;
+        height: 100%;
         width: 160px;
-        padding: 60px 20px 20px;
         background: rgba(255, 255, 255, 0.15);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
