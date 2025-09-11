@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function ColorProvider({ children }: { children: React.ReactNode }) {
     const colors = [
@@ -30,12 +31,12 @@ export default function ColorProvider({ children }: { children: React.ReactNode 
     ];
 
     const [index, setIndex] = useState(0);
+    const pathname = usePathname(); // 获取当前路由
 
     useEffect(() => {
-        const handler = () => setIndex(prev => (prev + 1) % colors.length);
-        document.addEventListener("click", handler);
-        return () => document.removeEventListener("click", handler);
-    }, []);
+        // 每次路由变化时切换颜色
+        setIndex(prev => (prev + 1) % colors.length);
+    }, [pathname]);
 
     useEffect(() => {
         document.documentElement.style.setProperty("--activeColor", colors[index]);
