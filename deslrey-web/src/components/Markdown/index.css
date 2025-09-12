@@ -64,7 +64,7 @@
 pre {
     position: relative;
     margin: 1rem 0;
-    padding: 1.25rem 1rem;
+    padding: 25px 10px;
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 0.5rem;
     overflow: auto;

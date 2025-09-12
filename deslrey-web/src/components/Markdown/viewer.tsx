@@ -79,34 +79,16 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
             container.querySelectorAll("h2, h3")
         ) as HTMLElement[];
         const newHeadings: Array<{ id: string; text: string; level: number }> = [];
+
         for (const h of headingEls) {
             const raw = h.textContent?.trim() || "";
-            const slug = raw
-                .toLowerCase()
-                .replace(/[^a-z0-9\u4e00-\u9fa5\s-]/g, "")
-                .replace(/\s+/g, "-")
-                .replace(/-+/g, "-");
-            const id = slug || `heading-${newHeadings.length + 1}`;
+            const id = h.id; // rehype-slug 已经自动加好
 
-            // 关键修复：确保标题元素的ID和目录中使用的ID完全一致
-            h.id = id;
+            if (!id) continue;
 
-            console.log('设置标题ID:', id, '标题文本:', raw);
-
-            // 添加锚点
-            if (!h.querySelector(".markdown-anchor")) {
-                const a = document.createElement("a");
-                a.href = `#${id}`;
-                a.className = "markdown-anchor";
-                a.textContent = "#";
-                h.appendChild(a);
-            }
-
-            const level = Number(h.tagName.substring(1));
-            // 确保newHeadings中存储的id与实际设置的id一致
-            newHeadings.push({ id, text: raw, level });
+            newHeadings.push({ id, text: raw, level: Number(h.tagName.substring(1)) });
         }
-        console.log('生成的目录项:', newHeadings);
+
         setHeadings(newHeadings);
 
         // === 监听标题激活 ===
@@ -127,6 +109,21 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
             observer.disconnect();
         };
     }, [body]);
+
+
+    function slugify(text: string, index: number): string {
+        return (
+            text
+                .toLowerCase()
+                .trim()
+                .replace(/[\.（）\(\)]/g, "-")   // 替换掉点和括号
+                .replace(/[^a-z0-9\u4e00-\u9fa5-]/g, "") // 只保留字母数字和中文
+                .replace(/-+/g, "-")            // 合并多个 -
+                .replace(/^-|-$/g, "")          // 去掉开头/结尾的 -
+            || `heading-${index + 1}`           // 兜底
+        );
+    }
+
 
     // 单独的 useEffect 处理滚动进度
     React.useEffect(() => {
@@ -165,32 +162,11 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
 
 
     const scrollToHeading = React.useCallback((id: string) => {
-        const container = contentRef.current;
-        if (!container) return;
-        let el = document.getElementById(id);
-
+        const el = document.getElementById(id);
         if (!el) return;
 
-        const offset = 80; // 顶部偏移
-        const rect = el.getBoundingClientRect();
-        const scrollContainer = getScrollParent(contentRef.current);
-
-        if (scrollContainer === window) {
-            window.scrollTo({
-                top: rect.top + window.scrollY - offset,
-                behavior: "smooth",
-            });
-        } else {
-            const containerEl = scrollContainer as HTMLElement;
-            containerEl.scrollTo({
-                top: rect.top + containerEl.scrollTop - offset,
-                behavior: "smooth",
-            });
-        }
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
     }, []);
-
-
-
 
     return (
         <div className="layout">

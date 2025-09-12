@@ -387,3 +387,9 @@
     background-color: var(--accent);
     transition: all 0.1s;
 }
+
+pre code.hljs {
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+}
