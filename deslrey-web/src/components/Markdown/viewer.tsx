@@ -7,7 +7,7 @@ import { plugins } from "./config";
 import { Progress } from "antd";
 import type { ProgressProps } from "antd";
 
-import "./index.css";
+import "./index.scss";
 import { CodeBlockEnhancer } from "@/util/codeBlockEnhancer";
 
 interface BytemdViewerProps {
@@ -70,44 +70,37 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
         return () => observer.disconnect();
     }, [body]);
 
+
     React.useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
 
-        // === 生成目录 ===
-        const headingEls = Array.from(
-            container.querySelectorAll("h2, h3")
-        ) as HTMLElement[];
-        const newHeadings: Array<{ id: string; text: string; level: number }> = [];
+        requestAnimationFrame(() => {
+            const headingEls = Array.from(container.querySelectorAll("h2, h3")) as HTMLElement[];
+            if (!headingEls.length) return;
 
-        for (const h of headingEls) {
-            const raw = h.textContent?.trim() || "";
-            const id = h.id; // rehype-slug 已经自动加好
+            const newHeadings = headingEls.map(h => ({
+                id: h.id,
+                text: h.textContent?.trim() || "",
+                level: Number(h.tagName.substring(1)),
+            }));
+            setHeadings(newHeadings);
 
-            if (!id) continue;
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            setActiveId(entry.target.id);
+                        }
+                    });
+                },
+                { root: null, rootMargin: "-40% 0px -60% 0px", threshold: 0 }
+            );
 
-            newHeadings.push({ id, text: raw, level: Number(h.tagName.substring(1)) });
-        }
+            headingEls.forEach(el => observer.observe(el));
 
-        setHeadings(newHeadings);
-
-        // === 监听标题激活 ===
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        const id = (entry.target as HTMLElement).id;
-                        setActiveId(id);
-                    }
-                });
-            },
-            { rootMargin: "-40% 0px -40% 0px", threshold: [0, 1] }
-        );
-        headingEls.forEach((el) => observer.observe(el));
-
-        return () => {
-            observer.disconnect();
-        };
+            return () => observer.disconnect();
+        });
     }, [body]);
 
 
@@ -171,7 +164,7 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
     return (
         <div className="layout">
             <div className="content" ref={contentRef}>
-                <div ref={containerRef} className="markdown-body">
+                <div ref={containerRef} >
                     <Viewer value={body} plugins={plugins} />
                 </div>
             </div>
