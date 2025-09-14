@@ -132,7 +132,7 @@ body,
     width: 100%;
     height: 100%;
     overflow: hidden;
-    font-family: var(--ct-body-font-family);
+    margin-top: 50px;
 }
 
 body {
@@ -144,12 +144,6 @@ body {
     align-items: center;
 }
 
-body {
-    /* 隐藏x轴导航条 */
-    overflow-x: hidden;
-    overflow-y: overlay;
-    background-color: $bodyColor;
-}
 body::-webkit-scrollbar {
     /*滚动条整体样式*/
     width: 14px;
@@ -162,6 +156,7 @@ body::-webkit-scrollbar-thumb {
 body::-webkit-scrollbar-thumb:hover {
     background-color: $hoverColor;
 }
+
 body::-webkit-scrollbar-track {
     /*滚动条里面轨道*/
     border-radius: 7px;
