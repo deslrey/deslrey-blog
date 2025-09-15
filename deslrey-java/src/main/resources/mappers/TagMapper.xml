@@ -9,4 +9,15 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
+    <select id="tagList" resultType="org.deslrey.entity.vo.TagCountVO">
+        select t.id, t.tag_title AS title, COUNT(at.article_id) AS total
+        from tag t
+                 left join article_tag `at` on t.id = `at`.tag_id
+                 left join article `a` on `at`.article_id = `a`.id
+        where a.exist = 1
+        GROUP BY t.id, t.tag_title
+        HAVING total > 0
+        ORDER BY total DESC;
+    </select>
+
 </mapper>

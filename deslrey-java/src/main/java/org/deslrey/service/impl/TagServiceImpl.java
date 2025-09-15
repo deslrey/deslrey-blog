@@ -1,9 +1,14 @@
 package org.deslrey.service.impl;
 
+import org.deslrey.entity.vo.TagCountVO;
 import org.deslrey.mapper.TagMapper;
+import org.deslrey.result.Results;
 import org.deslrey.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <br>
@@ -20,4 +25,12 @@ public class TagServiceImpl implements TagService {
     @Autowired
     private TagMapper tagMapper;
 
+    @Override
+    public Results<List<TagCountVO>> tagList() {
+        List<TagCountVO> tagCountVOList = tagMapper.tagList();
+        if (tagCountVOList == null || tagCountVOList.isEmpty()) {
+            return Results.ok(new ArrayList<>());
+        }
+        return Results.ok(tagCountVOList);
+    }
 }
