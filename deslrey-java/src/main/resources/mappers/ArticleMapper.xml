@@ -18,9 +18,10 @@
     </resultMap>
 
     <select id="latestReleases" resultType="org.deslrey.entity.vo.LatestReleasesVO">
-        select title, update_time
+        select id, title, create_time AS createTime
         from article
-        order by update_time desc
+        where exist = 1
+        order by create_time desc
         limit 5;
     </select>
 

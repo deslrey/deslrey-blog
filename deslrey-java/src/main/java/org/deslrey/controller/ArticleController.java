@@ -37,7 +37,7 @@ public class ArticleController {
         return articleService.getArticlesByPage(page, pageSize);
     }
 
-    @PostMapping("LatestReleases")
+    @GetMapping("LatestReleases")
     public Results<List<LatestReleasesVO>> latestReleases() {
         return articleService.latestReleases();
     }

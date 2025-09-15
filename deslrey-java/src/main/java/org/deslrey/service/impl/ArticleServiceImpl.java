@@ -41,7 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
     public Results<List<LatestReleasesVO>> latestReleases() {
         List<LatestReleasesVO> latestReleasesVOS = articleMapper.latestReleases();
         if (latestReleasesVOS == null || latestReleasesVOS.isEmpty()) {
-            return Results.ok();
+            return Results.ok(new ArrayList<>());
         }
         return Results.ok(latestReleasesVOS);
     }
