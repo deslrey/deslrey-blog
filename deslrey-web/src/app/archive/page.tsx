@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./archive.module.scss";
 import dayjs from "dayjs";
 import { ArchiveVO } from "@/interfaces/Article";
+import Link from "next/link";
 
 const Archive = async () => {
     let articles: ArchiveVO[] = [];
@@ -52,28 +53,17 @@ const Archive = async () => {
                                             dayjs(a.createTime).valueOf()
                                     )
                                     .map((article) => (
-                                        <li
-                                            key={article.id}
-                                            className={styles.articleItem}
-                                        >
+                                        <Link href={`/blog/${article.id}`} key={article.id} className={styles.articleItem}>
                                             <div className={styles.date}>
-                                                {dayjs(article.createTime).format(
-                                                    "MM-DD HH:mm:ss"
-                                                )}
+                                                {dayjs(article.createTime).format("MM-DD HH:mm:ss")}
                                             </div>
                                             <div className={styles.info}>
                                                 <h3 className={styles.title}>
                                                     {article.title}
-                                                    {article.edit && (
-                                                        <span
-                                                            className={styles.edit}
-                                                        >
-                                                            ✏️
-                                                        </span>
-                                                    )}
+                                                    {article.edit && <span className={styles.edit}>✏️</span>}
                                                 </h3>
                                             </div>
-                                        </li>
+                                        </Link>
                                     ))}
                             </ul>
                         </div>

@@ -19,7 +19,6 @@
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 16px;
-    border-left: 4px solid var(--activeColor);
     padding-left: 10px;
 }
 
@@ -34,6 +33,19 @@
     gap: 12px;
     padding: 10px 0;
     border-bottom: 1px dashed #ddd;
+    color: #fff;
+
+    h3 {
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        width: 100%;
+        gap: 12px;
+    }
+
+    h3:hover {
+        color: var(--activeColor);
+    }
 }
 
 .date {
