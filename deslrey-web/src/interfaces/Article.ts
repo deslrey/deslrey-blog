@@ -26,3 +26,10 @@ export interface ArchiveVO {
     createTime: Date;
     edit: boolean;
 }
+
+
+export interface CategoryVO {
+    id: number;
+    title: string;
+    total: number;
+}
