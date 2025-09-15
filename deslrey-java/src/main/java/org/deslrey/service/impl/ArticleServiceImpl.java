@@ -2,6 +2,7 @@ package org.deslrey.service.impl;
 
 import org.deslrey.convert.ArticleConvert;
 import org.deslrey.entity.po.Article;
+import org.deslrey.entity.vo.ArchiveVO;
 import org.deslrey.entity.vo.ArticleVO;
 import org.deslrey.entity.vo.LatestReleasesVO;
 import org.deslrey.mapper.ArticleMapper;
@@ -12,6 +13,7 @@ import org.deslrey.util.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,7 +53,6 @@ public class ArticleServiceImpl implements ArticleService {
             return Results.ok();
         }
         return Results.ok(articleConvert.articleVOList(articleList));
-
     }
 
     @Override
@@ -65,6 +66,14 @@ public class ArticleServiceImpl implements ArticleService {
             return Results.fail("查找文章失败");
         }
         return Results.ok(article);
+    }
 
+    @Override
+    public Results<List<ArchiveVO>> archiveList() {
+        List<ArchiveVO> articleVOList = articleMapper.archiveList();
+        if (articleVOList == null || articleVOList.isEmpty()) {
+            return Results.ok(new ArrayList<>());
+        }
+        return Results.ok(articleVOList);
     }
 }

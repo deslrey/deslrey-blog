@@ -1,6 +1,7 @@
 package org.deslrey.controller;
 
 import org.deslrey.entity.po.Article;
+import org.deslrey.entity.vo.ArchiveVO;
 import org.deslrey.entity.vo.ArticleVO;
 import org.deslrey.entity.vo.LatestReleasesVO;
 import org.deslrey.result.Results;
@@ -39,6 +40,12 @@ public class ArticleController {
     @PostMapping("LatestReleases")
     public Results<List<LatestReleasesVO>> latestReleases() {
         return articleService.latestReleases();
+    }
+
+
+    @GetMapping("archiveList")
+    public Results<List<ArchiveVO>> archiveList() {
+        return articleService.archiveList();
     }
 
 }

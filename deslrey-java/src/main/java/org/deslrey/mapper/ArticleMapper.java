@@ -2,6 +2,7 @@ package org.deslrey.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import org.deslrey.entity.po.Article;
+import org.deslrey.entity.vo.ArchiveVO;
 import org.deslrey.entity.vo.LatestReleasesVO;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface ArticleMapper {
     List<Article> getArticlesByPage(@Param("offset") int offset, @Param("pageSize") int pageSize);
 
     Article detail(Integer id);
+
+    List<ArchiveVO> archiveList();
 }

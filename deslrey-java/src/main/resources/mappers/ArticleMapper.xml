@@ -16,6 +16,7 @@
         <result column="edit" property="edit"/>
         <result column="exist" property="exist"/>
     </resultMap>
+
     <select id="latestReleases" resultType="org.deslrey.entity.vo.LatestReleasesVO">
         select title, update_time
         from article
@@ -28,7 +29,8 @@
         FROM article
         LIMIT #{pageSize} OFFSET #{offset}
     </select>
-    <select id="detail" resultType="org.deslrey.entity.po.Article" parameterType="java.lang.Integer">
+
+    <select id="detail" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select id,
                title,
                content,
@@ -37,11 +39,19 @@
                create_time,
                update_time,
                category,
+               des,
                sticky,
-               edit
+               edit,
+               exist
         from article
         where id = #{id}
           and exist = 1;
+    </select>
+
+    <select id="archiveList" resultType="org.deslrey.entity.vo.ArchiveVO">
+        select id, title, create_time as createTime, edit
+        from article
+        where exist = 1;
     </select>
 
 

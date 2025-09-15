@@ -1,6 +1,7 @@
 package org.deslrey.service;
 
 import org.deslrey.entity.po.Article;
+import org.deslrey.entity.vo.ArchiveVO;
 import org.deslrey.entity.vo.ArticleVO;
 import org.deslrey.entity.vo.LatestReleasesVO;
 import org.deslrey.result.Results;
@@ -22,4 +23,6 @@ public interface ArticleService {
     Results<List<ArticleVO>> getArticlesByPage(int page, int pageSize);
 
     Results<Article> detail(Integer id);
+
+    Results<List<ArchiveVO>> archiveList();
 }
