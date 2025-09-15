@@ -18,3 +18,11 @@ export interface Tag {
     title: string;
     total: number;
 }
+
+
+export interface ArchiveVO {
+    id: number;
+    title: string;
+    createTime: Date;
+    edit: boolean;
+}
