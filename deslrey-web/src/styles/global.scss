@@ -131,16 +131,7 @@ body,
 #__next {
     width: 100%;
     height: 100%;
-    overflow: hidden;
-}
-
-body {
-    overflow-x: hidden;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    scroll-behavior: smooth;
-    align-items: center;
+    overflow: auto;
 }
 
 body::-webkit-scrollbar {

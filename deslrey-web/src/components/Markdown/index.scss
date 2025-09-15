@@ -25,7 +25,8 @@
 .markdown-toc {
     position: sticky;
     top: 150px;
-    width: 100%;
+    width: 250px; /* 固定宽度 */
+    // width: 100%;
     max-width: 350px;
     max-height: calc(100vh - 120px);
     overflow-y: auto;
@@ -56,6 +57,34 @@
 
 .markdown-toc li.lv-4 {
     padding-left: 1.5rem;
+}
+
+/* TOC 占位骨架 */
+.markdown-toc li.skeleton {
+    height: 16px;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.markdown-toc li.skeleton span {
+    display: block;
+    width: 80%;
+    height: 100%;
+    border-radius: 4px;
+    // background: linear-gradient(90deg, #f5f5f5 0%, #e0e0e0 50%, #f5f5f5 100%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
 }
 
 .markdown-toc a {
@@ -112,10 +141,10 @@ pre:hover .code-copy-btn {
     /* color: #666; */
 }
 
-/*小屏幕隐藏目录 */
 @media (max-width: 1024px) {
     .layout {
         flex-direction: column;
+        align-items: center; /* 新增：水平居中 */
     }
 
     .markdown-toc {
@@ -126,6 +155,9 @@ pre:hover .code-copy-btn {
 @media (max-width: 768px) {
     .content {
         margin-top: 70px;
+        width: 100%;
+        max-width: 900px;
+        padding: 0 1rem; /* 可选，避免内容贴边 */
     }
 
     .markdown-body {

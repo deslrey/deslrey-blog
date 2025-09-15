@@ -1,13 +1,12 @@
 .bolgBox {
-    border-radius: 1rem;
     font-size: 1rem;
     padding-top: 150px;
 
     @media (max-width: 1024px) {
-        width: 80%;
+        width: 100%;
     }
 
     @media (max-width: 768px) {
-        width: 95%;
+        width: 100%;
     }
 }
