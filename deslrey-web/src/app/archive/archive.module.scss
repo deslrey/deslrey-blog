@@ -18,7 +18,7 @@
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 16px;
-    border-left: 4px solid #4f46e5;
+    border-left: 4px solid var(--activeColor);
     padding-left: 10px;
 }
 
@@ -53,22 +53,11 @@
     gap: 6px;
 }
 
-.sticky {
-    color: #e11d48;
-}
-
 .edit {
     font-size: 14px;
-    color: #22c55e;
 }
-
-.des {
-    margin: 4px 0;
+.empty {
+    text-align: center;
     font-size: 14px;
-    color: #555;
-}
-
-.meta {
-    font-size: 12px;
-    color: #888;
+    padding: 40px 0;
 }
