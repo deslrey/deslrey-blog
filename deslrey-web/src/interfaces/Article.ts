@@ -14,6 +14,12 @@ export interface Classify {
     total: number;
 }
 
+export interface LatestReleasesVO {
+    id: number;
+    title: string;
+    createTime: Date;
+}
+
 export interface Tag {
     title: string;
     total: number;
@@ -29,6 +35,12 @@ export interface ArchiveVO {
 
 
 export interface CategoryVO {
+    id: number;
+    title: string;
+    total: number;
+}
+
+export interface TagVO {
     id: number;
     title: string;
     total: number;
