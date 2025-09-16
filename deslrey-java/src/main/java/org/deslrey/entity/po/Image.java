@@ -31,9 +31,9 @@ public class Image implements Serializable {
      */
     private Integer id;
     /**
-     * 文章主键
+     * 所属文件夹ID
      */
-    private Integer articleId;
+    private Integer folderId;
 
     /**
      * 图片名称
