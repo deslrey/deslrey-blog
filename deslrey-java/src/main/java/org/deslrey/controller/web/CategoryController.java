@@ -1,6 +1,7 @@
 package org.deslrey.controller.web;
 
 import org.deslrey.entity.vo.CategoryCountVO;
+import org.deslrey.entity.vo.CategoryVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,10 @@ public class CategoryController {
     @GetMapping("list")
     public Results<List<CategoryCountVO>> categoryList() {
         return categoryService.categoryList();
+    }
+
+    @GetMapping("categoryList")
+    public Results<List<CategoryVO>> categoryListAdmin() {
+        return categoryService.categoryListAdmin();
     }
 }

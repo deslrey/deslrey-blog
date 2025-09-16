@@ -18,4 +18,9 @@
         ORDER BY total DESC;
     </select>
 
+    <select id="categoryListAdmin" resultMap="BaseResultMap">
+        select id, category_title
+        from category
+    </select>
+
 </mapper>

@@ -1,6 +1,9 @@
 package org.deslrey.service.impl;
 
+import org.deslrey.convert.CategoryConvert;
+import org.deslrey.entity.po.Category;
 import org.deslrey.entity.vo.CategoryCountVO;
+import org.deslrey.entity.vo.CategoryVO;
 import org.deslrey.mapper.ArticleMapper;
 import org.deslrey.mapper.CategoryMapper;
 import org.deslrey.result.Results;
@@ -36,5 +39,16 @@ public class CategoryServiceImpl implements CategoryService {
             return Results.ok(new ArrayList<>());
         }
         return Results.ok(categoryCountVOList);
+    }
+
+    @Override
+    public Results<List<CategoryVO>> categoryListAdmin() {
+        List<Category> categoryList = categoryMapper.categoryListAdmin();
+        if (categoryList == null || categoryList.isEmpty()) {
+            return Results.ok(new ArrayList<>());
+        }
+
+        List<CategoryVO> categoriedVOList = CategoryConvert.INSTANCE.categoryVOList(categoryList);
+        return Results.ok(categoriedVOList);
     }
 }

@@ -12,3 +12,8 @@ export interface ArticleTpye {
     edit: boolean;
     exist: boolean;
 }
+
+export interface Category {
+    id: number;
+    categoryTitle: string;
+}
