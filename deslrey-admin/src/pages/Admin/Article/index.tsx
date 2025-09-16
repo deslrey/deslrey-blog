@@ -15,6 +15,7 @@ import { SquarePen, PenLine } from 'lucide-react';
 
 import request from "../../../utils/request";
 import type { ArticleTpye } from "../../../interfaces/Article";
+import { OperateType } from "../../../interfaces/Operate";
 import styles from "./index.module.scss";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
@@ -45,7 +46,6 @@ const Article: React.FC = () => {
         setArticles(data.list);
         setTotal(data.total);
 
-        // 同步 MUI 页码（MUI 从 0 开始，后端从 1 开始）
         setPage(data.pageNum - 1);
         setRowsPerPage(data.pageSize);
     };
@@ -67,11 +67,11 @@ const Article: React.FC = () => {
     };
 
     const handlerAdd = () => {
-        navigate('/admin/addArticle')
+        navigate(`/admin/addArticle?${OperateType.add}`)
     }
 
     const handlerEdit = (id: number) => {
-        navigate(`/admin/addArticle?id=${id}`)
+        navigate(`/admin/addArticle?${OperateType.edit}}&id=${id}`)
     }
 
     return (
