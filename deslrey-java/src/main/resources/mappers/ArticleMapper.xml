@@ -55,5 +55,19 @@
         where exist = 1;
     </select>
 
+    <select id="getArticlesAdmin" resultMap="BaseResultMap">
+        SELECT id,
+               title,
+               word_count,
+               views,
+               create_time,
+               update_time,
+               category,
+               des,
+               sticky,
+               edit,
+               exist
+        FROM article
+    </select>
 
 </mapper>

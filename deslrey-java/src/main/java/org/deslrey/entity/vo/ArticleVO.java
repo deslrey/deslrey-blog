@@ -36,9 +36,15 @@ public class ArticleVO {
     private LocalDateTime createTime;
 
     /**
+     * 更新日期
+     */
+    private LocalDateTime updateTime;
+
+    /**
      * 分类
      */
     private String category;
+
     /**
      * 置顶
      */

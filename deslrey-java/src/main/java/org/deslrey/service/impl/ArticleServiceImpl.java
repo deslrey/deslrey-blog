@@ -1,6 +1,9 @@
 package org.deslrey.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.deslrey.convert.ArticleConvert;
+import org.deslrey.entity.admin.vo.ArticleAdminVO;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.vo.ArchiveVO;
 import org.deslrey.entity.vo.ArticleVO;
@@ -75,5 +78,15 @@ public class ArticleServiceImpl implements ArticleService {
             return Results.ok(new ArrayList<>());
         }
         return Results.ok(articleVOList);
+    }
+
+    @Override
+    public Results<PageInfo<ArticleAdminVO>> articleListAdmin(int page, int pageSize) {
+        // 启动分页
+        PageHelper.startPage(page, pageSize);
+        List<ArticleAdminVO> list = articleMapper.getArticlesAdmin();
+        // PageInfo 包含分页结果（list, total, pages 等）
+        PageInfo<ArticleAdminVO> pageInfo = new PageInfo<>(list);
+        return Results.ok(pageInfo);
     }
 }
