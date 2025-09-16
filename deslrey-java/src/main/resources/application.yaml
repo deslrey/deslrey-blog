@@ -21,3 +21,7 @@ server:
   servlet:
     context-path: /deslrey
   port: 8080
+
+
+custom:
+  static-source-path: D:\repository\images
