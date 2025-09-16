@@ -1,4 +1,4 @@
-package org.deslrey.controller;
+package org.deslrey.controller.web;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

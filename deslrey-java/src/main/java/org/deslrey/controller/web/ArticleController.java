@@ -1,4 +1,4 @@
-package org.deslrey.controller;
+package org.deslrey.controller.web;
 
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.vo.ArchiveVO;
@@ -33,7 +33,7 @@ public class ArticleController {
     }
 
     @GetMapping("list")
-    public Results<List<ArticleVO>> articleList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
+    public Results<List<ArticleVO>> articleList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize) {
         return articleService.getArticlesByPage(page, pageSize);
     }
 
@@ -42,10 +42,8 @@ public class ArticleController {
         return articleService.latestReleases();
     }
 
-
     @GetMapping("archiveList")
     public Results<List<ArchiveVO>> archiveList() {
         return articleService.archiveList();
     }
-
 }

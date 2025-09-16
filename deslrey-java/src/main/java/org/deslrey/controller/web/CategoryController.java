@@ -1,4 +1,4 @@
-package org.deslrey.controller;
+package org.deslrey.controller.web;
 
 import org.deslrey.entity.vo.CategoryCountVO;
 import org.deslrey.result.Results;
