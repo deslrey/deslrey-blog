@@ -8,18 +8,25 @@ import {
     TableRow,
     Paper,
     TablePagination,
-    Button
+
 } from "@mui/material";
+
+import { SquarePen, PenLine } from 'lucide-react';
+
 import request from "../../../utils/request";
 import type { ArticleTpye } from "../../../interfaces/Article";
 import styles from "./index.module.scss";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 const api = {
     list: "/admin/article/list",
 };
 
 const Article: React.FC = () => {
+
+    const navigate = useNavigate()
+
     const [articles, setArticles] = useState<ArticleTpye[]>([]);
     const [page, setPage] = useState(0); // MUI 页码是从 0 开始的
     const [rowsPerPage, setRowsPerPage] = useState(5); // 每页条数
@@ -49,7 +56,7 @@ const Article: React.FC = () => {
 
     // 处理页码切换
     const handleChangePage = (_: unknown, newPage: number) => {
-        fetchData(newPage + 1, rowsPerPage); // 后端是从 1 开始的
+        fetchData(newPage + 1, rowsPerPage);
     };
 
     // 处理每页条数切换
@@ -59,8 +66,19 @@ const Article: React.FC = () => {
         fetchData(1, newSize); // 重置到第一页
     };
 
+    const handlerAdd = () => {
+        navigate('/admin/addArticle')
+    }
+
+    const handlerEdit = (id: number) => {
+        navigate(`/admin/addArticle?id=${id}`)
+    }
+
     return (
         <div className={styles.articleBox}>
+            <div className={styles.header}>
+                <PenLine className={styles.addIcon} onClick={handlerAdd} />
+            </div>
             <Paper sx={{ borderRadius: 2, boxShadow: 3 }}>
                 <TableContainer>
                     <Table className={styles.fixedTable}>
@@ -104,14 +122,11 @@ const Article: React.FC = () => {
                                     <TableCell>{article.edit ? "✅" : "❌"}</TableCell>
                                     <TableCell>{article.exist ? "✅" : "❌"}</TableCell>
                                     <TableCell>
-                                        <Button variant="contained" color="success" size="small">
-                                            编辑
-                                        </Button>
+                                        <SquarePen color="#000" onClick={() => handlerEdit(article.id)} />
                                     </TableCell>
                                 </TableRow>
                             ))}
 
-                            {/* 空行填充，保持高度 */}
                             {articles.length < rowsPerPage && (
                                 <TableRow className={styles.emptyRow}>
                                     <TableCell colSpan={9} />
@@ -130,7 +145,7 @@ const Article: React.FC = () => {
                     onPageChange={handleChangePage}
                     rowsPerPage={rowsPerPage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
-                    rowsPerPageOptions={[2, 5, 10, 25]}
+                    rowsPerPageOptions={[5, 10, 25]}
                     labelRowsPerPage="每页行数"
                     labelDisplayedRows={({ from, to, count }) =>
                         `第 ${from}-${to} 条 / 共 ${count !== -1 ? count : `更多`} 条`
