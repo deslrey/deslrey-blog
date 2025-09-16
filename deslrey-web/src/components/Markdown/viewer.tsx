@@ -103,21 +103,6 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
         });
     }, [body]);
 
-
-    function slugify(text: string, index: number): string {
-        return (
-            text
-                .toLowerCase()
-                .trim()
-                .replace(/[\.（）\(\)]/g, "-")   // 替换掉点和括号
-                .replace(/[^a-z0-9\u4e00-\u9fa5-]/g, "") // 只保留字母数字和中文
-                .replace(/-+/g, "-")            // 合并多个 -
-                .replace(/^-|-$/g, "")          // 去掉开头/结尾的 -
-            || `heading-${index + 1}`           // 兜底
-        );
-    }
-
-
     // 单独的 useEffect 处理滚动进度
     React.useEffect(() => {
         const scrollContainer = getScrollParent(contentRef.current);
@@ -168,11 +153,10 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
                     <Viewer value={body} plugins={plugins} />
                 </div>
             </div>
-            {headings.length > 0 && (
-                <aside className="markdown-toc">
-                    {/* <div className="markdown-toc-title">目录</div> */}
-                    <ul>
-                        {headings.map((h) => (
+            <aside className="markdown-toc">
+                <ul>
+                    {headings.length > 0
+                        ? headings.map((h) => (
                             <li
                                 key={h.id}
                                 className={`lv-${h.level} ${activeId === h.id ? "active" : ""}`}
@@ -187,23 +171,30 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
                                     {h.text}
                                 </a>
                             </li>
-                        ))}
-                    </ul>
-                    <div className="markdown-toc-progress">
-                        <Progress
-                            type="circle"
-                            percent={progress}
-                            size={20}
-                            showInfo={false}
-                            strokeColor={conicColors}
-                        />
-                        <span className="dot" /> {progress}%
-                    </div>
-                    <a className="markdown-toc-top" href="#top" onClick={handleScrollToTop}>
-                        回到顶部
-                    </a>
-                </aside>
-            )}
+                        ))
+                        : Array(5)
+                            .fill(0)
+                            .map((_, i) => (
+                                <li key={i} className="skeleton">
+                                    <span />
+                                </li>
+                            ))}
+                </ul>
+                <div className="markdown-toc-progress">
+                    <Progress
+                        type="circle"
+                        percent={progress}
+                        size={20}
+                        showInfo={false}
+                        strokeColor={conicColors}
+                    />
+                    <span className="dot" /> {progress}%
+                </div>
+                <a className="markdown-toc-top" href="#top" onClick={handleScrollToTop}>
+                    回到顶部
+                </a>
+            </aside>
+
         </div>
     );
 };
