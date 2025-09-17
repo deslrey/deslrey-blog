@@ -1,10 +1,5 @@
+import { House, Newspaper, Pencil, User, Image, Folder } from "lucide-react";
 import React, { lazy } from "react";
-
-import {
-    BiDetail,
-    BiHomeAlt2,
-    BiTaskX,
-} from 'react-icons/bi';
 
 export interface RouteType {
     path: string;
@@ -15,8 +10,9 @@ export interface RouteType {
 
 const About = lazy(() => import('../Admin/About'))
 const AddArticle = lazy(() => import('../Admin/AddArticle'))
-const EditArticle = lazy(() => import('../Admin/EditArticle'))
 const Article = lazy(() => import('../Admin/Article'))
+const ImagePage = lazy(() => import('../Admin/Image'))
+const FolderPage = lazy(() => import('../Admin/Folder'))
 const Draft = lazy(() => import('../Admin/Draft'))
 const Home = lazy(() => import('../Admin/Home'))
 
@@ -25,34 +21,41 @@ export const useRoutes = (): RouteType[] => [
         path: 'home',
         disPlayName: '主页',
         element: <Home />,
-        icon: <BiHomeAlt2 />
+        icon: <House color="#000000" />
     },
     {
         path: 'article',
         disPlayName: '文章',
         element: <Article />,
-        icon: <BiDetail />
+        icon: <Newspaper color="#000000" />
+    },
+    {
+        path: 'imageTable',
+        disPlayName: '图片',
+        element: <ImagePage />,
+        icon: <Image color="#000000" />
+    },
+    {
+        path: 'folder',
+        disPlayName: '目录',
+        element: <FolderPage />,
+        icon: <Folder />
     },
     {
         path: 'draft',
         disPlayName: '草稿箱',
         element: <Draft />,
-        icon: <BiTaskX />
+        icon: <Pencil color="#000000" />
     },
     {
         path: 'about',
         disPlayName: '关于',
         element: <About />,
-        icon: <BiHomeAlt2 />
+        icon: <User color="#000000" />
     },
     {
         path: 'addArticle',
         disPlayName: '',
         element: <AddArticle />,
-    },
-    {
-        path: 'enitArticle',
-        disPlayName: '',
-        element: <EditArticle />,
     }
 ]
