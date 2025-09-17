@@ -1,5 +1,6 @@
 package org.deslrey.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.deslrey.entity.po.Folder;
 
 import java.util.List;
@@ -17,4 +18,9 @@ public interface FolderMapper {
     List<Folder> folderAll();
 
     List<Folder> folderList();
+
+    boolean existsFolderByName(String folderName);
+
+    int save(@Param("folderName") String folderName, @Param("path") String path);
+
 }

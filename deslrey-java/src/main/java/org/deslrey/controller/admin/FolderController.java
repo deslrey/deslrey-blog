@@ -5,10 +5,7 @@ import org.deslrey.entity.po.Folder;
 import org.deslrey.result.Results;
 import org.deslrey.service.FolderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <br>
@@ -29,5 +26,10 @@ public class FolderController {
     @GetMapping("list")
     public Results<PageInfo<Folder>> folderList(@RequestParam(defaultValue = "all") String type, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize) {
         return folderService.folderList(type, page, pageSize);
+    }
+
+    @PostMapping("addFolder")
+    public Results<Void> addFolder(@RequestBody Folder folder) {
+        return folderService.addFolder(folder);
     }
 }

@@ -10,6 +10,12 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
+    <insert id="save">
+        INSERT INTO folder (folder_name, path, create_time)
+        VALUES (#{folderName}, #{path}, NOW())
+    </insert>
+
+
     <select id="folderAll" resultMap="BaseResultMap">
         select id, folder_name, path, create_time
         from folder
@@ -19,5 +25,12 @@
         select id, folder_name
         from folder
     </select>
+
+    <select id="existsFolderByName" resultType="boolean" parameterType="string">
+        SELECT EXISTS(SELECT 1
+                      FROM folder
+                      WHERE folder_name = #{folderName})
+    </select>
+
 
 </mapper>

@@ -15,4 +15,6 @@ import org.deslrey.result.Results;
  */
 public interface FolderService {
     Results<PageInfo<Folder>> folderList(String type, int page, int pageSize);
+
+    Results<Void> addFolder(Folder folder);
 }
