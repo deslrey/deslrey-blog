@@ -1,9 +1,16 @@
 package org.deslrey.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.deslrey.entity.po.Folder;
 import org.deslrey.mapper.FolderMapper;
+import org.deslrey.result.Results;
 import org.deslrey.service.FolderService;
+import org.deslrey.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <br>
@@ -20,4 +27,16 @@ public class FolderServiceImpl implements FolderService {
     @Autowired
     private FolderMapper folderMapper;
 
+    @Override
+    public Results<PageInfo<Folder>> folderList(String type, int page, int pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<Folder> folderList;
+        if (StringUtils.isEmpty(type) || "all".equals(type)) {
+            folderList = folderMapper.folderAll();
+        } else {
+            folderList = folderMapper.folderList();
+        }
+        PageInfo<Folder> pageInfo = new PageInfo<>(folderList);
+        return Results.ok(pageInfo);
+    }
 }

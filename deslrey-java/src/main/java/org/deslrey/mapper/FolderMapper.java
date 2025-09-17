@@ -1,5 +1,9 @@
 package org.deslrey.mapper;
 
+import org.deslrey.entity.po.Folder;
+
+import java.util.List;
+
 /**
  * <br>
  * 文件夹mapper
@@ -10,4 +14,7 @@ package org.deslrey.mapper;
  * @since 2025/9/16 16:46
  */
 public interface FolderMapper {
+    List<Folder> folderAll();
+
+    List<Folder> folderList();
 }

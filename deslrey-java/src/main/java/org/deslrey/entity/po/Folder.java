@@ -31,11 +31,6 @@ public class Folder implements Serializable {
     private Integer id;
 
     /**
-     * 所属文件夹ID
-     */
-    private Integer folderId;
-
-    /**
      * 文件夹名称
      */
     private String folderName;
