@@ -7,10 +7,12 @@ import org.deslrey.mapper.FolderMapper;
 import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.FolderService;
+import org.deslrey.util.NumberUtils;
 import org.deslrey.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.desktop.PreferencesEvent;
 import java.util.List;
 
 /**
@@ -60,5 +62,28 @@ public class FolderServiceImpl implements FolderService {
             return Results.fail("添加失败");
         }
         return Results.ok("添加成功");
+    }
+
+    @Override
+    public Results<Void> updateFolder(Folder folder) {
+        if (folder == null) {
+            return Results.fail(ResultCodeEnum.CODE_501);
+        }
+
+        if (NumberUtils.isLessZero(folder.getId()) || StringUtils.isBlank(folder.getFolderName()) || StringUtils.isBlank(folder.getPath())) {
+            return Results.fail(ResultCodeEnum.EMPTY_VALUE);
+        }
+
+        boolean folderExist = folderMapper.selectById(folder.getId());
+        if (!folderExist) {
+            return Results.fail("修改的数据不存在");
+        }
+
+        int result = folderMapper.updateFolderById(folder);
+
+        if (result > 0) {
+            return Results.ok("修改成功");
+        }
+        return Results.fail("修改失败");
     }
 }

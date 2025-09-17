@@ -32,4 +32,10 @@ public class FolderController {
     public Results<Void> addFolder(@RequestBody Folder folder) {
         return folderService.addFolder(folder);
     }
+
+    @PostMapping("updateFolder")
+    public Results<Void> updateFolder(@RequestBody Folder folder) {
+        return folderService.updateFolder(folder);
+    }
+
 }

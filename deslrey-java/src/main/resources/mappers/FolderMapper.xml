@@ -15,6 +15,13 @@
         VALUES (#{folderName}, #{path}, NOW())
     </insert>
 
+    <update id="updateFolderById" parameterType="org.deslrey.entity.po.Folder">
+        update folder
+        set folder_name = #{folderName},
+            path        = #{path}
+        where id = #{id}
+    </update>
+
 
     <select id="folderAll" resultMap="BaseResultMap">
         select id, folder_name, path, create_time
@@ -30,6 +37,12 @@
         SELECT EXISTS(SELECT 1
                       FROM folder
                       WHERE folder_name = #{folderName})
+    </select>
+
+    <select id="selectById" resultType="java.lang.Boolean" parameterType="java.lang.Integer">
+        select EXISTS(select 1
+                      from folder
+                      where id = #{id})
     </select>
 
 

@@ -2,18 +2,22 @@ import React, { useEffect, useState } from 'react';
 import {
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
     Paper, TablePagination, Dialog, DialogTitle, DialogContent, DialogActions,
-    TextField, Button
+    TextField, Button, TableSortLabel
 } from "@mui/material";
 import styles from './index.module.scss';
 import type { Folder } from '../../../interfaces/Folder';
 import request from '../../../utils/request';
 import dayjs from 'dayjs';
 import { FolderPlus, SquarePen } from 'lucide-react';
+import { Message } from '../../../utils/message';
 
 const api = {
     list: '/folder/list',
     addFolder: '/folder/addFolder',
+    updateFolder: '/folder/updateFolder',
 }
+
+type Order = 'asc' | 'desc';
 
 const FolderPage: React.FC = () => {
     const [folders, setFolders] = useState<Folder[]>([]);
@@ -21,10 +25,19 @@ const FolderPage: React.FC = () => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [total, setTotal] = useState(0);
 
+    // 排序状态
+    const [order, setOrder] = useState<Order>('desc');
+    const [orderBy, setOrderBy] = useState<keyof Folder>('createTime');
+
     // 弹窗控制
     const [open, setOpen] = useState(false);
-    const [form, setForm] = useState({ folderName: '', path: '' });
+    const [form, setForm] = useState<{ id?: number; folderName: string; path: string }>({
+        folderName: '',
+        path: ''
+    });
 
+    // 是否编辑模式
+    const [isEdit, setIsEdit] = useState(false);
 
     const fetchData = async (pageNum = 1, pageSize = rowsPerPage) => {
         const res = await request.get(api.list, {
@@ -49,30 +62,63 @@ const FolderPage: React.FC = () => {
         fetchData(1, newSize);
     };
 
-    const handlerEdit = (id: number) => {
-        console.log("编辑", id);
-    };
-
-    // 打开添加弹窗
-    const handlerAdd = () => {
-        setForm({ folderName: '', path: '' }); // 清空
+    // 点击编辑
+    const handlerEdit = (folder: Folder) => {
+        setIsEdit(true);
+        setForm({
+            id: folder.id,
+            folderName: folder.folderName,
+            path: folder.path
+        });
         setOpen(true);
     };
 
+    // 打开新增弹窗
+    const handlerAdd = () => {
+        setIsEdit(false);
+        setForm({ folderName: '', path: '' }); // 清空
+        setOpen(true);
+    };
 
     // 输入框通用处理方法
     const handleFormChange = (key: keyof typeof form, value: string) => {
         setForm(prev => ({ ...prev, [key]: value }));
     };
 
-
-    // 提交新增
+    // 提交（新增或编辑）
     const handleSubmit = async () => {
-        const res = await request.post(api.addFolder, form);
-        console.log("添加结果", res);
-        setOpen(false);
-        fetchData(1, rowsPerPage); // 刷新列表
+        try {
+            if (isEdit && form.id) {
+                // 编辑
+                const res = await request.post(api.updateFolder, form);
+                Message.success(res.message);
+            } else {
+                // 新增
+                const res = await request.post(api.addFolder, form);
+                Message.success(res.message);
+            }
+        } catch (err: any) {
+            Message.error(err.message || "请求失败");
+        } finally {
+            setOpen(false);
+            fetchData(1, rowsPerPage);
+        }
     };
+
+
+    // 切换排序
+    const handleSort = (property: keyof Folder) => {
+        const isAsc = orderBy === property && order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+        setOrderBy(property);
+    };
+
+    // 排序函数
+    const sortedFolders = [...folders].sort((a, b) => {
+        const valA = dayjs(a[orderBy] as any).valueOf();
+        const valB = dayjs(b[orderBy] as any).valueOf();
+        return order === 'asc' ? valA - valB : valB - valA;
+    });
 
 
     return (
@@ -86,24 +132,30 @@ const FolderPage: React.FC = () => {
                     <Table className={styles.fixedTable}>
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{ width: 60 }}>ID</TableCell>
-                                <TableCell sx={{ width: 100 }}>名称</TableCell>
+                                <TableCell sx={{ width: 80, paddingLeft: 10 }}>ID</TableCell>
+                                <TableCell sx={{ width: 150 }}>名称</TableCell>
                                 <TableCell sx={{ width: 240 }}>存储路径</TableCell>
-                                <TableCell sx={{ width: 160 }}>创建时间</TableCell>
+                                <TableCell sx={{ width: 200 }} sortDirection={orderBy === 'createTime' ? order : false}>
+                                    <TableSortLabel
+                                        active={orderBy === 'createTime'}
+                                        direction={orderBy === 'createTime' ? order : 'asc'}
+                                        onClick={() => handleSort('createTime')}
+                                    >
+                                        创建时间
+                                    </TableSortLabel>
+                                </TableCell>
                                 <TableCell sx={{ width: 80 }}>操作</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {folders.map((folder) => (
+                            {sortedFolders.map((folder) => (
                                 <TableRow key={folder.id} hover>
-                                    <TableCell>{folder.id}</TableCell>
+                                    <TableCell sx={{ paddingLeft: 10 }}>{folder.id}</TableCell>
                                     <TableCell>{folder.folderName}</TableCell>
                                     <TableCell>{folder.path}</TableCell>
+                                    <TableCell>{dayjs(folder.createTime).format("YYYY-MM-DD HH:mm")}</TableCell>
                                     <TableCell>
-                                        {dayjs(folder.createTime).format("YYYY-MM-DD HH:mm")}
-                                    </TableCell>
-                                    <TableCell>
-                                        <SquarePen color="#000" onClick={() => handlerEdit(folder.id)} />
+                                        <SquarePen color="#000" onClick={() => handlerEdit(folder)} />
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -128,7 +180,7 @@ const FolderPage: React.FC = () => {
 
             {/* 新增 / 编辑弹窗 */}
             <Dialog open={open} onClose={() => setOpen(false)}>
-                <DialogTitle>新增文件夹</DialogTitle>
+                <DialogTitle>{isEdit ? "编辑文件夹" : "新增文件夹"}</DialogTitle>
                 <DialogContent>
                     <TextField
                         margin="dense"
