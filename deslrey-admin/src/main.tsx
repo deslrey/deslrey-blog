@@ -9,6 +9,8 @@ import '@fontsource/roboto/700.css';
 
 
 import App from './App.tsx'
+import { SnackbarProvider } from 'notistack';
+import { SnackbarUtilsConfigurator } from './utils/message.tsx';
 
 const containerElement = document.getElementById('root') as HTMLElement;
 
@@ -17,7 +19,10 @@ const root = createRoot(containerElement);
 const element = (
   <BrowserRouter>
     <StrictMode>
-      <App />
+      <SnackbarProvider maxSnack={3}>
+        <SnackbarUtilsConfigurator />
+        <App />
+      </SnackbarProvider>
     </StrictMode>
   </BrowserRouter>
 );
