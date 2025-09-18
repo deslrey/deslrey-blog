@@ -1,12 +1,12 @@
 package org.deslrey.controller.admin;
 
+import com.github.pagehelper.PageInfo;
+import org.deslrey.entity.vo.ImageVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.ImageService;
+import org.deslrey.util.StaticUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -30,4 +30,8 @@ public class ImageController {
         return imageService.uploadImage(file, folderId);
     }
 
+    @GetMapping("list")
+    public Results<PageInfo<ImageVO>> imageList(@RequestParam(defaultValue = StaticUtils.ALL_TYPE) String type, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize) {
+        return imageService.imageList(type, page, pageSize);
+    }
 }

@@ -1,5 +1,7 @@
 package org.deslrey.service;
 
+import com.github.pagehelper.PageInfo;
+import org.deslrey.entity.vo.ImageVO;
 import org.deslrey.result.Results;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,4 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface ImageService {
     Results<Void> uploadImage(MultipartFile file, Integer folderId);
+
+    Results<PageInfo<ImageVO>> imageList(String type, int page, int pageSize);
 }

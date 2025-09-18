@@ -1,6 +1,9 @@
 package org.deslrey.mapper;
 
 import org.deslrey.entity.po.Image;
+import org.deslrey.entity.vo.ImageVO;
+
+import java.util.List;
 
 /**
  * <br>
@@ -13,4 +16,9 @@ import org.deslrey.entity.po.Image;
  */
 public interface ImageMapper {
     int insertImage(Image image);
+
+    List<ImageVO> allList();
+
+    List<ImageVO> modicumList();
+
 }

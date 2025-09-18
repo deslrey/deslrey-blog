@@ -18,4 +18,17 @@
             value (#{folderId}, #{imageName}, #{path}, #{url}, #{size}, NOW())
     </insert>
 
+    <select id="allList" resultType="org.deslrey.entity.vo.ImageVO">
+        select i.id, f.folder_name as folderName, i.path, i.url, i.size, i.create_time
+        from image i
+                 left join folder f on i.folder_id = f.id
+    </select>
+
+
+    <select id="modicumList" resultType="org.deslrey.entity.vo.ImageVO">
+        select f.folder_name as folderName, i.url
+        from image i
+                 left join folder f on i.folder_id = f.id
+    </select>
+
 </mapper>

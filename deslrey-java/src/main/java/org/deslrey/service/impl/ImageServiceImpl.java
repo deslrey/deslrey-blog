@@ -1,8 +1,11 @@
 package org.deslrey.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.deslrey.entity.po.Folder;
 import org.deslrey.entity.po.Image;
+import org.deslrey.entity.vo.ImageVO;
 import org.deslrey.mapper.FolderMapper;
 import org.deslrey.mapper.ImageMapper;
 import org.deslrey.result.ResultCodeEnum;
@@ -10,6 +13,7 @@ import org.deslrey.result.Results;
 import org.deslrey.service.ImageService;
 import org.deslrey.util.ImageUtils;
 import org.deslrey.util.NumberUtils;
+import org.deslrey.util.StaticUtils;
 import org.deslrey.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * <br>
@@ -82,5 +87,18 @@ public class ImageServiceImpl implements ImageService {
             return Results.fail("上床失败");
         }
 
+    }
+
+    @Override
+    public Results<PageInfo<ImageVO>> imageList(String type, int page, int pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<ImageVO> imageList;
+        if (StringUtils.isEmpty(type) || StaticUtils.ALL_TYPE.equals(type)) {
+            imageList = imageMapper.allList();
+        } else {
+            imageList = imageMapper.modicumList();
+        }
+        PageInfo<ImageVO> imageVOPageInfo = new PageInfo<>(imageList);
+        return Results.ok(imageVOPageInfo);
     }
 }
