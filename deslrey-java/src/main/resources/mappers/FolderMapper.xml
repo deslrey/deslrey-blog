@@ -51,5 +51,10 @@
         where id = #{id}
     </select>
 
+    <select id="folderNameList"  resultMap="BaseResultMap">
+        select id, folder_name
+        from folder
+    </select>
+
 
 </mapper>

@@ -28,4 +28,7 @@ public interface FolderMapper {
     int updateFolderById(Folder folder);
 
     Folder selectById(@Param(("id")) Integer Id);
+
+    List<Folder> folderNameList();
+
 }

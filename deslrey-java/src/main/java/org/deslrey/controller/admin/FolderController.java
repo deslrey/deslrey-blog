@@ -7,6 +7,8 @@ import org.deslrey.service.FolderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <br>
  * 文件夹控制层
@@ -26,6 +28,11 @@ public class FolderController {
     @GetMapping("list")
     public Results<PageInfo<Folder>> folderList(@RequestParam(defaultValue = "all") String type, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize) {
         return folderService.folderList(type, page, pageSize);
+    }
+
+    @GetMapping("folderNameList")
+    public Results<List<Folder>> folderNameList() {
+        return folderService.folderNameList();
     }
 
     @PostMapping("addFolder")

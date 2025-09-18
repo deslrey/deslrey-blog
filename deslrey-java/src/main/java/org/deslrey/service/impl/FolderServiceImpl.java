@@ -8,10 +8,14 @@ import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.FolderService;
 import org.deslrey.util.NumberUtils;
+import org.deslrey.util.StaticUtils;
 import org.deslrey.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +29,9 @@ import java.util.List;
  */
 @Service
 public class FolderServiceImpl implements FolderService {
+
+    @Value("${custom.static-source-path}")
+    private String staticSourcePath;
 
     @Autowired
     private FolderMapper folderMapper;
@@ -56,7 +63,7 @@ public class FolderServiceImpl implements FolderService {
             return Results.fail(ResultCodeEnum.CODE_601);
         }
 
-        int result = folderMapper.save(folder.getFolderName(), folder.getPath());
+        int result = folderMapper.save(folder.getFolderName(), staticSourcePath + File.separator + folder.getPath());
         if (result == 0) {
             return Results.fail("添加失败");
         }
@@ -84,5 +91,14 @@ public class FolderServiceImpl implements FolderService {
             return Results.ok("修改成功");
         }
         return Results.fail("修改失败");
+    }
+
+    @Override
+    public Results<List<Folder>> folderNameList() {
+        List<Folder> folderList = folderMapper.folderNameList();
+        if (folderList == null || folderList.isEmpty()) {
+            return Results.ok(new ArrayList<>());
+        }
+        return Results.ok(folderList);
     }
 }

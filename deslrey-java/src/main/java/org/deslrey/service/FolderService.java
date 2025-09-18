@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Folder;
 import org.deslrey.result.Results;
 
+import java.util.List;
+
 /**
  * <br>
  * 文件夹接口
@@ -19,4 +21,6 @@ public interface FolderService {
     Results<Void> addFolder(Folder folder);
 
     Results<Void> updateFolder(Folder folder);
+
+    Results<List<Folder>> folderNameList();
 }
