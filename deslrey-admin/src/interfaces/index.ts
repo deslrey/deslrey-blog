@@ -42,3 +42,10 @@ export const OperateType = {
     edit: "edit",
     draft: "draft",
 }
+
+export const ListType = {
+    all: "all",
+    modicum: "modicum"
+}
+
+export type Order = 'asc' | 'desc';
