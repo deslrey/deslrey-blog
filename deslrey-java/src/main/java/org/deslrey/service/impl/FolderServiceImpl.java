@@ -12,7 +12,6 @@ import org.deslrey.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.desktop.PreferencesEvent;
 import java.util.List;
 
 /**
@@ -74,7 +73,7 @@ public class FolderServiceImpl implements FolderService {
             return Results.fail(ResultCodeEnum.EMPTY_VALUE);
         }
 
-        boolean folderExist = folderMapper.selectById(folder.getId());
+        boolean folderExist = folderMapper.selectExistById(folder.getId());
         if (!folderExist) {
             return Results.fail("修改的数据不存在");
         }

@@ -39,10 +39,16 @@
                       WHERE folder_name = #{folderName})
     </select>
 
-    <select id="selectById" resultType="java.lang.Boolean" parameterType="java.lang.Integer">
+    <select id="selectExistById" resultType="java.lang.Boolean" parameterType="java.lang.Integer">
         select EXISTS(select 1
                       from folder
                       where id = #{id})
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select id, folder_name, path
+        from folder
+        where id = #{id}
     </select>
 
 
