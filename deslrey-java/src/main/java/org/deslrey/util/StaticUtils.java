@@ -13,4 +13,7 @@ public class StaticUtils {
 
     public static final String BASE_URL = "http://localhost:8080/deslrey/staticSource/";
 
+    public static final String ALL_TYPE = "all";
+    public static final String ALL_MODICUM = "modicum";
+
 }
