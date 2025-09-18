@@ -17,6 +17,14 @@
         <result column="exist" property="exist"/>
     </resultMap>
 
+    <insert id="insertArticle" parameterType="org.deslrey.entity.po.Article" keyProperty="id" useGeneratedKeys="true">
+        insert into article(title, content, word_count, views, create_time, update_time, category, des, sticky, edit,
+                            exist)
+        values (#{title}, #{content}, #{wordCount}, #{views}, #{createTime}, #{updateTime},
+                #{category}, #{des}, #{sticky}, #{edit}, #{exist})
+
+    </insert>
+
     <select id="latestReleases" resultType="org.deslrey.entity.vo.LatestReleasesVO">
         select id, title, create_time AS createTime
         from article

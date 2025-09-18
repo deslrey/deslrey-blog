@@ -1,14 +1,12 @@
 package org.deslrey.controller.admin;
 
 import com.github.pagehelper.PageInfo;
+import org.deslrey.entity.admin.po.ArticleDraft;
 import org.deslrey.entity.admin.vo.ArticleAdminVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <br>
@@ -31,4 +29,8 @@ public class ArticleAdminController {
         return articleService.articleListAdmin(page, pageSize);
     }
 
+    @PostMapping("addArticle")
+    public Results<Void> addArticle(@RequestBody ArticleDraft articleDraft) {
+        return articleService.addArticle(articleDraft);
+    }
 }

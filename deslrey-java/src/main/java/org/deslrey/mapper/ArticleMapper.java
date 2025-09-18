@@ -29,4 +29,5 @@ public interface ArticleMapper {
 
     List<ArticleAdminVO> getArticlesAdmin();
 
+    int insertArticle(Article article);
 }

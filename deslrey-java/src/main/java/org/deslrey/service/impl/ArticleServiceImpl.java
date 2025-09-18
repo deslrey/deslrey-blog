@@ -3,12 +3,14 @@ package org.deslrey.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.deslrey.convert.ArticleConvert;
+import org.deslrey.entity.admin.po.ArticleDraft;
 import org.deslrey.entity.admin.vo.ArticleAdminVO;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.vo.ArchiveVO;
 import org.deslrey.entity.vo.ArticleVO;
 import org.deslrey.entity.vo.LatestReleasesVO;
 import org.deslrey.mapper.ArticleMapper;
+import org.deslrey.mapper.ArticleTagMapper;
 import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.ArticleService;
@@ -16,6 +18,7 @@ import org.deslrey.util.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +39,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleConvert articleConvert;
+
+    @Autowired
+    private ArticleTagMapper articleTagMapper;
 
     /**
      * 查询最新发布的五篇文章
@@ -88,5 +94,37 @@ public class ArticleServiceImpl implements ArticleService {
         // PageInfo 包含分页结果（list, total, pages 等）
         PageInfo<ArticleAdminVO> pageInfo = new PageInfo<>(list);
         return Results.ok(pageInfo);
+    }
+
+    @Override
+    public Results<Void> addArticle(ArticleDraft articleDraft) {
+        if (articleDraft == null) {
+            return Results.fail(ResultCodeEnum.EMPTY_VALUE);
+        }
+
+        Article article = new Article();
+        article.setTitle(articleDraft.getTitle());
+        article.setContent(articleDraft.getContent());
+        article.setWordCount(articleDraft.getContent().length());
+        article.setViews(0);
+        article.setCreateTime(LocalDateTime.now());
+        article.setUpdateTime(LocalDateTime.now());
+        article.setCategory(articleDraft.getCategory());
+        article.setDes(articleDraft.getDes());
+        article.setSticky(false);
+        article.setEdit(false);
+        article.setExist(true);
+
+
+        int result = articleMapper.insertArticle(article);
+        if (result <= 0) {
+            return Results.fail("保存失败");
+        }
+        List<Integer> tagIdList = articleDraft.getTagIdList();
+        for (Integer tagId : tagIdList) {
+            articleTagMapper.insertArticleTag(article.getId(), tagId);
+        }
+
+        return Results.ok("保存成功");
     }
 }

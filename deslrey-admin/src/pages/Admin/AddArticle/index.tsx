@@ -11,6 +11,7 @@ import { styled } from '@mui/material/styles';
 import styles from './index.module.scss';
 import type { Category, Tag } from '../../../interfaces';
 import request from '../../../utils/request';
+import { Message } from '../../../utils/message';
 
 const CustomPopper = styled(Popper)({
     '& .MuiAutocomplete-listbox': {
@@ -30,6 +31,7 @@ const CustomPopper = styled(Popper)({
 
 
 const api = {
+    addArticle: '/admin/article/addArticle',
     categoryList: '/category/categoryList',
     tagNameList: '/tag/tagNameList',
 };
@@ -44,14 +46,21 @@ const AddArticle: React.FC = () => {
     const [tags, setTags] = useState<Tag[]>([]);
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
 
-    const handleSave = () => {
-        console.log({
+    const handleSave = async () => {
+        const payload = {
             title,
-            categoryId: category?.id || null,
-            tagIds: selectedTagIds,
-            description,
             content,
-        });
+            category: category?.categoryTitle || null,
+            tagIdList: selectedTagIds,
+            des: description,
+        };
+
+        try {
+            const res = await request.post(api.addArticle, payload);
+            console.log(res);
+        } catch (error) {
+            Message.error('保存失败');
+        }
     };
 
     const handleDraft = () => {

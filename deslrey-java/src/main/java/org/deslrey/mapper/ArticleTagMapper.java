@@ -10,4 +10,5 @@ package org.deslrey.mapper;
  * @since 2025/9/15 15:54
  */
 public interface ArticleTagMapper {
+    void insertArticleTag(Integer articleId, Integer tagId);
 }

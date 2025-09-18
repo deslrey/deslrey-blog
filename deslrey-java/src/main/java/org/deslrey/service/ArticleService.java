@@ -1,6 +1,7 @@
 package org.deslrey.service;
 
 import com.github.pagehelper.PageInfo;
+import org.deslrey.entity.admin.po.ArticleDraft;
 import org.deslrey.entity.admin.vo.ArticleAdminVO;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.vo.ArchiveVO;
@@ -29,4 +30,6 @@ public interface ArticleService {
     Results<List<ArchiveVO>> archiveList();
 
     Results<PageInfo<ArticleAdminVO>> articleListAdmin(int page, int pageSize);
+
+    Results<Void> addArticle(ArticleDraft articleDraft);
 }
