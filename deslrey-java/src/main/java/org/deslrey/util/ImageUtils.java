@@ -150,4 +150,28 @@ public class ImageUtils {
 
         return destFile;
     }
+
+
+    /**
+     * 将本地文件路径转换为可访问的 URL
+     *
+     * @param file       本地文件对象
+     * @param folderPath 本地静态资源根路径
+     * @return 替换后的访问 URL
+     */
+    public static String toAccessUrl(File file, String folderPath) {
+        if (file == null || folderPath == null) {
+            return null;
+        }
+        // 统一路径分隔符，避免 Windows 和 Linux 不一致
+        String absolutePath = file.getAbsolutePath().replace("\\", "/");
+        String normalizedFolderPath = folderPath.replace("\\", "/");
+
+        if (absolutePath.startsWith(normalizedFolderPath)) {
+            return StaticUtils.BASE_URL + absolutePath.substring(normalizedFolderPath.length() + 1);
+        }
+        return StaticUtils.BASE_URL + file.getName();
+    }
+
+
 }
