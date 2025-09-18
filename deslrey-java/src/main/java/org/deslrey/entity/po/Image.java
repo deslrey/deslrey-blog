@@ -53,7 +53,7 @@ public class Image implements Serializable {
     /**
      * 文件大小
      */
-    private Integer size;
+    private Long size;
 
     /**
      * 创建日期

@@ -13,4 +13,9 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
+    <insert id="insertImage" parameterType="org.deslrey.entity.po.Image">
+        insert into image(folder_id, image_name, path, url, size, create_time)
+            value (#{folderId}, #{imageName}, #{path}, #{url}, #{size}, NOW())
+    </insert>
+
 </mapper>

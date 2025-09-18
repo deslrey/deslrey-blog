@@ -1,5 +1,7 @@
 package org.deslrey.mapper;
 
+import org.deslrey.entity.po.Image;
+
 /**
  * <br>
  * 图片mapper
@@ -10,4 +12,5 @@ package org.deslrey.mapper;
  * @since 2025/9/16 16:05
  */
 public interface ImageMapper {
+    int insertImage(Image image);
 }
