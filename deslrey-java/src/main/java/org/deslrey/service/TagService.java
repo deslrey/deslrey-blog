@@ -1,5 +1,6 @@
 package org.deslrey.service;
 
+import org.deslrey.entity.po.Tag;
 import org.deslrey.entity.vo.TagCountVO;
 import org.deslrey.result.Results;
 
@@ -16,4 +17,6 @@ import java.util.List;
  */
 public interface TagService {
     Results<List<TagCountVO>> tagList();
+
+    Results<List<Tag>> tagNameList();
 }

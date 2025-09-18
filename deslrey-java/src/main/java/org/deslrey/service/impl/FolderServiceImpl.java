@@ -63,7 +63,7 @@ public class FolderServiceImpl implements FolderService {
             return Results.fail(ResultCodeEnum.CODE_601);
         }
 
-        int result = folderMapper.save(folder.getFolderName(), staticSourcePath + File.separator + folder.getPath());
+        int result = folderMapper.save(folder.getFolderName(), folder.getPath());
         if (result == 0) {
             return Results.fail("添加失败");
         }

@@ -37,6 +37,12 @@ export interface Image {
 
 }
 
+export interface Tag {
+    id: number;
+    tagTitle: string;
+    createTime: Date
+}
+
 export const OperateType = {
     add: "add",
     edit: "edit",

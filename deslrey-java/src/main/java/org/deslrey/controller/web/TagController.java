@@ -1,5 +1,6 @@
 package org.deslrey.controller.web;
 
+import org.deslrey.entity.po.Tag;
 import org.deslrey.entity.vo.TagCountVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.TagService;
@@ -29,6 +30,11 @@ public class TagController {
     @GetMapping("list")
     public Results<List<TagCountVO>> tagList() {
         return tagService.tagList();
+    }
+
+    @GetMapping("tagNameList")
+    public Results<List<Tag>> tagNameList(){
+        return tagService.tagNameList();
     }
 
 }

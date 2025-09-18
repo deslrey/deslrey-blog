@@ -20,4 +20,9 @@
         ORDER BY total DESC;
     </select>
 
+    <select id="tagNameList" resultMap="BaseResultMap">
+        select id, tag_title
+        from tag limit 10
+    </select>
+
 </mapper>

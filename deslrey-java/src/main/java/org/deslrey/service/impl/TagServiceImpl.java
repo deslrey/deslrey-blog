@@ -1,5 +1,6 @@
 package org.deslrey.service.impl;
 
+import org.deslrey.entity.po.Tag;
 import org.deslrey.entity.vo.TagCountVO;
 import org.deslrey.mapper.TagMapper;
 import org.deslrey.result.Results;
@@ -32,5 +33,14 @@ public class TagServiceImpl implements TagService {
             return Results.ok(new ArrayList<>());
         }
         return Results.ok(tagCountVOList);
+    }
+
+    @Override
+    public Results<List<Tag>> tagNameList() {
+        List<Tag> tagList = tagMapper.tagNameList();
+        if (tagList == null || tagList.isEmpty()) {
+            return Results.ok(new ArrayList<>());
+        }
+        return Results.ok(tagList);
     }
 }
