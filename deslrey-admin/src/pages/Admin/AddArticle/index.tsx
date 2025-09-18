@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MDEditor from '@uiw/react-md-editor';
 import { Button, TextField, MenuItem, FormControl, InputLabel, Select } from '@mui/material';
 import styles from './index.module.scss';
-import type { Category } from '../../../interfaces/Article';
+import type { Category } from '../../../interfaces';
 import request from '../../../utils/request';
 
 const AddArticle: React.FC = () => {

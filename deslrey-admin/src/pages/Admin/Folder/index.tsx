@@ -5,7 +5,7 @@ import {
     TextField, Button, TableSortLabel
 } from "@mui/material";
 import styles from './index.module.scss';
-import type { Folder } from '../../../interfaces/Folder';
+import type { Folder, Order } from '../../../interfaces';
 import request from '../../../utils/request';
 import dayjs from 'dayjs';
 import { FolderPlus, SquarePen } from 'lucide-react';
@@ -16,8 +16,6 @@ const api = {
     addFolder: '/folder/addFolder',
     updateFolder: '/folder/updateFolder',
 }
-
-type Order = 'asc' | 'desc';
 
 const FolderPage: React.FC = () => {
     const [folders, setFolders] = useState<Folder[]>([]);

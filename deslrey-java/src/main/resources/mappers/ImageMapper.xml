@@ -19,7 +19,7 @@
     </insert>
 
     <select id="allList" resultType="org.deslrey.entity.vo.ImageVO">
-        select i.id, f.folder_name as folderName, i.path, i.url, i.size, i.create_time
+        select i.id, f.folder_name as folderName, i.image_name as imageName, i.path, i.url, i.size, i.create_time as createTime
         from image i
                  left join folder f on i.folder_id = f.id
     </select>

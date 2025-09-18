@@ -84,7 +84,7 @@ public class ImageServiceImpl implements ImageService {
             return Results.fail("上传失败");
         } catch (IOException e) {
             log.error("保存图片上传出现异常 ======> {}", e.getMessage());
-            return Results.fail("上床失败");
+            return Results.fail("上传失败");
         }
 
     }

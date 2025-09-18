@@ -1,0 +1,59 @@
+.imageBox {
+    height: 100%;
+    width: 100%;
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin: 20px;
+        margin-right: 30px;
+        height: 40px;
+
+        .uploadBox {
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+        }
+    }
+
+    .addIcon {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+    }
+}
+
+.fixedTable {
+    width: 100%;
+
+    th,
+    td {
+        white-space: nowrap; // 不换行
+        overflow: hidden; // 超出隐藏
+        text-overflow: ellipsis; // 超出显示省略号
+    }
+}
+
+.previewWrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 20px;
+    gap: 20px;
+
+    .urlBox {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+    }
+}
+
+.previewImage {
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: 8px;
+}

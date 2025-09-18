@@ -14,8 +14,8 @@ import {
 import { SquarePen, PenLine } from 'lucide-react';
 
 import request from "../../../utils/request";
-import type { ArticleTpye } from "../../../interfaces/Article";
-import { OperateType } from "../../../interfaces/Operate";
+import type { ArticleTpye } from "../../../interfaces";
+import { OperateType } from "../../../interfaces";
 import styles from "./index.module.scss";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
