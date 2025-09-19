@@ -32,7 +32,7 @@ const CustomPopper = styled(Popper)({
 
 const api = {
     addArticle: '/admin/article/addArticle',
-    categoryList: '/category/categoryList',
+    categoryCountList: '/category/countList',
     tagNameList: '/tag/tagNameList',
 };
 
@@ -75,7 +75,7 @@ const AddArticle: React.FC = () => {
 
     const fetchCategories = async () => {
         try {
-            const res = await request.get(api.categoryList);
+            const res = await request.get(api.categoryCountList);
             if (res.code === 200 && Array.isArray(res.data)) {
                 setCategories(res.data);
             }
