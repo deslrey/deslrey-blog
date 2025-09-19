@@ -8,8 +8,11 @@ import org.deslrey.entity.vo.CategoryCountVO;
 import org.deslrey.entity.vo.CategoryVO;
 import org.deslrey.mapper.ArticleMapper;
 import org.deslrey.mapper.CategoryMapper;
+import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.CategoryService;
+import org.deslrey.util.NumberUtils;
+import org.deslrey.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,5 +67,31 @@ public class CategoryServiceImpl implements CategoryService {
 
         List<CategoryVO> categoriedVOList = CategoryConvert.INSTANCE.categoryVOList(categoryList);
         return Results.ok(categoriedVOList);
+    }
+
+    @Override
+    public Results<Void> updateCategoryTitle(Category category) {
+        if (category == null || NumberUtils.isLessZero(category.getId()) || StringUtils.isBlank(category.getCategoryTitle())) {
+            return Results.fail(ResultCodeEnum.EMPTY_VALUE);
+        }
+
+        int result = categoryMapper.updateCategoryTitle(category);
+        if (result > 0) {
+            return Results.ok("更新成功");
+        }
+        return Results.fail("更新失败");
+    }
+
+    @Override
+    public Results<Void> addCategory(Category category) {
+        if (category == null || StringUtils.isBlank(category.getCategoryTitle())) {
+            return Results.fail(ResultCodeEnum.EMPTY_VALUE);
+        }
+
+        int result = categoryMapper.insertCategory(category.getCategoryTitle());
+        if (result > 0) {
+            return Results.ok("添加成功");
+        }
+        return Results.fail("添加失败");
     }
 }

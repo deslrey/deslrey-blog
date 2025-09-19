@@ -8,6 +8,16 @@
         <result column="category_title" property="categoryTitle"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
+    <insert id="insertCategory" parameterType="java.lang.String">
+        insert into category(category_title, create_time)
+        values (#{categoryTitle}, NOW())
+    </insert>
+
+    <update id="updateCategoryTitle" parameterType="org.deslrey.entity.po.Category">
+        update category
+        set category_title = #{categoryTitle}
+        where id = #{id}
+    </update>
 
     <select id="categoryCountList" resultType="org.deslrey.entity.vo.CategoryCountVO">
         select c.id, c.category_title AS title, COUNT(a.id) AS total

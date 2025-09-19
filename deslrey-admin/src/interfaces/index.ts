@@ -16,6 +16,7 @@ export interface ArticleTpye {
 export interface Category {
     id: number;
     categoryTitle: string;
+    createTime?: Date
 }
 
 

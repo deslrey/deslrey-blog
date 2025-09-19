@@ -23,4 +23,8 @@ public interface CategoryService {
     Results<List<CategoryVO>> categoryArticleList();
 
     Results<PageInfo<Category>> categoryList(int page, int pageSize);
+
+    Results<Void> updateCategoryTitle(Category category);
+
+    Results<Void> addCategory(Category category);
 }

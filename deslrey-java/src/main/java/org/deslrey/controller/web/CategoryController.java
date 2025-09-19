@@ -7,10 +7,7 @@ import org.deslrey.entity.vo.CategoryVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,4 +43,16 @@ public class CategoryController {
     public Results<List<CategoryVO>> categoryArticleList() {
         return categoryService.categoryArticleList();
     }
+
+    @PostMapping("updateCategoryTitle")
+    public Results<Void> updateCategoryTitle(@RequestBody Category category) {
+        return categoryService.updateCategoryTitle(category);
+    }
+
+    @PostMapping("addCategory")
+    public Results<Void> addCategory(@RequestBody Category category) {
+        return categoryService.addCategory(category);
+    }
+
+
 }
