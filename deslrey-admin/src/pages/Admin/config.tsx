@@ -1,4 +1,4 @@
-import { House, Newspaper, Pencil, User, Image, Folder } from "lucide-react";
+import { House, Newspaper, Pencil, User, Image, Folder, Tag, ChartBarStacked } from "lucide-react";
 import React, { lazy } from "react";
 
 export interface RouteType {
@@ -11,6 +11,8 @@ export interface RouteType {
 const About = lazy(() => import('../Admin/About'))
 const AddArticle = lazy(() => import('../Admin/AddArticle'))
 const Article = lazy(() => import('../Admin/Article'))
+const CategoryPage = lazy(() => import('../Admin/Category'))
+const TagPage = lazy(() => import('../Admin/Tag'))
 const ImagePage = lazy(() => import('../Admin/Image'))
 const FolderPage = lazy(() => import('../Admin/Folder'))
 const Draft = lazy(() => import('../Admin/Draft'))
@@ -36,10 +38,28 @@ export const useRoutes = (): RouteType[] => [
         icon: <Image color="#000000" />
     },
     {
+        path: 'imageTable',
+        disPlayName: '图片',
+        element: <ImagePage />,
+        icon: <Image color="#000000" />
+    },
+    {
         path: 'folder',
         disPlayName: '目录',
         element: <FolderPage />,
         icon: <Folder />
+    },
+    {
+        path: 'category',
+        disPlayName: '分类',
+        element: <CategoryPage />,
+        icon: <ChartBarStacked color="#000000" />
+    },
+    {
+        path: 'tag',
+        disPlayName: '标签',
+        element: <TagPage />,
+        icon: <Tag color="#000000" />
     },
     {
         path: 'draft',
