@@ -38,16 +38,10 @@ export const useRoutes = (): RouteType[] => [
         icon: <Image color="#000000" />
     },
     {
-        path: 'imageTable',
-        disPlayName: '图片',
-        element: <ImagePage />,
-        icon: <Image color="#000000" />
-    },
-    {
         path: 'folder',
         disPlayName: '目录',
         element: <FolderPage />,
-        icon: <Folder />
+        icon: <Folder color="#000000" />
     },
     {
         path: 'category',
