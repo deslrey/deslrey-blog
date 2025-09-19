@@ -1,5 +1,7 @@
 package org.deslrey.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.deslrey.convert.CategoryConvert;
 import org.deslrey.entity.po.Category;
 import org.deslrey.entity.vo.CategoryCountVO;
@@ -32,6 +34,18 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private ArticleMapper articleMapper;
 
+
+    @Override
+    public Results<PageInfo<Category>> categoryList(int page, int pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<Category> categoryList = categoryMapper.categoryList();
+        if (categoryList == null || categoryList.isEmpty()) {
+            return Results.ok(new PageInfo<>(new ArrayList<>()));
+        }
+        PageInfo<Category> categoryPageInfo = new PageInfo<>(categoryList);
+        return Results.ok(categoryPageInfo);
+    }
+
     @Override
     public Results<List<CategoryCountVO>> categoryCountList() {
         List<CategoryCountVO> categoryCountVOList = categoryMapper.categoryCountList();
@@ -42,8 +56,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Results<List<CategoryVO>> categoryListAdmin() {
-        List<Category> categoryList = categoryMapper.categoryListAdmin();
+    public Results<List<CategoryVO>> categoryArticleList() {
+        List<Category> categoryList = categoryMapper.categoryArticleList();
         if (categoryList == null || categoryList.isEmpty()) {
             return Results.ok(new ArrayList<>());
         }

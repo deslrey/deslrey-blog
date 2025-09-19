@@ -18,8 +18,13 @@
         ORDER BY total DESC;
     </select>
 
-    <select id="categoryListAdmin" resultMap="BaseResultMap">
+    <select id="categoryArticleList" resultMap="BaseResultMap">
         select id, category_title
+        from category
+    </select>
+
+    <select id="categoryList" resultMap="BaseResultMap">
+        select id, category_title, create_time
         from category
     </select>
 

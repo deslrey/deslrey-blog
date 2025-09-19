@@ -17,5 +17,8 @@ import java.util.List;
 public interface CategoryMapper {
     List<CategoryCountVO> categoryCountList();
 
-    List<Category> categoryListAdmin();
+    List<Category> categoryArticleList();
+
+    List<Category> categoryList();
+
 }
