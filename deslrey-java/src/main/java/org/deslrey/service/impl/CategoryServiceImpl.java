@@ -33,8 +33,8 @@ public class CategoryServiceImpl implements CategoryService {
     private ArticleMapper articleMapper;
 
     @Override
-    public Results<List<CategoryCountVO>> categoryList() {
-        List<CategoryCountVO> categoryCountVOList = categoryMapper.categoryList();
+    public Results<List<CategoryCountVO>> categoryCountList() {
+        List<CategoryCountVO> categoryCountVOList = categoryMapper.categoryCountList();
         if (categoryCountVOList == null || categoryCountVOList.isEmpty()) {
             return Results.ok(new ArrayList<>());
         }

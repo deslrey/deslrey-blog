@@ -16,7 +16,7 @@ import java.util.List;
  * @since 2025/9/15 11:43
  */
 public interface CategoryService {
-    Results<List<CategoryCountVO>> categoryList();
+    Results<List<CategoryCountVO>> categoryCountList();
 
     Results<List<CategoryVO>> categoryListAdmin();
 

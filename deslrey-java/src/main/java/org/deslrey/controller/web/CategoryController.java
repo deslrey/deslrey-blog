@@ -27,9 +27,9 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("list")
-    public Results<List<CategoryCountVO>> categoryList() {
-        return categoryService.categoryList();
+    @GetMapping("countList")
+    public Results<List<CategoryCountVO>> categoryCountList() {
+        return categoryService.categoryCountList();
     }
 
     @GetMapping("categoryList")

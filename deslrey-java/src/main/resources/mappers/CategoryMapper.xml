@@ -9,7 +9,7 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
-    <select id="categoryList" resultType="org.deslrey.entity.vo.CategoryCountVO">
+    <select id="categoryCountList" resultType="org.deslrey.entity.vo.CategoryCountVO">
         select c.id, c.category_title AS title, COUNT(a.id) AS total
         from category c
                  left join article a ON a.category = c.category_title
