@@ -1,13 +1,12 @@
 package org.deslrey.controller.web;
 
+import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Tag;
 import org.deslrey.entity.vo.TagCountVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,14 +26,30 @@ public class TagController {
     @Autowired
     private TagService tagService;
 
-    @GetMapping("list")
-    public Results<List<TagCountVO>> tagList() {
-        return tagService.tagList();
+
+    @GetMapping("tagList")
+    public Results<PageInfo<Tag>> tagList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
+        return tagService.tagList(page, pageSize);
+    }
+
+    @GetMapping("tagCountList")
+    public Results<List<TagCountVO>> tagCountList() {
+        return tagService.tagCountList();
     }
 
     @GetMapping("tagNameList")
-    public Results<List<Tag>> tagNameList(){
+    public Results<List<Tag>> tagNameList() {
         return tagService.tagNameList();
+    }
+
+    @PostMapping("addTag")
+    public Results<Void> addTag(@RequestBody Tag tag) {
+        return tagService.addTag(tag);
+    }
+
+    @PostMapping("updateTagTitle")
+    public Results<Void> updateTagTitle(@RequestBody Tag tag) {
+        return tagService.updateTagTitle(tag);
     }
 
 }

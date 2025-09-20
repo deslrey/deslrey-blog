@@ -1,5 +1,6 @@
 package org.deslrey.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.deslrey.entity.po.Tag;
 import org.deslrey.entity.vo.TagCountVO;
 
@@ -16,7 +17,14 @@ import java.util.List;
  */
 public interface TagMapper {
 
-    List<TagCountVO> tagList();
+    List<TagCountVO> tagCountList();
 
     List<Tag> tagNameList();
+
+    List<Tag> tagList();
+
+    int insertTag(@Param("tagTitle") String tagTitle);
+
+    int updateTagTitle(Tag tag);
+
 }

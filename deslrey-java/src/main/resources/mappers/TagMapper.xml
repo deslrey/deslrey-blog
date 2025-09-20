@@ -9,7 +9,19 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
-    <select id="tagList" resultType="org.deslrey.entity.vo.TagCountVO">
+    <insert id="insertTag" parameterType="java.lang.String">
+        insert into tag(tag_title, create_time)
+        values (#{tagTitle}, NOW())
+    </insert>
+
+    <update id="updateTagTitle" parameterType="org.deslrey.entity.po.Tag">
+        update tag
+        set tag_title = #{tagTitle}
+        where id = #{id}
+    </update>
+
+
+    <select id="tagCountList" resultType="org.deslrey.entity.vo.TagCountVO">
         select t.id, t.tag_title AS title, COUNT(at.article_id) AS total
         from tag t
                  left join article_tag `at` on t.id = `at`.tag_id
@@ -22,7 +34,13 @@
 
     <select id="tagNameList" resultMap="BaseResultMap">
         select id, tag_title
-        from tag limit 10
+        from tag
+        limit 10
+    </select>
+
+    <select id="tagList" resultMap="BaseResultMap">
+        select id, tag_title, create_time
+        from tag
     </select>
 
 </mapper>

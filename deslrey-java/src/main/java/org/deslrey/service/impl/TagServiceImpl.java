@@ -1,10 +1,15 @@
 package org.deslrey.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Tag;
 import org.deslrey.entity.vo.TagCountVO;
 import org.deslrey.mapper.TagMapper;
+import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.TagService;
+import org.deslrey.util.NumberUtils;
+import org.deslrey.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +32,19 @@ public class TagServiceImpl implements TagService {
     private TagMapper tagMapper;
 
     @Override
-    public Results<List<TagCountVO>> tagList() {
-        List<TagCountVO> tagCountVOList = tagMapper.tagList();
+    public Results<PageInfo<Tag>> tagList(int page, int pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<Tag> tagList = tagMapper.tagList();
+        if (tagList == null || tagList.isEmpty()) {
+            return Results.ok(new PageInfo<>(new ArrayList<>()));
+        }
+        PageInfo<Tag> tagPageInfo = new PageInfo<>(tagList);
+        return Results.ok(tagPageInfo);
+    }
+
+    @Override
+    public Results<List<TagCountVO>> tagCountList() {
+        List<TagCountVO> tagCountVOList = tagMapper.tagCountList();
         if (tagCountVOList == null || tagCountVOList.isEmpty()) {
             return Results.ok(new ArrayList<>());
         }
@@ -42,5 +58,31 @@ public class TagServiceImpl implements TagService {
             return Results.ok(new ArrayList<>());
         }
         return Results.ok(tagList);
+    }
+
+    @Override
+    public Results<Void> addTag(Tag tag) {
+        if (tag == null || StringUtils.isBlank(tag.getTagTitle())) {
+            return Results.fail(ResultCodeEnum.EMPTY_VALUE);
+        }
+
+        int result = tagMapper.insertTag(tag.getTagTitle());
+        if (result > 0) {
+            return Results.ok("新增成功");
+        }
+        return Results.fail("新增失败");
+    }
+
+    @Override
+    public Results<Void> updateTagTitle(Tag tag) {
+        if (tag == null || NumberUtils.isLessZero(tag.getId()) || StringUtils.isBlank(tag.getTagTitle())) {
+            return Results.fail(ResultCodeEnum.EMPTY_VALUE);
+        }
+
+        int result = tagMapper.updateTagTitle(tag);
+        if (result > 0) {
+            return Results.ok("修改成功");
+        }
+        return Results.fail("更新失败");
     }
 }
