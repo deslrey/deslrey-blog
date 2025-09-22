@@ -5,10 +5,7 @@ import org.deslrey.entity.po.Draft;
 import org.deslrey.result.Results;
 import org.deslrey.service.DraftService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <br>
@@ -32,4 +29,8 @@ public class DraftController {
         return draftService.draftList(page, pageSize);
     }
 
+    @GetMapping("detail/{id}")
+    public Results<Draft> DraftDetail(@PathVariable Integer id) {
+        return draftService.DraftDetail(id);
+    }
 }

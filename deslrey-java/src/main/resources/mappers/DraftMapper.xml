@@ -16,4 +16,9 @@
         from draft
     </select>
 
+    <select id="selectDraftById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select id, title, content, des, create_time
+        from draft
+    </select>
+
 </mapper>

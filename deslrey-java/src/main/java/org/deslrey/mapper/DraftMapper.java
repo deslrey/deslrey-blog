@@ -16,4 +16,5 @@ import java.util.List;
 public interface DraftMapper {
     List<Draft> selectDraftList();
 
+    Draft selectDraftById(Integer id);
 }

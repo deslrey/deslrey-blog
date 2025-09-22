@@ -16,4 +16,5 @@ import org.deslrey.result.Results;
 public interface DraftService {
     Results<PageInfo<Draft>> draftList(int page, int pageSize);
 
+    Results<Draft> DraftDetail(Integer id);
 }
