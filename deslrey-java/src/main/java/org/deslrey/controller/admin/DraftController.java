@@ -38,4 +38,9 @@ public class DraftController {
     public Results<Void> addDraft(@RequestBody Draft draft) {
         return draftService.addDraft(draft);
     }
+
+    @PostMapping("updateDraft")
+    public Results<Void> updateDraft(@RequestBody Draft draft) {
+        return draftService.updateDraft(draft);
+    }
 }

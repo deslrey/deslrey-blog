@@ -41,14 +41,19 @@ public class Draft implements Serializable {
     private String content;
 
     /**
+     * 描述
+     */
+    private String des;
+
+    /**
      * 创建日期
      */
     private LocalDateTime createTime;
 
     /**
-     * 描述
+     * 更新日期
      */
-    private String des;
+    private LocalDateTime updateTime;
 
 
 }

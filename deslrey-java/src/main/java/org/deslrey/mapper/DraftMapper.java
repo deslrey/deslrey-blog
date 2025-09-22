@@ -1,5 +1,6 @@
 package org.deslrey.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.deslrey.entity.po.Draft;
 
 import java.util.List;
@@ -16,8 +17,9 @@ import java.util.List;
 public interface DraftMapper {
     List<Draft> selectDraftList();
 
-    Draft selectDraftById(Integer id);
+    Draft selectDraftById(@Param("id") Integer id);
 
     int insertDraft(Draft draft);
 
+    int updateDraftById(Draft draft);
 }

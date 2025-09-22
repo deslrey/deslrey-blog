@@ -71,4 +71,23 @@ public class DraftServiceImpl implements DraftService {
         }
         return Results.fail("草稿保存失败");
     }
+
+    @Override
+    public Results<Void> updateDraft(Draft draft) {
+        if (draft == null) {
+            return Results.fail(ResultCodeEnum.EMPTY_VALUE);
+        }
+        if (NumberUtils.isLessZero(draft.getId())) {
+            return Results.fail(ResultCodeEnum.CODE_501);
+        }
+        if (StringUtils.isBlank(draft.getTitle()) || StringUtils.isEmpty(draft.getContent()) || StringUtils.isEmpty(draft.getDes())) {
+            return Results.fail(ResultCodeEnum.EMPTY_VALUE);
+        }
+
+        int result = draftMapper.updateDraftById(draft);
+        if (result > 0) {
+            return Results.ok("草稿更新成功");
+        }
+        return Results.fail("草稿更新失败");
+    }
 }

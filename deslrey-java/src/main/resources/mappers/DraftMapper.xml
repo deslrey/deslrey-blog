@@ -9,21 +9,33 @@
         <result column="content" property="content"/>
         <result column="des" property="des"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
     <insert id="insertDraft" parameterType="org.deslrey.entity.po.Draft">
-        insert into draft(title, content, create_time, des)
-        values (#{title}, #{content}, NOW(), #{des})
+        insert into draft(title, content, des, create_time, update_time)
+        values (#{title}, #{content}, #{des}, NOW(), NOW())
     </insert>
 
+    <update id="updateDraftById" parameterType="org.deslrey.entity.po.Draft">
+        update draft
+        set title       = #{title},
+            content     = #{content},
+            des         = #{des},
+            update_time = NOW()
+        where id = #{id}
+
+    </update>
+
     <select id="selectDraftList" resultMap="BaseResultMap">
-        select id, title, content, des, create_time
+        select id, title, content, des, create_time, update_time
         from draft
     </select>
 
     <select id="selectDraftById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select id, title, content, des, create_time
+        select id, title, content, des, create_time, update_time
         from draft
+        where id = #{id}
     </select>
 
 </mapper>

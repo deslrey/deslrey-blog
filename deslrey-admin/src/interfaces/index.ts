@@ -17,8 +17,9 @@ export interface Draft {
     id: number;
     title: string;
     content: string;
-    createTime: Date;
     des: string
+    createTime: Date;
+    updateTime: Date;
 }
 
 export interface ArticleDraft {
