@@ -33,4 +33,9 @@ public class DraftController {
     public Results<Draft> DraftDetail(@PathVariable Integer id) {
         return draftService.DraftDetail(id);
     }
+
+    @PostMapping("addDraft")
+    public Results<Void> addDraft(@RequestBody Draft draft) {
+        return draftService.addDraft(draft);
+    }
 }

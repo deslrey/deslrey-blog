@@ -11,6 +11,11 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
+    <insert id="insertDraft" parameterType="org.deslrey.entity.po.Draft">
+        insert into draft(title, content, create_time, des)
+        values (#{title}, #{content}, NOW(), #{des})
+    </insert>
+
     <select id="selectDraftList" resultMap="BaseResultMap">
         select id, title, content, des, create_time
         from draft
