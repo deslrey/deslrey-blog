@@ -3,14 +3,20 @@ package org.deslrey.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.deslrey.convert.ArticleConvert;
+import org.deslrey.convert.ArticleDraftConvert;
 import org.deslrey.entity.admin.po.ArticleDraft;
 import org.deslrey.entity.admin.vo.ArticleAdminVO;
+import org.deslrey.entity.admin.vo.ArticleDraftVO;
 import org.deslrey.entity.po.Article;
+import org.deslrey.entity.po.ArticleTag;
+import org.deslrey.entity.po.Category;
 import org.deslrey.entity.vo.ArchiveVO;
 import org.deslrey.entity.vo.ArticleVO;
+import org.deslrey.entity.vo.CategoryVO;
 import org.deslrey.entity.vo.LatestReleasesVO;
 import org.deslrey.mapper.ArticleMapper;
 import org.deslrey.mapper.ArticleTagMapper;
+import org.deslrey.mapper.CategoryMapper;
 import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.ArticleService;
@@ -42,6 +48,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleTagMapper articleTagMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     /**
      * 查询最新发布的五篇文章
@@ -126,5 +135,29 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         return Results.ok("保存成功");
+    }
+
+    @Override
+    public Results<ArticleDraftVO> editArticle(Integer articleId) {
+        if (NumberUtils.isLessZero(articleId)) {
+            return Results.fail(ResultCodeEnum.CODE_501);
+        }
+        Article article = articleMapper.editArticle(articleId);
+        if (article == null) {
+            return Results.fail("获取失败,暂无数据");
+        }
+
+        ArticleDraftVO articleDraftVO = ArticleDraftConvert.INSTANCE.convertVO(article);
+
+        List<Integer> articleTagList = articleTagMapper.selectArticleTagListById(articleId);
+        if (articleTagList == null) {
+            articleTagList = new ArrayList<>();
+        }
+        CategoryVO categoryVO = categoryMapper.selectCategoryByTitle(article.getCategory());
+        if (categoryVO != null) {
+            articleDraftVO.setCategoryPO(categoryVO);
+        }
+        articleDraftVO.setTagIdList(articleTagList);
+        return Results.ok(articleDraftVO);
     }
 }

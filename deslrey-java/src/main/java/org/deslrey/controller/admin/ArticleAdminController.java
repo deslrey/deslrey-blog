@@ -3,6 +3,7 @@ package org.deslrey.controller.admin;
 import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.admin.po.ArticleDraft;
 import org.deslrey.entity.admin.vo.ArticleAdminVO;
+import org.deslrey.entity.admin.vo.ArticleDraftVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +34,10 @@ public class ArticleAdminController {
     public Results<Void> addArticle(@RequestBody ArticleDraft articleDraft) {
         return articleService.addArticle(articleDraft);
     }
+
+    @GetMapping("editArticle/{articleId}")
+    public Results<ArticleDraftVO> editArticle(@PathVariable Integer articleId) {
+        return articleService.editArticle(articleId);
+    }
+
 }

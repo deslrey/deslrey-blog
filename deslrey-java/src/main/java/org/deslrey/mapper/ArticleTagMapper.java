@@ -1,5 +1,10 @@
 package org.deslrey.mapper;
 
+import org.apache.ibatis.annotations.Param;
+import org.deslrey.entity.po.ArticleTag;
+
+import java.util.List;
+
 /**
  * <br>
  * 文章 - 标签 mapper
@@ -11,4 +16,6 @@ package org.deslrey.mapper;
  */
 public interface ArticleTagMapper {
     void insertArticleTag(Integer articleId, Integer tagId);
+
+    List<Integer> selectArticleTagListById(@Param("articleId") Integer articleId);
 }

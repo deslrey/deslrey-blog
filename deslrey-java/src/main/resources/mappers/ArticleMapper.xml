@@ -57,7 +57,7 @@
           and exist = 1;
     </select>
 
-    <select id="archiveList" resultType="org.deslrey.entity.vo.ArchiveVO">
+    <select id="archiveList" resultMap="BaseResultMap">
         select id, title, create_time as createTime, edit
         from article
         where exist = 1;
@@ -76,6 +76,13 @@
                edit,
                exist
         FROM article
+    </select>
+
+    <select id="editArticle" resultMap="BaseResultMap"
+            parameterType="java.lang.Integer">
+        select id, title, content, des, category
+        from article
+        where id = #{articleId}
     </select>
 
 </mapper>

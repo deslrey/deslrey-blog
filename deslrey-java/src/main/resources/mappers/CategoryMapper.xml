@@ -37,5 +37,11 @@
         select id, category_title, create_time
         from category
     </select>
+    <select id="selectCategoryByTitle" resultType="org.deslrey.entity.vo.CategoryVO"
+            parameterType="java.lang.String">
+        select id, category_title as categoryTitle
+        from category
+        where category_title = #{categoryTitle}
+    </select>
 
 </mapper>

@@ -9,9 +9,10 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import styles from './index.module.scss';
-import type { Category, Tag } from '../../../interfaces';
+import type { ArticleDraft, Category, Tag } from '../../../interfaces';
 import request from '../../../utils/request';
 import { Message } from '../../../utils/message';
+import { useSearchParams } from 'react-router-dom';
 
 const CustomPopper = styled(Popper)({
     '& .MuiAutocomplete-listbox': {
@@ -29,14 +30,18 @@ const CustomPopper = styled(Popper)({
     },
 });
 
-
 const api = {
     addArticle: '/admin/article/addArticle',
     categoryCountList: '/category/categoryCountList',
     tagNameList: '/tag/tagNameList',
+    editArticle: 'admin/article/editArticle'
 };
 
-const AddArticle: React.FC = () => {
+const EditArticle: React.FC = () => {
+
+    //  路由接收参数
+    const [searchParams, setSearchParams] = useSearchParams()
+
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState<Category | null>(null);
     const [description, setDescription] = useState('');
@@ -57,7 +62,17 @@ const AddArticle: React.FC = () => {
 
         try {
             const res = await request.post(api.addArticle, payload);
-            console.log(res);
+            if (res && res.code === 200) {
+                Message.success(res.message)
+
+                setTitle('');
+                setContent('');
+                setDescription('');
+                setCategory(null);
+                setSelectedTagIds([]);
+            } else {
+                Message.error("保存失败")
+            }
         } catch (error) {
             Message.error('保存失败');
         }
@@ -95,10 +110,36 @@ const AddArticle: React.FC = () => {
         }
     };
 
+    const fetchEditArticleData = async (id: number) => {
+        try {
+            const res = await request.get<ArticleDraft>(`${api.editArticle}/${id}`)
+            if (res.code !== 200) {
+                Message.warning(res.message)
+            }
+            const data = res.data
+            setTitle(data.title)
+            setContent(data.content)
+            setDescription(data.des)
+            setCategory(data.categoryPO)
+            setSelectedTagIds(data.tagIdList)
+        } catch (error) {
+            Message.error('获取数据失败')
+        }
+    }
     useEffect(() => {
+        const idParam = searchParams.get("id");
+        const id = Number(idParam);
+
+        if (!idParam || isNaN(id)) {
+            Message.error("路由请求参数错误,编辑文章的id不存在")
+            return;
+        }
+
+        fetchEditArticleData(id);
         fetchCategories();
         fetchTags();
     }, []);
+
 
     return (
         <div className={styles.addArticleBox}>
@@ -182,4 +223,4 @@ const AddArticle: React.FC = () => {
     );
 };
 
-export default AddArticle;
+export default EditArticle;

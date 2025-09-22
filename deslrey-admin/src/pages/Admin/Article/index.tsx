@@ -71,7 +71,7 @@ const Article: React.FC = () => {
     }
 
     const handlerEdit = (id: number) => {
-        navigate(`/admin/addArticle?${OperateType.edit}}&id=${id}`)
+        navigate(`/admin/editArticle?${OperateType.edit}&id=${id}`)
     }
 
     return (

@@ -1,14 +1,15 @@
-package org.deslrey.entity.admin.po;
+package org.deslrey.entity.admin.vo;
 
 import lombok.Data;
 import org.deslrey.entity.po.Category;
+import org.deslrey.entity.vo.CategoryVO;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
  * <br>
- * 文章草稿
+ * 文章草稿vo
  * </br>
  *
  * @author deslrey
@@ -16,7 +17,7 @@ import java.util.List;
  * @since 2025/9/18 16:18
  */
 @Data
-public class ArticleDraft {
+public class ArticleDraftVO {
 
     private Integer id;
 
@@ -33,12 +34,13 @@ public class ArticleDraft {
     /**
      * 分类
      */
-    private String category;
+    private CategoryVO categoryPO;
 
     /**
      * 标签id集合
      */
     private List<Integer> tagIdList;
+
 
     /**
      * 描述

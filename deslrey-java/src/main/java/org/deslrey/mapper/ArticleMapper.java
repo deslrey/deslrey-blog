@@ -1,7 +1,9 @@
 package org.deslrey.mapper;
 
 import org.apache.ibatis.annotations.Param;
+import org.deslrey.entity.admin.po.ArticleDraft;
 import org.deslrey.entity.admin.vo.ArticleAdminVO;
+import org.deslrey.entity.admin.vo.ArticleDraftVO;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.vo.ArchiveVO;
 import org.deslrey.entity.vo.LatestReleasesVO;
@@ -30,4 +32,6 @@ public interface ArticleMapper {
     List<ArticleAdminVO> getArticlesAdmin();
 
     int insertArticle(Article article);
+
+    Article editArticle(@Param("articleId") Integer articleId);
 }

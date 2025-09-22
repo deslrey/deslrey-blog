@@ -3,6 +3,7 @@ package org.deslrey.service;
 import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.admin.po.ArticleDraft;
 import org.deslrey.entity.admin.vo.ArticleAdminVO;
+import org.deslrey.entity.admin.vo.ArticleDraftVO;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.vo.ArchiveVO;
 import org.deslrey.entity.vo.ArticleVO;
@@ -32,4 +33,6 @@ public interface ArticleService {
     Results<PageInfo<ArticleAdminVO>> articleListAdmin(int page, int pageSize);
 
     Results<Void> addArticle(ArticleDraft articleDraft);
+
+    Results<ArticleDraftVO> editArticle(Integer articleId);
 }
