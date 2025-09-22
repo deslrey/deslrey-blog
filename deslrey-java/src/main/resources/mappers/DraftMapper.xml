@@ -11,4 +11,9 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
+    <select id="selectDraftList" resultMap="BaseResultMap">
+        select id, title, content, des, create_time
+        from draft
+    </select>
+
 </mapper>

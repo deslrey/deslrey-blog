@@ -1,5 +1,9 @@
 package org.deslrey.mapper;
 
+import org.deslrey.entity.po.Draft;
+
+import java.util.List;
+
 /**
  * <br>
  * 草稿mapper
@@ -10,4 +14,6 @@ package org.deslrey.mapper;
  * @since 2025/9/22 10:52
  */
 public interface DraftMapper {
+    List<Draft> selectDraftList();
+
 }
