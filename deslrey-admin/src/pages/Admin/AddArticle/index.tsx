@@ -34,6 +34,7 @@ const api = {
     addArticle: '/admin/article/addArticle',
     categoryCountList: '/category/categoryCountList',
     tagNameList: '/tag/tagNameList',
+    addDraft: 'admin/draft/addDraft',
 };
 
 const AddArticle: React.FC = () => {
@@ -63,14 +64,24 @@ const AddArticle: React.FC = () => {
         }
     };
 
-    const handleDraft = () => {
-        console.log({
-            title,
-            categoryId: category?.id || null,
-            tagIds: selectedTagIds,
-            description,
-            content,
-        });
+    const handleDraft = async () => {
+        const draft = { title, content, des: description }
+        console.log(draft)
+        try {
+            const res = await request.post(api.addDraft, draft)
+            if (res.code !== 200) {
+                Message.error(res.message)
+                return
+            }
+            setTitle('')
+            setCategory(null)
+            setDescription('')
+            setContent('')
+            setSelectedTagIds([])
+            Message.success(res.message)
+        } catch (error) {
+            Message.error("保存草稿失败")
+        }
     };
 
     const fetchCategories = async () => {
