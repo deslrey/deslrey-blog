@@ -10,6 +10,7 @@ export interface RouteType {
 
 const About = lazy(() => import('../Admin/About'))
 const AddArticle = lazy(() => import('../Admin/AddArticle'))
+const EditArticle = lazy(() => import('../Admin/EditArticle'))
 const Article = lazy(() => import('../Admin/Article'))
 const CategoryPage = lazy(() => import('../Admin/Category'))
 const TagPage = lazy(() => import('../Admin/Tag'))
@@ -71,5 +72,10 @@ export const useRoutes = (): RouteType[] => [
         path: 'addArticle',
         disPlayName: '',
         element: <AddArticle />,
+    },
+    {
+        path: 'editArticle',
+        disPlayName: '',
+        element: <EditArticle />,
     }
 ]
