@@ -13,6 +13,14 @@ export interface ArticleTpye {
     exist: boolean;
 }
 
+export interface Draft {
+    id: number;
+    title: string;
+    content: string;
+    createTime: Date;
+    des: string
+}
+
 export interface ArticleDraft {
     id: number;
     title: string;
