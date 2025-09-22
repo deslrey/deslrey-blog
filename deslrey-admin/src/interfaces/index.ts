@@ -13,6 +13,15 @@ export interface ArticleTpye {
     exist: boolean;
 }
 
+export interface ArticleDraft {
+    id: number;
+    title: string;
+    content: string;
+    categoryPO: Category;
+    tagIdList: number[];
+    des: string;
+}
+
 export interface Category {
     id: number;
     categoryTitle: string;
