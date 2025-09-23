@@ -8,7 +8,7 @@ export interface RouteType {
     icon?: React.ReactNode;
 }
 
-const About = lazy(() => import('../Admin/About'))
+const UserPage = lazy(() => import('./User'))
 const AddArticle = lazy(() => import('../Admin/AddArticle'))
 const EditArticle = lazy(() => import('../Admin/EditArticle'))
 const Article = lazy(() => import('../Admin/Article'))
@@ -63,9 +63,9 @@ export const useRoutes = (): RouteType[] => [
         icon: <Pencil color="#000000" />
     },
     {
-        path: 'about',
-        disPlayName: '关于',
-        element: <About />,
+        path: 'user',
+        disPlayName: '用户',
+        element: <UserPage />,
         icon: <User color="#000000" />
     },
     {
