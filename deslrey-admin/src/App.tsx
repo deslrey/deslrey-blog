@@ -6,12 +6,14 @@ import './styles/global.scss'
 
 const Admin = lazy(() => import("./pages/Admin"))
 const Login = lazy(() => import("./pages/Login"))
+const Register = lazy(() => import("./pages/Register"))
 
 const App: React.FC = () => {
   return (
     <WithLoading>
       <Routes>
         <Route path='/' element={<Login />} />
+        <Route path='/register' element={<Register />} />
         <Route path='admin/*' element={<Admin />} />
         <Route path='*' element={<Navigate to="/" />} />
       </Routes>
