@@ -78,7 +78,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         String hashPassword = PasswordUtils.hashPassword(userInfo.getPassWord(), salt);
 
         UserInfo user = new UserInfo();
-        user.setUserName(user.getUserName());
+        user.setUserName(userInfo.getUserName());
         user.setPassWord(hashPassword);
         user.setEmail(userInfo.getEmail());
         user.setSalt(salt);
@@ -91,3 +91,5 @@ public class UserInfoServiceImpl implements UserInfoService {
         return Results.fail("注册失败");
     }
 }
+
+
