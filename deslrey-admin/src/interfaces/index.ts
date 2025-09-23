@@ -63,9 +63,8 @@ export interface Tag {
 }
 
 export const OperateType = {
-    add: "add",
-    edit: "edit",
-    draft: "draft",
+    article: 'article',
+    draft: 'draft'
 }
 
 export const ListType = {

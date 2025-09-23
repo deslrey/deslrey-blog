@@ -22,4 +22,6 @@ public interface DraftMapper {
     int insertDraft(Draft draft);
 
     int updateDraftById(Draft draft);
+
+    int deleteDraft(Integer id);
 }

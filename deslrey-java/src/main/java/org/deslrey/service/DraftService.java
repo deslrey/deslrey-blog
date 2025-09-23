@@ -21,4 +21,6 @@ public interface DraftService {
     Results<Void> addDraft(Draft draft);
 
     Results<Void> updateDraft(Draft draft);
+
+    Results<Void> deleteDraft(Integer id);
 }

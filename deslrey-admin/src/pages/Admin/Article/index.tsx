@@ -67,11 +67,11 @@ const Article: React.FC = () => {
     };
 
     const handlerAdd = () => {
-        navigate(`/admin/addArticle?${OperateType.add}`)
+        navigate('/admin/addArticle')
     }
 
     const handlerEdit = (id: number) => {
-        navigate(`/admin/editArticle?${OperateType.edit}&id=${id}`)
+        navigate(`/admin/editArticle?type=${OperateType.article}&id=${id}`)
     }
 
     return (

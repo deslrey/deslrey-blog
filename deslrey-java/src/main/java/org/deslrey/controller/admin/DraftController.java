@@ -43,4 +43,9 @@ public class DraftController {
     public Results<Void> updateDraft(@RequestBody Draft draft) {
         return draftService.updateDraft(draft);
     }
+
+    @DeleteMapping("deleteDraft/{id}")
+    public Results<Void> deleteDraft(@PathVariable Integer id){
+        return draftService.deleteDraft(id);
+    }
 }

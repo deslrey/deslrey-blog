@@ -22,8 +22,8 @@ public class NumberUtils {
 
     public static boolean isLessZero(Integer number) {
         if (isNull(number))
-            return false;
-        return number < 0;
+            return true;
+        return number <= 0;
     }
 
 

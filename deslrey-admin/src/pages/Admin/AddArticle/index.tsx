@@ -58,7 +58,16 @@ const AddArticle: React.FC = () => {
 
         try {
             const res = await request.post(api.addArticle, payload);
-            console.log(res);
+            if (res.code !== 200) {
+                Message.error(res.message)
+                return
+            }
+            setTitle('')
+            setCategory(null)
+            setDescription('')
+            setContent('')
+            setSelectedTagIds([])
+            Message.success(res.message)
         } catch (error) {
             Message.error('保存失败');
         }

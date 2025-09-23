@@ -27,6 +27,12 @@
 
     </update>
 
+    <delete id="deleteDraft" parameterType="java.lang.Integer">
+        delete
+        from draft
+        where id = #{id}
+    </delete>
+
     <select id="selectDraftList" resultMap="BaseResultMap">
         select id, title, content, des, create_time, update_time
         from draft

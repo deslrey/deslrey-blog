@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import styles from './index.module.scss';
-import type { ArticleDraft, Category, Tag } from '../../../interfaces';
+import { OperateType, type ArticleDraft, type Category, type Draft, type Tag } from '../../../interfaces';
 import request from '../../../utils/request';
 import { Message } from '../../../utils/message';
 import { useSearchParams } from 'react-router-dom';
@@ -34,13 +34,19 @@ const api = {
     addArticle: '/admin/article/addArticle',
     categoryCountList: '/category/categoryCountList',
     tagNameList: '/tag/tagNameList',
-    editArticle: 'admin/article/editArticle'
+    editArticle: 'admin/article/editArticle',
+    addDraft: 'admin/draft/addDraft',
+    draftDetail: 'admin/draft/detail',
+    updateDraft: 'admin/draft/updateDraft',
 };
 
 const EditArticle: React.FC = () => {
 
     //  路由接收参数
     const [searchParams, setSearchParams] = useSearchParams()
+
+    const operateType = searchParams.get('type')
+    const operateId = searchParams.get('id')
 
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState<Category | null>(null);
@@ -50,6 +56,7 @@ const EditArticle: React.FC = () => {
     const [categories, setCategories] = useState<Category[]>([]);
     const [tags, setTags] = useState<Tag[]>([]);
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
+
 
     const handleSave = async () => {
         const payload = {
@@ -64,7 +71,6 @@ const EditArticle: React.FC = () => {
             const res = await request.post(api.addArticle, payload);
             if (res && res.code === 200) {
                 Message.success(res.message)
-
                 setTitle('');
                 setContent('');
                 setDescription('');
@@ -79,14 +85,65 @@ const EditArticle: React.FC = () => {
     };
 
     const handleDraft = () => {
-        console.log({
-            title,
-            categoryId: category?.id || null,
-            tagIds: selectedTagIds,
-            description,
-            content,
-        });
+        if (operateType === OperateType.article) {
+            newDraft()
+        } else {
+            updateDraft()
+        }
     };
+
+
+    const newDraft = async () => {
+        const payload = {
+            id: operateId,
+            title,
+            content,
+            des: description,
+        };
+
+        try {
+            const res = await request.post(api.addDraft, payload)
+            if (res && res.code === 200) {
+                setTitle('')
+                setCategory(null)
+                setDescription('')
+                setContent('')
+                setSelectedTagIds([])
+                Message.success(res.message)
+
+            } else {
+                Message.error(res.message)
+            }
+        } catch (error) {
+            Message.error("草稿保存失败")
+        }
+    }
+
+    const updateDraft = async () => {
+        const payload = {
+            id: operateId,
+            title,
+            content,
+            des: description,
+        };
+
+        try {
+            const res = await request.post(api.updateDraft, payload)
+            if (res && res.code === 200) {
+                setTitle('')
+                setCategory(null)
+                setDescription('')
+                setContent('')
+                setSelectedTagIds([])
+                Message.success(res.message)
+
+            } else {
+                Message.error(res.message)
+            }
+        } catch (error) {
+            Message.error("草稿保存失败")
+        }
+    }
 
     const fetchCategories = async () => {
         try {
@@ -110,11 +167,20 @@ const EditArticle: React.FC = () => {
         }
     };
 
-    const fetchEditArticleData = async (id: number) => {
+    const fetchEditArticleData = () => {
+        if (operateType === OperateType.article) {
+            fetchArticleData()
+        } else {
+            fetchDraftData()
+        }
+    }
+
+    const fetchArticleData = async () => {
         try {
-            const res = await request.get<ArticleDraft>(`${api.editArticle}/${id}`)
+            const res = await request.get<ArticleDraft>(`${api.editArticle}/${operateId}`)
             if (res.code !== 200) {
                 Message.warning(res.message)
+                return
             }
             const data = res.data
             setTitle(data.title)
@@ -126,16 +192,25 @@ const EditArticle: React.FC = () => {
             Message.error('获取数据失败')
         }
     }
-    useEffect(() => {
-        const idParam = searchParams.get("id");
-        const id = Number(idParam);
 
-        if (!idParam || isNaN(id)) {
-            Message.error("路由请求参数错误,编辑文章的id不存在")
-            return;
+    const fetchDraftData = async () => {
+        try {
+            const res = await request.get<Draft>(`${api.draftDetail}/${operateId}`)
+            if (res.code !== 200) {
+                Message.warning(res.message)
+                return
+            }
+            const data = res.data
+            setTitle(data.title)
+            setContent(data.content)
+            setDescription(data.des)
+        } catch (error) {
+            Message.error('获取数据失败')
         }
+    }
 
-        fetchEditArticleData(id);
+    useEffect(() => {
+        fetchEditArticleData();
         fetchCategories();
         fetchTags();
     }, []);
