@@ -8,9 +8,30 @@
         <result column="user_name" property="userName"/>
         <result column="pass_word" property="passWord"/>
         <result column="email" property="email"/>
+        <result column="salt" property="salt"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
         <result column="exist" property="exist"/>
     </resultMap>
+
+    <insert id="insertUser" parameterType="org.deslrey.entity.po.UserInfo" useGeneratedKeys="true">
+        insert into user_info(user_name, pass_word, email, salt, create_time, update_time, exist)
+        values (#{userName}, #{passWord}, #{email}, #{salt}, NOW(), NOW(), #{exist})
+    </insert>
+
+
+    <select id="selectUserByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select id, user_name, pass_word, email, salt
+        from user_info
+        where user_name = #{userName}
+    </select>
+
+    <select id="selectUserNameOrEmailExist" resultType="java.lang.Integer">
+        select count(1)
+        from user_info
+        where user_name = #{userName}
+           or email = #{email}
+    </select>
+
 
 </mapper>

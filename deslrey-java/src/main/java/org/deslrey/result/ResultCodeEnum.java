@@ -29,6 +29,7 @@ public enum ResultCodeEnum {
     PASSWORD_ERROR(215, "密码不正确"),
     LOGIN_MOBILE_ERROR(216, "账号不正确"),
     ACCOUNT_STOP(217, "账号已停用"),
+    ACCOUNT_EXIST(216, "用户已存在"),
 
     CODE_404(404, "请求地址不存在"),
     CODE_600(600, "请求参数错误"),

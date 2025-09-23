@@ -46,6 +46,11 @@ public class UserInfo implements Serializable {
     private String email;
 
     /**
+     * 盐值
+     */
+    private String salt;
+
+    /**
      * 创建日期
      */
     private LocalDateTime createTime;
