@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { AxiosInstance, AxiosRequestConfig } from "axios";
+import { Message } from "./message";
 
 export interface Results<T = any> {
     code: number;
@@ -30,6 +31,7 @@ class Request {
             (response) => {
                 // 只负责处理异常，不改返回类型
                 if (response.data.code !== 200) {
+                    Message.error(response.data.message)
                     return Promise.reject(response.data);
                 }
                 return response;
