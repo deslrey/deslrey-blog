@@ -98,7 +98,7 @@ const LoginPage: React.FC = () => {
                             fullWidth
                             label="密码"
                             name="passWord"
-                            type="passWord"
+                            type="password"
                             value={form.passWord}
                             onChange={handleChange}
                             margin="normal"
