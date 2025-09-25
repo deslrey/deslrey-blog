@@ -10,6 +10,7 @@ import Styles from "./index.module.scss";
 import { Message } from "../../utils/message";
 import request from "../../utils/request";
 import { useNavigate } from "react-router-dom";
+import { registerApi } from "../../api/publicApi";
 
 interface FormState {
     userName: string;
@@ -23,9 +24,6 @@ interface FormErrors {
     passWord?: string;
 }
 
-const api = {
-    register: '/user/register',
-}
 
 
 const RegisterPage: React.FC = () => {
@@ -83,7 +81,7 @@ const RegisterPage: React.FC = () => {
         }
 
         try {
-            const res = await request.post(api.register, form)
+            const res = await request.post(registerApi.register, form)
             if (res && res.code === 200) {
                 Message.success(res.message)
                 Message.success('跳转至登陆页面进行登陆')

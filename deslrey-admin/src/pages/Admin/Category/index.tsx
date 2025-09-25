@@ -12,13 +12,7 @@ import dayjs from 'dayjs';
 import request from '../../../utils/request';
 import { Message } from '../../../utils/message';
 import { FolderPlus, SquarePen } from 'lucide-react';
-
-
-const api = {
-    categoryList: '/category/categoryList',
-    updateCategoryTitle: '/category/updateCategoryTitle',
-    addCategory: '/category/addCategory',
-}
+import { categoryApi } from '../../../api/adminApi';
 
 const CategoryPage: React.FC = () => {
 
@@ -43,7 +37,7 @@ const CategoryPage: React.FC = () => {
     const [isEdit, setIsEdit] = useState(false);
 
     const fetchData = async (pageNum = 1, pageSize = rowsPerPage) => {
-        const res = await request.get(api.categoryList, {
+        const res = await request.get(categoryApi.categoryList, {
             params: {
                 page: pageNum, pageSize: pageSize
             }
@@ -114,11 +108,11 @@ const CategoryPage: React.FC = () => {
         try {
             if (isEdit && form.id) {
                 // 编辑
-                const res = await request.post(api.updateCategoryTitle, form);
+                const res = await request.post(categoryApi.updateCategoryTitle, form);
                 Message.success(res.message);
             } else {
                 // 新增
-                const res = await request.post(api.addCategory, form);
+                const res = await request.post(categoryApi.addCategory, form);
                 Message.success(res.message);
             }
         } catch (err: any) {

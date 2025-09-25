@@ -12,24 +12,14 @@ import dayjs from 'dayjs';
 import request from '../../../utils/request';
 import { Message } from '../../../utils/message';
 import { FolderPlus, SquarePen } from 'lucide-react';
-
-
-const api = {
-    tagList: '/tag/tagList',
-    addTag: '/tag/addTag',
-    updateTagTitle: '/tag/updateTagTitle',
-}
+import { tagApi } from '../../../api/adminApi';
 
 const TagPage: React.FC = () => {
-
-
 
     const [tags, setTags] = useState<Tag[]>([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [total, setTotal] = useState(0);
-
-
 
     // 排序状态
     const [order, setOrder] = useState<Order>('desc');
@@ -45,7 +35,7 @@ const TagPage: React.FC = () => {
     const [isEdit, setIsEdit] = useState(false);
 
     const fetchData = async (pageNum = 1, pageSize = rowsPerPage) => {
-        const res = await request.get(api.tagList, {
+        const res = await request.get(tagApi.tagList, {
             params: {
                 page: pageNum, pageSize: pageSize
             }
@@ -116,11 +106,11 @@ const TagPage: React.FC = () => {
         try {
             if (isEdit && form.id) {
                 // 编辑
-                const res = await request.post(api.updateTagTitle, form);
+                const res = await request.post(tagApi.updateTagTitle, form);
                 Message.success(res.message);
             } else {
                 // 新增
-                const res = await request.post(api.addTag, form);
+                const res = await request.post(tagApi.addTag, form);
                 Message.success(res.message);
             }
         } catch (err: any) {

@@ -13,16 +13,12 @@ import { Message } from "../../utils/message";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../../store";
 import type { User } from "../../interfaces";
+import { loginApi } from "../../api/publicApi";
 
 interface LoginForm {
     userName: string;
     passWord: string;
 }
-
-const api = {
-    login: '/user/login'
-}
-
 const LoginPage: React.FC = () => {
 
     const navigator = useNavigate()
@@ -47,7 +43,7 @@ const LoginPage: React.FC = () => {
         }
 
         try {
-            const res = await request.post<User>(api.login, form)
+            const res = await request.post<User>(loginApi.login, form)
             if (res && res.code === 200) {
                 const data = res.data
                 useUserStore.getState().setUser({

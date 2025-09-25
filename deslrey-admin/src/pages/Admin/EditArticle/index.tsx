@@ -13,6 +13,7 @@ import { OperateType, type ArticleDraft, type Category, type Draft, type Tag } f
 import request from '../../../utils/request';
 import { Message } from '../../../utils/message';
 import { useSearchParams } from 'react-router-dom';
+import { editArticleApi } from '../../../api/adminApi';
 
 const CustomPopper = styled(Popper)({
     '& .MuiAutocomplete-listbox': {
@@ -29,16 +30,6 @@ const CustomPopper = styled(Popper)({
         },
     },
 });
-
-const api = {
-    addArticle: '/admin/article/addArticle',
-    categoryCountList: '/category/categoryCountList',
-    tagNameList: '/tag/tagNameList',
-    editArticle: 'admin/article/editArticle',
-    addDraft: 'admin/draft/addDraft',
-    draftDetail: 'admin/draft/detail',
-    updateDraft: 'admin/draft/updateDraft',
-};
 
 const EditArticle: React.FC = () => {
 
@@ -68,7 +59,7 @@ const EditArticle: React.FC = () => {
         };
 
         try {
-            const res = await request.post(api.addArticle, payload);
+            const res = await request.post(editArticleApi.addArticle, payload);
             if (res && res.code === 200) {
                 Message.success(res.message)
                 setTitle('');
@@ -102,7 +93,7 @@ const EditArticle: React.FC = () => {
         };
 
         try {
-            const res = await request.post(api.addDraft, payload)
+            const res = await request.post(editArticleApi.addDraft, payload)
             if (res && res.code === 200) {
                 setTitle('')
                 setCategory(null)
@@ -128,7 +119,7 @@ const EditArticle: React.FC = () => {
         };
 
         try {
-            const res = await request.post(api.updateDraft, payload)
+            const res = await request.post(editArticleApi.updateDraft, payload)
             if (res && res.code === 200) {
                 setTitle('')
                 setCategory(null)
@@ -147,7 +138,7 @@ const EditArticle: React.FC = () => {
 
     const fetchCategories = async () => {
         try {
-            const res = await request.get(api.categoryCountList);
+            const res = await request.get(editArticleApi.categoryCountList);
             if (res.code === 200 && Array.isArray(res.data)) {
                 setCategories(res.data);
             }
@@ -158,7 +149,7 @@ const EditArticle: React.FC = () => {
 
     const fetchTags = async () => {
         try {
-            const res = await request.get(api.tagNameList);
+            const res = await request.get(editArticleApi.tagNameList);
             if (res.code === 200) {
                 setTags(res.data);
             }
@@ -177,7 +168,7 @@ const EditArticle: React.FC = () => {
 
     const fetchArticleData = async () => {
         try {
-            const res = await request.get<ArticleDraft>(`${api.editArticle}/${operateId}`)
+            const res = await request.get<ArticleDraft>(`${editArticleApi.editArticle}/${operateId}`)
             if (res.code !== 200) {
                 Message.warning(res.message)
                 return
@@ -195,7 +186,7 @@ const EditArticle: React.FC = () => {
 
     const fetchDraftData = async () => {
         try {
-            const res = await request.get<Draft>(`${api.draftDetail}/${operateId}`)
+            const res = await request.get<Draft>(`${editArticleApi.draftDetail}/${operateId}`)
             if (res.code !== 200) {
                 Message.warning(res.message)
                 return

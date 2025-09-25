@@ -11,12 +11,8 @@ import dayjs from 'dayjs';
 import { Copy, Eye, ImageUp } from 'lucide-react';
 import { Message } from '../../../utils/message';
 import { formatFileSize } from '../../../utils/format';
+import { imageApi } from '../../../api/adminApi';
 
-const api = {
-    list: '/image/list',
-    uploadImage: '/image/uploadImage',
-    folderNameList: '/folder/folderNameList'
-}
 
 const ImageTable: React.FC = () => {
     const [file, setFile] = useState<File | null>(null);
@@ -43,7 +39,7 @@ const ImageTable: React.FC = () => {
 
     // 拉取文件夹列表并去重
     const fetchFolders = async () => {
-        const res = await request.get<Folder[]>(api.folderNameList);
+        const res = await request.get<Folder[]>(imageApi.folderNameList);
         const uniqueFolders = Array.from(
             new Map(res.data.map((f: Folder) => [f.id, f])).values()
         );
@@ -51,7 +47,7 @@ const ImageTable: React.FC = () => {
     };
 
     const fetchData = async (pageNum = 1, pageSize = rowsPerPage) => {
-        const res = await request.get(api.list, {
+        const res = await request.get(imageApi.list, {
             params: {
                 type: ListType.all,
                 page: pageNum,
@@ -89,7 +85,7 @@ const ImageTable: React.FC = () => {
         formData.append("folderId", String(folderId));
 
         try {
-            const res = await request.post(api.uploadImage, formData, {
+            const res = await request.post(imageApi.uploadImage, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             if (res.code === 200) {

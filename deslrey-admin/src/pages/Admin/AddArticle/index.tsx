@@ -12,6 +12,7 @@ import styles from './index.module.scss';
 import type { Category, Tag } from '../../../interfaces';
 import request from '../../../utils/request';
 import { Message } from '../../../utils/message';
+import { addArticleApi } from '../../../api/adminApi';
 
 const CustomPopper = styled(Popper)({
     '& .MuiAutocomplete-listbox': {
@@ -29,13 +30,6 @@ const CustomPopper = styled(Popper)({
     },
 });
 
-
-const api = {
-    addArticle: '/admin/article/addArticle',
-    categoryCountList: '/category/categoryCountList',
-    tagNameList: '/tag/tagNameList',
-    addDraft: 'admin/draft/addDraft',
-};
 
 const AddArticle: React.FC = () => {
     const [title, setTitle] = useState('');
@@ -57,7 +51,7 @@ const AddArticle: React.FC = () => {
         };
 
         try {
-            const res = await request.post(api.addArticle, payload);
+            const res = await request.post(addArticleApi.addArticle, payload);
             if (res.code !== 200) {
                 Message.error(res.message)
                 return
@@ -77,7 +71,7 @@ const AddArticle: React.FC = () => {
         const draft = { title, content, des: description }
         console.log(draft)
         try {
-            const res = await request.post(api.addDraft, draft)
+            const res = await request.post(addArticleApi.addDraft, draft)
             if (res.code !== 200) {
                 Message.error(res.message)
                 return
@@ -95,7 +89,7 @@ const AddArticle: React.FC = () => {
 
     const fetchCategories = async () => {
         try {
-            const res = await request.get(api.categoryCountList);
+            const res = await request.get(addArticleApi.categoryCountList);
             if (res.code === 200 && Array.isArray(res.data)) {
                 setCategories(res.data);
             }
@@ -106,7 +100,7 @@ const AddArticle: React.FC = () => {
 
     const fetchTags = async () => {
         try {
-            const res = await request.get(api.tagNameList);
+            const res = await request.get(addArticleApi.tagNameList);
             if (res.code === 200) {
                 setTags(res.data);
             }

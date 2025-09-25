@@ -19,10 +19,8 @@ import { OperateType } from "../../../interfaces";
 import styles from "./index.module.scss";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import { articleApi } from "../../../api/adminApi";
 
-const api = {
-    list: "/admin/article/list",
-};
 
 const Article: React.FC = () => {
 
@@ -35,7 +33,7 @@ const Article: React.FC = () => {
 
     // 拉取后端分页数据
     const fetchData = async (pageNum = 1, pageSize = rowsPerPage) => {
-        const res = await request.get(api.list, {
+        const res = await request.get(articleApi.list, {
             params: {
                 page: pageNum,
                 pageSize: pageSize,

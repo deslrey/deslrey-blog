@@ -10,12 +10,7 @@ import request from '../../../utils/request';
 import dayjs from 'dayjs';
 import { FolderPlus, SquarePen } from 'lucide-react';
 import { Message } from '../../../utils/message';
-
-const api = {
-    list: '/folder/list',
-    addFolder: '/folder/addFolder',
-    updateFolder: '/folder/updateFolder',
-}
+import { folderApi } from '../../../api/adminApi';
 
 const FolderPage: React.FC = () => {
     const [folders, setFolders] = useState<Folder[]>([]);
@@ -38,7 +33,7 @@ const FolderPage: React.FC = () => {
     const [isEdit, setIsEdit] = useState(false);
 
     const fetchData = async (pageNum = 1, pageSize = rowsPerPage) => {
-        const res = await request.get(api.list, {
+        const res = await request.get(folderApi.list, {
             params: { type: 'all', page: pageNum, pageSize: pageSize }
         });
         const data = res.data;
@@ -88,11 +83,11 @@ const FolderPage: React.FC = () => {
         try {
             if (isEdit && form.id) {
                 // 编辑
-                const res = await request.post(api.updateFolder, form);
+                const res = await request.post(folderApi.updateFolder, form);
                 Message.success(res.message);
             } else {
                 // 新增
-                const res = await request.post(api.addFolder, form);
+                const res = await request.post(folderApi.addFolder, form);
                 Message.success(res.message);
             }
         } catch (err: any) {

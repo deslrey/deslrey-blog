@@ -20,11 +20,7 @@ import styles from "./index.module.scss";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { Message } from "../../../utils/message";
-
-const api = {
-    draftList: "/admin/draft/draftList",
-    deleteDraft: "/admin/draft/deleteDraft",
-};
+import { draftApi } from "../../../api/adminApi";
 
 const DraftPage: React.FC = () => {
 
@@ -37,7 +33,7 @@ const DraftPage: React.FC = () => {
 
     // 拉取后端分页数据
     const fetchData = async (pageNum = 1, pageSize = rowsPerPage) => {
-        const res = await request.get(api.draftList, {
+        const res = await request.get(draftApi.draftList, {
             params: {
                 page: pageNum,
                 pageSize: pageSize,
@@ -78,7 +74,7 @@ const DraftPage: React.FC = () => {
 
     const handlerDelete = async (id: number) => {
         try {
-            const res = await request.delete(`${api.deleteDraft}/${id}`)
+            const res = await request.delete(`${draftApi.deleteDraft}/${id}`)
             if (res && res.code === 200) {
                 Message.success(res.message)
             } else {
