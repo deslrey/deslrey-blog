@@ -34,7 +34,6 @@ public class CategoryController {
     }
 
     @GetMapping("categoryCountList")
-
     public Results<List<CategoryCountVO>> categoryCountList() {
         return categoryService.categoryCountList();
     }

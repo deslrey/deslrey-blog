@@ -138,7 +138,7 @@ const EditArticle: React.FC = () => {
 
     const fetchCategories = async () => {
         try {
-            const res = await request.get(editArticleApi.categoryCountList);
+            const res = await request.get(editArticleApi.categoryArticleList);
             if (res.code === 200 && Array.isArray(res.data)) {
                 setCategories(res.data);
             }

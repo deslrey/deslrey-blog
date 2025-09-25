@@ -1,7 +1,7 @@
 export const addArticleApi = {
     addArticle: '/admin/article/addArticle',
-    categoryCountList: '/public/category/categoryCountList',
-    tagNameList: '/tag/tagNameList',
+    categoryArticleList: '/public/category/categoryArticleList',
+    tagNameList: '/public/tag/tagNameList',
     addDraft: 'admin/draft/addDraft',
 };
 
@@ -22,12 +22,12 @@ export const draftApi = {
 
 export const editArticleApi = {
     addArticle: '/admin/article/addArticle',
-    categoryCountList: '/public/category/categoryCountList',
     tagNameList: '/public/tag/tagNameList',
     editArticle: 'admin/article/editArticle',
     addDraft: 'admin/draft/addDraft',
     draftDetail: 'admin/draft/detail',
     updateDraft: 'admin/draft/updateDraft',
+    categoryArticleList: '/public/category/categoryArticleList',
 }
 
 export const folderApi = {

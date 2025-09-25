@@ -89,7 +89,7 @@ const AddArticle: React.FC = () => {
 
     const fetchCategories = async () => {
         try {
-            const res = await request.get(addArticleApi.categoryCountList);
+            const res = await request.get(addArticleApi.categoryArticleList);
             if (res.code === 200 && Array.isArray(res.data)) {
                 setCategories(res.data);
             }
