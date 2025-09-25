@@ -30,14 +30,27 @@ class Request {
         // 响应拦截器
         this.instance.interceptors.response.use(
             (response) => {
-                if (response.data.code !== 200) {
-                    Message.error(response.data.message);
-                    return Promise.reject(response.data);
+                const res = response.data;
+                if (res.code === 401) {
+                    Message.error("登录超时，请重新登录");
+                    const store = useUserStore.getState();
+                    store.clearUser();
+                    window.location.href = "/login";
+                    return Promise.reject(res);
+                }
+                if (res.code !== 200) {
+                    Message.error(res.message);
+                    return Promise.reject(res);
                 }
                 return response;
             },
-            (error) => Promise.reject(error)
+            (error) => {
+                Message.error("请求异常");
+                return Promise.reject(error);
+            }
         );
+
+
     }
 
     // GET
