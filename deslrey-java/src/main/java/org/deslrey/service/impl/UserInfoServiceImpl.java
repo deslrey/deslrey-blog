@@ -47,9 +47,8 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
 
         String salt = user.getSalt();
-        String hashed = PasswordUtils.hashPassword(userInfo.getPassWord(), salt);
-        boolean isValid = PasswordUtils.verifyPassword(userInfo.getPassWord(), salt, hashed);
-
+        String storedHash = user.getPassWord();
+        boolean isValid = PasswordUtils.verifyPassword(userInfo.getPassWord(), salt, storedHash);
         if (!isValid) {
             return Results.fail("登陆失败,密码错误");
         }
