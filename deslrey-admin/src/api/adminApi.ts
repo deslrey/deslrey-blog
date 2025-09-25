@@ -1,6 +1,6 @@
 export const addArticleApi = {
     addArticle: '/admin/article/addArticle',
-    categoryCountList: '/category/categoryCountList',
+    categoryCountList: '/public/category/categoryCountList',
     tagNameList: '/tag/tagNameList',
     addDraft: 'admin/draft/addDraft',
 };
@@ -10,9 +10,9 @@ export const articleApi = {
 }
 
 export const categoryApi = {
-    categoryList: '/admin/category/categoryList',
-    updateCategoryTitle: '/admin/category/updateCategoryTitle',
-    addCategory: '/admin/category/addCategory',
+    categoryList: '/public/category/categoryList',
+    updateCategoryTitle: '/public/category/updateCategoryTitle',
+    addCategory: '/public/category/addCategory',
 }
 
 export const draftApi = {
@@ -43,7 +43,7 @@ export const imageApi = {
 }
 
 export const tagApi = {
-    tagList: '/tag/tagList',
-    addTag: '/tag/addTag',
-    updateTagTitle: '/tag/updateTagTitle',
+    tagList: '/public/tag/tagList',
+    addTag: '/public/tag/addTag',
+    updateTagTitle: '/public/tag/updateTagTitle',
 }
