@@ -52,6 +52,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 }
 
             } catch (Exception e) {
+                e.printStackTrace();
                 response.setContentType("application/json;charset=UTF-8");
                 response.getWriter().write(
                         new ObjectMapper().writeValueAsString(Results.fail(ResultCodeEnum.CODE_401))

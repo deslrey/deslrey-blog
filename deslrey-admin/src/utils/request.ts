@@ -20,7 +20,7 @@ class Request {
             (config) => {
                 const token = useUserStore.getState().user.token;
                 if (token && config.headers) {
-                    config.headers.Authorization = `token ${token}`;
+                    config.headers.Authorization = `token-${token}`;
                 }
                 return config;
             },
@@ -34,7 +34,7 @@ class Request {
 
                 // 检查响应头是否有新 token
                 const newToken = response.headers['authorization'];
-                if (newToken && newToken.startsWith("token ")) {
+                if (newToken && newToken.startsWith("token-")) {
                     useUserStore.getState().setUser({
                         ...useUserStore.getState().user,
                         token: newToken.replace("token-", ""),
