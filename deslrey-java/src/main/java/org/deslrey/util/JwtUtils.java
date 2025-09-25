@@ -2,8 +2,10 @@ package org.deslrey.util;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
@@ -19,7 +21,7 @@ import java.util.Date;
 public class JwtUtils {
 
     private static final String SECRET = "deslrey_secret_deslrey_secret_123456";
-    private static final Key KEY = Keys.hmacShaKeyFor(SECRET.getBytes());
+    private static final Key KEY = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
 
     private static final long EXPIRATION_MS = 1000 * 60 * 60 * 24; // 1 天有效期
 
@@ -32,17 +34,25 @@ public class JwtUtils {
                 .setSubject(username)
                 .setIssuedAt(new Date(now)) // 签发时间
                 .setExpiration(new Date(now + EXPIRATION_MS)) // 过期时间
-                .signWith(KEY)
+                .signWith(KEY, SignatureAlgorithm.HS256)
                 .compact();
     }
 
+    /**
+     * 从 token 中解析用户名
+     */
     public static String getUsernameFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(KEY).build()
+        return Jwts.parserBuilder()
+                .setSigningKey(KEY)
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
     }
 
+    /**
+     * 验证 token 是否有效
+     */
     public static boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(KEY).build().parseClaimsJws(token);
@@ -53,10 +63,9 @@ public class JwtUtils {
     }
 
     public static void main(String[] args) {
-//        String token = generateToken("deslrey");
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZXNscmV5IiwiaWF0IjoxNzU4NjgzNzQ3LCJleHAiOjE3NTg3NzAxNDd9.MLhQRUpNuaMwwjNtLB-F7SzgYayRC0I8WqJ0vwS6Aoo";
-        System.out.println("token = " + token);
-        System.out.println("isValid = " + validateToken(token));
-        System.out.println("username = " + getUsernameFromToken(token));
+        String token = generateToken("deslrey");
+        System.out.println("生成的 token = " + token);
+        System.out.println("是否有效 = " + validateToken(token));
+        System.out.println("用户名 = " + getUsernameFromToken(token));
     }
 }
