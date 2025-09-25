@@ -31,25 +31,35 @@ class Request {
         this.instance.interceptors.response.use(
             (response) => {
                 const res = response.data;
+
+                // 检查响应头是否有新 token
+                const newToken = response.headers['authorization'];
+                if (newToken && newToken.startsWith("token ")) {
+                    useUserStore.getState().setUser({
+                        ...useUserStore.getState().user,
+                        token: newToken.replace("token-", ""),
+                    });
+                }
+
                 if (res.code === 401) {
                     Message.error("登录超时，请重新登录");
-                    const store = useUserStore.getState();
-                    store.clearUser();
+                    useUserStore.getState().clearUser();
                     window.location.href = "/login";
                     return Promise.reject(res);
                 }
+
                 if (res.code !== 200) {
                     Message.error(res.message);
                     return Promise.reject(res);
                 }
-                return response;
+
+                return res;
             },
             (error) => {
                 Message.error("请求异常");
                 return Promise.reject(error);
             }
         );
-
 
     }
 

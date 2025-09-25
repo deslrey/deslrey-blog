@@ -36,18 +36,22 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("token ")) {
-            String token = authHeader.substring(5);
+        if (authHeader != null && authHeader.startsWith("token-")) {
+            String token = authHeader.replaceFirst("token-", "");
 
             try {
                 String username = JwtUtils.getUsernameFromToken(token);
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
-
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
+                // 自动续期: token 剩余有效期小于 5 分钟就刷新
+                if (JwtUtils.isTokenExpiringSoon(token, 5 * 60 * 1000)) {
+                    String newToken = JwtUtils.generateToken(username);
+                    response.setHeader("Authorization", "token-" + newToken);
+                }
+
             } catch (Exception e) {
-                // 统一返回 JSON
                 response.setContentType("application/json;charset=UTF-8");
                 response.getWriter().write(
                         new ObjectMapper().writeValueAsString(Results.fail(ResultCodeEnum.CODE_401))

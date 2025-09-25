@@ -62,6 +62,24 @@ public class JwtUtils {
         }
     }
 
+    /**
+     * 判断 token 是否即将过期
+     */
+    public static boolean isTokenExpiringSoon(String token, long thresholdMs) {
+        try {
+            long exp = Jwts.parserBuilder().setSigningKey(KEY).build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getExpiration()
+                    .getTime();
+            long now = System.currentTimeMillis();
+            return exp - now < thresholdMs;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+
     public static void main(String[] args) {
         String token = generateToken("deslrey");
         System.out.println("生成的 token = " + token);
