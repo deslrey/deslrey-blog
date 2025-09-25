@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import styles from './index.module.scss'
 import { useRoutes, type RouteType } from './config'
-import { Navigate, NavLink, Route, Routes } from 'react-router-dom'
+import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import WithLoading from '../../components/WithLoading'
 import Header from '../../components/Header'
 
@@ -21,7 +21,17 @@ const SideItem: React.FC<{ item: RouteType }> = ({ item }) => {
 
 const Admin: React.FC = () => {
     const sideList = useRoutes()
-    
+    const location = useLocation()
+
+    useEffect(() => {
+        const currentRoute = sideList.find(item => `/admin/${item.path}` === location.pathname);
+        if (currentRoute) {
+            document.title = currentRoute.title;
+        } else {
+            document.title = '404';
+        }
+    }, [location.pathname, sideList])
+
     return (
         <div className={styles.mainBox}>
             <div className={styles.handlerBox}>

@@ -21,6 +21,8 @@ interface LoginForm {
 }
 const LoginPage: React.FC = () => {
 
+    document.title = '登陆';
+
     const navigator = useNavigate()
 
     const [form, setForm] = useState<LoginForm>({ userName: "", passWord: "" });

@@ -24,9 +24,9 @@ interface FormErrors {
     passWord?: string;
 }
 
-
-
 const RegisterPage: React.FC = () => {
+
+    document.title = '注册';
 
     const naviagte = useNavigate()
 
