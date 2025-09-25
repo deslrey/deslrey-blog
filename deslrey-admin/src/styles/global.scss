@@ -130,20 +130,24 @@ html,
 body {
     width: 100%;
     height: 100%;
-    overflow: hidden;
 }
 
 #root {
     width: 100%;
     height: 100%;
+    overflow: auto;
+}
+
+body::-webkit-scrollbar,
+div::-webkit-scrollbar {
+    display: none;
 }
 
 @media screen and (max-width: 1240px) {
-    body::-webkit-scrollbar,
-    div::-webkit-scrollbar {
-        display: none;
-    }
-
+    // body::-webkit-scrollbar,
+    // div::-webkit-scrollbar {
+    //     display: none;
+    // }
     .ant-message-notice-content {
         border-radius: 8rem !important;
         font-size: 16rem !important;
