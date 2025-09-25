@@ -1,5 +1,8 @@
 package org.deslrey.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.deslrey.result.ResultCodeEnum;
+import org.deslrey.result.Results;
 import org.deslrey.util.JwtUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,12 +47,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
             } catch (Exception e) {
-                e.printStackTrace();
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Token 无效或已过期");
+                // 统一返回 JSON
+                response.setContentType("application/json;charset=UTF-8");
+                response.getWriter().write(
+                        new ObjectMapper().writeValueAsString(Results.fail(ResultCodeEnum.CODE_401))
+                );
                 return;
             }
         }
+
 
         filterChain.doFilter(request, response);
     }
