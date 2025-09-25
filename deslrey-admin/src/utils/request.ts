@@ -53,7 +53,7 @@ class Request {
                     return Promise.reject(res);
                 }
 
-                return res;
+                return response;
             },
             (error) => {
                 Message.error("请求异常");
