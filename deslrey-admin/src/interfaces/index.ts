@@ -37,7 +37,6 @@ export interface Category {
     createTime?: Date
 }
 
-
 export interface Folder {
     id: number;
     folderName: string;
@@ -53,8 +52,14 @@ export interface Image {
     url: string;
     size: number;
     createTime: Date;
-
 }
+
+export type User = {
+    token: string | null;
+    userName: string | null;
+    email: string | null;
+    avatar: string | null;
+};
 
 export interface Tag {
     id: number;

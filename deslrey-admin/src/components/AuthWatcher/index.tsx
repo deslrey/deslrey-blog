@@ -6,14 +6,19 @@ import { Message } from "../../utils/message";
 const AuthWatcher = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { user } = useUserStore();
+    const { clearUser } = useUserStore();
 
     useEffect(() => {
-        if (location.pathname.startsWith("/admin") && !user.token) {
-            Message.error("请重新登陆")
-            navigate("/login", { replace: true });
+        console.log(location.pathname);
+        const stored = sessionStorage.getItem("userInfo");
+        if (location.pathname.startsWith("/admin")) {
+            if (!stored) {
+                clearUser();
+                Message.error("请重新登陆");
+                navigate("/login", { replace: true });
+            }
         }
-    }, [location.pathname, user.token, navigate]);
+    }, [location.pathname, navigate, clearUser]);
 
     return null;
 };

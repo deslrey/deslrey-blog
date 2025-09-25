@@ -21,7 +21,7 @@
 
 
     <select id="selectUserByName" resultMap="BaseResultMap" parameterType="java.lang.String">
-        select id, user_name, pass_word, email, salt
+        select id, user_name, pass_word, email, salt, avatar
         from user_info
         where user_name = #{userName}
     </select>

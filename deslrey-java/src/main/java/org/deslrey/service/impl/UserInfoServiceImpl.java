@@ -3,10 +3,12 @@ package org.deslrey.service.impl;
 import org.deslrey.convert.UserInfoConvert;
 import org.deslrey.entity.po.UserInfo;
 import org.deslrey.entity.vo.UserInfoVO;
+import org.deslrey.entity.vo.UserTokenVO;
 import org.deslrey.mapper.UserInfoMapper;
 import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.UserInfoService;
+import org.deslrey.util.JwtUtils;
 import org.deslrey.util.PasswordUtils;
 import org.deslrey.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserInfoMapper userInfoMapper;
 
     @Override
-    public Results<UserInfoVO> login(UserInfo userInfo) {
+    public Results<UserTokenVO> login(UserInfo userInfo) {
         if (userInfo == null) {
             return Results.fail(ResultCodeEnum.CODE_501);
         }
@@ -52,9 +54,17 @@ public class UserInfoServiceImpl implements UserInfoService {
             return Results.fail("登陆失败,密码错误");
         }
 
-        UserInfoVO userInfoVO = UserInfoConvert.INSTANCE.convert(user);
+        String token = JwtUtils.generateToken(user.getUserName());
+        if (StringUtils.isBlank(token)) {
+            return Results.fail("登陆失败,token生成错误");
+        }
+        UserTokenVO userTokenVO = new UserTokenVO();
+        userTokenVO.setUserName(user.getUserName());
+        userTokenVO.setEmail(user.getEmail());
+        userTokenVO.setToken(token);
+        userTokenVO.setAvatar(user.getAvatar());
 
-        return Results.ok(userInfoVO);
+        return Results.ok(userTokenVO, "登陆成功");
     }
 
     @Override

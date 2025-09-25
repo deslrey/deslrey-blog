@@ -20,6 +20,7 @@
         .sideBox {
             display: flex;
             width: 15%;
+            padding-top: 20px;
             flex-direction: column;
             margin: 2px 2px 0 0;
             background-color: rgba(#fff, 0.4);
@@ -41,7 +42,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 6px;
+    gap: 20px;
     height: 40px;
     padding: 0 20%;
     cursor: pointer;

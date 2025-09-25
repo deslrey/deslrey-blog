@@ -16,4 +16,6 @@ public class StaticUtils {
     public static final String ALL_TYPE = "all";
     public static final String ALL_MODICUM = "modicum";
 
+    public static final String DEFAULT_AVATAR = "http://localhost:8080/deslrey/staticSource/0.jpg";
+
 }

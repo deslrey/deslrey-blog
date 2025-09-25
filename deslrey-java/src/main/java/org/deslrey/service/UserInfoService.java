@@ -1,7 +1,7 @@
 package org.deslrey.service;
 
 import org.deslrey.entity.po.UserInfo;
-import org.deslrey.entity.vo.UserInfoVO;
+import org.deslrey.entity.vo.UserTokenVO;
 import org.deslrey.result.Results;
 
 /**
@@ -14,7 +14,7 @@ import org.deslrey.result.Results;
  * @since 2025/9/5 16:39
  */
 public interface UserInfoService {
-    Results<UserInfoVO> login(UserInfo userInfo);
+    Results<UserTokenVO> login(UserInfo userInfo);
 
     Results<Void> register(UserInfo userInfo);
 }

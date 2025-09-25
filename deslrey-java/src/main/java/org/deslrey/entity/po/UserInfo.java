@@ -51,6 +51,11 @@ public class UserInfo implements Serializable {
     private String salt;
 
     /**
+     * 用户头像
+     */
+    private String avatar;
+
+    /**
      * 创建日期
      */
     private LocalDateTime createTime;

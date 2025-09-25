@@ -2,6 +2,7 @@ package org.deslrey.controller.admin;
 
 import org.deslrey.entity.po.UserInfo;
 import org.deslrey.entity.vo.UserInfoVO;
+import org.deslrey.entity.vo.UserTokenVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class UserInfoController {
     private UserInfoService userInfoService;
 
     @PostMapping("login")
-    public Results<UserInfoVO> login(@RequestBody UserInfo userInfo) {
+    public Results<UserTokenVO> login(@RequestBody UserInfo userInfo) {
         return userInfoService.login(userInfo);
     }
 

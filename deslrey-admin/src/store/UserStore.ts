@@ -1,33 +1,29 @@
 import { create } from "zustand";
-
-type User = {
-    token: string | null;
-    username: string | null;
-    email: string | null;
-    avatar: string | null;
-};
+import { persist, createJSONStorage } from "zustand/middleware";
+import type { User } from "../interfaces";
 
 type UserState = {
     user: User;
     setUser: (user: User) => void;
     clearUser: () => void;
+    update: (user: Partial<User>) => void;
 };
 
-const getInitialUser = (): User => {
-    const stored = sessionStorage.getItem("userInfo");
-    return stored ? JSON.parse(stored) : { token: null, username: null, email: null, avatar: null };
-};
-
-export const useUserStore = create<UserState>((set) => ({
-    user: getInitialUser(),
-    setUser: (user) => {
-        sessionStorage.setItem("userInfo", JSON.stringify(user));
-        set({ user });
-    },
-    clearUser: () => {
-        sessionStorage.removeItem("userInfo");
-        set({
-            user: { token: null, username: null, email: null, avatar: null },
-        });
-    },
-}));
+export const useUserStore = create<UserState>()(
+    persist(
+        (set) => ({
+            user: { token: null, userName: null, email: null, avatar: null },
+            setUser: (user) => set({ user }),
+            clearUser: () =>
+                set({ user: { token: null, userName: null, email: null, avatar: null } }),
+            update: (user) =>
+                set((state) => ({
+                    user: { ...state.user, ...user },
+                })),
+        }),
+        {
+            name: "userInfo",
+            storage: createJSONStorage(() => sessionStorage),
+        }
+    )
+);
