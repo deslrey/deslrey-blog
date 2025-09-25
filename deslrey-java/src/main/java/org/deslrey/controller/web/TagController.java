@@ -20,7 +20,7 @@ import java.util.List;
  * @since 2025/9/15 11:40
  */
 @RestController
-@RequestMapping("tag")
+@RequestMapping("/public/tag")
 public class TagController {
 
     @Autowired
