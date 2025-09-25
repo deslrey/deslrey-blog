@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2025/9/22 10:51
  */
 @RestController
-@RequestMapping("admin/draft")
+@RequestMapping("/admin/draft")
 public class DraftController {
 
     @Autowired

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2025/9/16 8:59
  */
 @RestController
-@RequestMapping("admin/article")
+@RequestMapping("/admin/article")
 public class ArticleAdminController {
 
     @Autowired

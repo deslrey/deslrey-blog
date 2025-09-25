@@ -19,7 +19,7 @@ import java.util.List;
  * @since 2025/9/16 16:46
  */
 @RestController
-@RequestMapping("folder")
+@RequestMapping("/admin/folder")
 public class FolderController {
 
     @Autowired
