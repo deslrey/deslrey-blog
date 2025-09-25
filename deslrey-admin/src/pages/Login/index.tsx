@@ -116,6 +116,15 @@ const LoginPage: React.FC = () => {
                             登录
                         </Button>
                     </form>
+
+                    {/* 跳转注册 */}
+                    <Typography variant="body2" align="center" sx={{ mt: 2 }}>
+                        没有账号？
+                        <Button variant="text" onClick={() => navigator("/register")}>
+                            去注册
+                        </Button>
+                    </Typography>
+
                 </Paper>
             </div>
         </div>

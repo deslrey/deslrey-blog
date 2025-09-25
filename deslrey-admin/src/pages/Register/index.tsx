@@ -88,9 +88,8 @@ const RegisterPage: React.FC = () => {
                 naviagte('/')
             }
         } catch (error) {
-
+            Message.error("注册失败")
         }
-
     };
 
     return (
@@ -150,6 +149,13 @@ const RegisterPage: React.FC = () => {
                         注册
                     </Button>
                 </form>
+                {/* 跳转登录 */}
+                <Typography variant="body2" align="center" sx={{ mt: 2 }}>
+                    已有账号？
+                    <Button variant="text" onClick={() => naviagte("/")}>
+                        去登录
+                    </Button>
+                </Typography>
             </Paper>
         </Box>
     );
