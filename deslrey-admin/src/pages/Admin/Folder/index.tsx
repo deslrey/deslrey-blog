@@ -19,7 +19,7 @@ const FolderPage: React.FC = () => {
     const [total, setTotal] = useState(0);
 
     // 排序状态
-    const [order, setOrder] = useState<Order>('desc');
+    const [order, setOrder] = useState<Order>('asc');
     const [orderBy, setOrderBy] = useState<keyof Folder>('createTime');
 
     // 弹窗控制

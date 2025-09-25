@@ -24,7 +24,7 @@ const CategoryPage: React.FC = () => {
 
 
     // 排序状态
-    const [order, setOrder] = useState<Order>('desc');
+    const [order, setOrder] = useState<Order>('asc');
     const [orderBy, setOrderBy] = useState<keyof Category>('createTime');
 
     // 弹窗控制

@@ -21,7 +21,7 @@ const ImageTable: React.FC = () => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [total, setTotal] = useState(0);
 
-    const [order, setOrder] = useState<Order>('desc');
+    const [order, setOrder] = useState<Order>('asc');
     const [orderBy, setOrderBy] = useState<keyof Image>('createTime');
 
     const [openDialog, setOpenDialog] = useState(false);
