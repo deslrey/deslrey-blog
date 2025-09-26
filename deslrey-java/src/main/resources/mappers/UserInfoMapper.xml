@@ -19,6 +19,12 @@
         values (#{userName}, #{passWord}, #{email}, #{salt}, NOW(), NOW(), #{exist})
     </insert>
 
+    <update id="updateUserNameByName">
+        update user_info
+        set user_name = #{newUserName}
+        where user_name = #{oldUserName}
+    </update>
+
 
     <select id="selectUserByName" resultMap="BaseResultMap" parameterType="java.lang.String">
         select id, user_name, pass_word, email, salt, avatar

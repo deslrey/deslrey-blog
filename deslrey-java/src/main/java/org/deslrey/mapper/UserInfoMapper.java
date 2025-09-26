@@ -18,4 +18,6 @@ public interface UserInfoMapper {
     int selectUserNameOrEmailExist(@Param("userName") String userName, @Param("email") String email);
 
     int insertUser(UserInfo user);
+
+    int updateUserNameByName(@Param("oldUserName") String currentUsername, @Param("newUserName") String newName);
 }

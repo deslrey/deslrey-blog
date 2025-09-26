@@ -17,4 +17,6 @@ public interface UserInfoService {
     Results<UserTokenVO> login(UserInfo userInfo);
 
     Results<Void> register(UserInfo userInfo);
+
+    Results<Void> updateUserName(String oldName, String newName);
 }

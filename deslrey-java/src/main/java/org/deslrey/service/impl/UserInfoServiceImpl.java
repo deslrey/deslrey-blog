@@ -1,18 +1,19 @@
 package org.deslrey.service.impl;
 
-import org.deslrey.convert.UserInfoConvert;
 import org.deslrey.entity.po.UserInfo;
-import org.deslrey.entity.vo.UserInfoVO;
 import org.deslrey.entity.vo.UserTokenVO;
 import org.deslrey.mapper.UserInfoMapper;
 import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.UserInfoService;
+import org.deslrey.util.AuthUtils;
 import org.deslrey.util.JwtUtils;
 import org.deslrey.util.PasswordUtils;
 import org.deslrey.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 /**
  * <br>
@@ -98,6 +99,35 @@ public class UserInfoServiceImpl implements UserInfoService {
             return Results.ok("注册成功");
         }
         return Results.fail("注册失败");
+    }
+
+    @Override
+    public Results<Void> updateUserName(String oldName, String newName) {
+        if (StringUtils.isBlank(oldName) || StringUtils.isBlank(newName)) {
+            return Results.fail(ResultCodeEnum.CODE_501);
+        }
+
+        String currentUsername = AuthUtils.getCurrentUsername();
+        if (StringUtils.isBlank(currentUsername)) {
+            return Results.fail(ResultCodeEnum.CODE_401);
+        }
+
+        if (Objects.equals(oldName, newName)) {
+            return Results.fail("修改失败,新用户名和旧用户名相同");
+        }
+
+        if (!Objects.equals(oldName, currentUsername)) {
+            return Results.fail(ResultCodeEnum.CODE_401);
+        }
+
+
+        int result = userInfoMapper.updateUserNameByName(currentUsername, newName);
+
+        if (result > 0) {
+            return Results.ok("修改成功");
+        }
+        return Results.fail("修改失败");
+
     }
 }
 

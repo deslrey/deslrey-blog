@@ -1,7 +1,6 @@
 package org.deslrey.controller.admin;
 
 import org.deslrey.entity.po.UserInfo;
-import org.deslrey.entity.vo.UserInfoVO;
 import org.deslrey.entity.vo.UserTokenVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.UserInfoService;
@@ -35,6 +34,11 @@ public class UserInfoController {
     @PostMapping("register")
     public Results<Void> register(@RequestBody UserInfo userInfo) {
         return userInfoService.register(userInfo);
+    }
+
+    @PostMapping("updateUserName")
+    public Results<Void> updateUserName(String oldName, String newName) {
+        return userInfoService.updateUserName(oldName, newName);
     }
 
 }
