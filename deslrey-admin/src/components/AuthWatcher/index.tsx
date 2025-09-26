@@ -8,15 +8,31 @@ const AuthWatcher = () => {
     const navigate = useNavigate();
     const { clearUser } = useUserStore();
 
+    const loginOut = () => {
+        clearUser();
+        Message.error("请重新登陆");
+        navigate("/login", { replace: true });
+    }
+
     useEffect(() => {
-        console.log(location.pathname);
-        const stored = sessionStorage.getItem("userInfo");
-        if (location.pathname.startsWith("/admin")) {
-            if (!stored) {
-                clearUser();
-                Message.error("请重新登陆");
-                navigate("/login", { replace: true });
+        try {
+            console.log(location.pathname);
+            const userInfo = sessionStorage.getItem("userInfo")
+            if (!userInfo) {
+                loginOut()
+                return
             }
+            const stored = JSON.parse(userInfo);
+            const token = stored?.state?.user?.token
+            if (location.pathname.startsWith("/admin")) {
+                if (!token) {
+                    loginOut()
+                    return
+                }
+            }
+        } catch (error) {
+            loginOut()
+            return
         }
     }, [location.pathname, navigate, clearUser]);
 
