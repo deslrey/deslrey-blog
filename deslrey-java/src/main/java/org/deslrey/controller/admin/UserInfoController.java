@@ -44,4 +44,8 @@ public class UserInfoController {
         return userInfoService.updateUserAvatar(file);
     }
 
+    @PostMapping("updatePassword")
+    public Results<Void> updatePassword(String olbPassWord, String newPassWord) {
+        return userInfoService.updatePassword(olbPassWord, newPassWord);
+    }
 }

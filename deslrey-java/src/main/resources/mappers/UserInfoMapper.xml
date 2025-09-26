@@ -33,6 +33,13 @@
         where id = #{userId}
     </update>
 
+    <update id="updatePassWord">
+        update user_info
+        set pass_word   = #{passWord},
+            update_time = NOW()
+        where id = #{id}
+    </update>
+
 
     <select id="selectUserByName" resultMap="BaseResultMap" parameterType="java.lang.String">
         select id, user_name, pass_word, email, salt, avatar

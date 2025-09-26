@@ -22,4 +22,6 @@ public interface UserInfoService {
     Results<Void> updateUserName(String oldName, String newName);
 
     Results<String> updateUserAvatar(MultipartFile file);
+
+    Results<Void> updatePassword(String olbPassWord, String newPassWord);
 }

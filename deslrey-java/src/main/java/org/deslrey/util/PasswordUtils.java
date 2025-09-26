@@ -1,11 +1,14 @@
 package org.deslrey.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
+@Slf4j
 public class PasswordUtils {
 
     /**
@@ -29,7 +32,8 @@ public class PasswordUtils {
             byte[] hashedBytes = md.digest(saltedPassword.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(hashedBytes);
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("加密算法不存在", e);
+            log.error("加密算法不存在 ======> {}", e.getMessage());
+            return null;
         }
     }
 

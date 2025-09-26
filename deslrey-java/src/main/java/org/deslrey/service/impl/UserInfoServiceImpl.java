@@ -173,6 +173,54 @@ public class UserInfoServiceImpl implements UserInfoService {
             return Results.fail("头像更新失败");
         }
     }
+
+    @Override
+    public Results<Void> updatePassword(String olbPassWord, String newPassWord) {
+        if (StringUtils.isBlank(olbPassWord) || StringUtils.isBlank(newPassWord)) {
+            return Results.fail("密码不能存在空");
+        }
+
+        if (Objects.equals(olbPassWord, newPassWord)) {
+            return Results.fail("新密码不能与旧密码相同");
+        }
+
+        String currentUsername = AuthUtils.getCurrentUsername();
+        if (StringUtils.isEmpty(currentUsername)) {
+            return Results.fail(ResultCodeEnum.CODE_401);
+        }
+
+        UserInfo userInfo = userInfoMapper.selectUserByName(currentUsername);
+        if (userInfo == null) {
+            return Results.fail("修改失密码败,该用户不存在");
+        }
+
+        String salt = userInfo.getSalt();
+
+        String oldHashPassword = PasswordUtils.hashPassword(olbPassWord, salt);
+        if (StringUtils.isEmpty(oldHashPassword)) {
+            return Results.fail(ResultCodeEnum.CODE_500);
+        }
+
+        if (!Objects.equals(oldHashPassword, userInfo.getPassWord())) {
+            return Results.fail("旧密码错误");
+        }
+
+        String newHashedPassword = PasswordUtils.hashPassword(newPassWord, salt);
+        if (StringUtils.isEmpty(newHashedPassword)) {
+            return Results.fail(ResultCodeEnum.CODE_500);
+        }
+
+        if (Objects.equals(newHashedPassword, userInfo.getPassWord())) {
+            return Results.fail("新密码不能与旧密码相同");
+        }
+
+        int result = userInfoMapper.updatePassWord(newHashedPassword, userInfo.getId());
+
+        if (result > 0) {
+            return Results.ok("密码修改成功");
+        }
+        return Results.fail("密码修改失败");
+    }
 }
 
 

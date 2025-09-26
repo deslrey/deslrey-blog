@@ -26,4 +26,6 @@ public interface UserInfoMapper {
     int updateUserAvatar(@Param("avatar") String accessUrl, @Param("userId") Integer userId);
 
     UserInfo selectUserById(Integer userId);
+
+    int updatePassWord(@Param("passWord") String hashedPassword, Integer id);
 }
