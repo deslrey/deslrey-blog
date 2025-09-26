@@ -1,18 +1,20 @@
 package org.deslrey.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.deslrey.entity.po.UserInfo;
 import org.deslrey.entity.vo.UserTokenVO;
 import org.deslrey.mapper.UserInfoMapper;
 import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.UserInfoService;
-import org.deslrey.util.AuthUtils;
-import org.deslrey.util.JwtUtils;
-import org.deslrey.util.PasswordUtils;
-import org.deslrey.util.StringUtils;
+import org.deslrey.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -24,11 +26,15 @@ import java.util.Objects;
  * @version 1.0
  * @since 2025/9/5 16:40
  */
+@Slf4j
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired
     private UserInfoMapper userInfoMapper;
+
+    @Value("${custom.static-source-path}")
+    private String folderPath;
 
     @Override
     public Results<UserTokenVO> login(UserInfo userInfo) {
@@ -120,7 +126,6 @@ public class UserInfoServiceImpl implements UserInfoService {
             return Results.fail(ResultCodeEnum.CODE_401);
         }
 
-
         int result = userInfoMapper.updateUserNameByName(currentUsername, newName);
 
         if (result > 0) {
@@ -128,6 +133,45 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         return Results.fail("修改失败");
 
+    }
+
+    @Override
+    public Results<String> updateUserAvatar(MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            return Results.fail("上传头像为空");
+        }
+
+        String currentUsername = AuthUtils.getCurrentUsername();
+        if (StringUtils.isBlank(currentUsername)) {
+            return Results.fail(ResultCodeEnum.CODE_401);
+        }
+
+        Integer userId = userInfoMapper.selectUserIdByName(currentUsername);
+        if (userId == null) {
+            return Results.fail(ResultCodeEnum.CODE_401);
+        }
+
+        try {
+            File saveMultipartFile = ImageUtils.saveMultipartFile(file, folderPath + File.separator + userId);
+            String accessUrl = ImageUtils.toAccessUrl(saveMultipartFile, folderPath);
+            if (StringUtils.isEmpty(accessUrl)) {
+                return Results.fail(ResultCodeEnum.CODE_500);
+            }
+
+            UserInfo userInfo = userInfoMapper.selectUserById(userId);
+            if (userInfo == null) {
+                return Results.fail("更新失败,暂无当前用户");
+            }
+
+            int result = userInfoMapper.updateUserAvatar(accessUrl, userId);
+            if (result > 0) {
+                return Results.ok(accessUrl, "更新成功");
+            }
+            return Results.fail("更新失败");
+        } catch (IOException e) {
+            log.error("更新头像出现异常 ======> {}", e.getMessage());
+            return Results.fail("头像更新失败");
+        }
     }
 }
 

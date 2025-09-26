@@ -3,6 +3,7 @@ package org.deslrey.service;
 import org.deslrey.entity.po.UserInfo;
 import org.deslrey.entity.vo.UserTokenVO;
 import org.deslrey.result.Results;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <br>
@@ -19,4 +20,6 @@ public interface UserInfoService {
     Results<Void> register(UserInfo userInfo);
 
     Results<Void> updateUserName(String oldName, String newName);
+
+    Results<String> updateUserAvatar(MultipartFile file);
 }

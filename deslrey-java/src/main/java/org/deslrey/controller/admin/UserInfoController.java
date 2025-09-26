@@ -5,10 +5,8 @@ import org.deslrey.entity.vo.UserTokenVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <br>
@@ -39,6 +37,11 @@ public class UserInfoController {
     @PostMapping("updateUserName")
     public Results<Void> updateUserName(String oldName, String newName) {
         return userInfoService.updateUserName(oldName, newName);
+    }
+
+    @PostMapping("updateUserAvatar")
+    public Results<String> updateUserAvatar(@RequestParam("file") MultipartFile file) {
+        return userInfoService.updateUserAvatar(file);
     }
 
 }

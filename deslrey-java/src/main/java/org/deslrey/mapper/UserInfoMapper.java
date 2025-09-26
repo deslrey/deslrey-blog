@@ -20,4 +20,10 @@ public interface UserInfoMapper {
     int insertUser(UserInfo user);
 
     int updateUserNameByName(@Param("oldUserName") String currentUsername, @Param("newUserName") String newName);
+
+    Integer selectUserIdByName(@Param("userName") String currentUsername);
+
+    int updateUserAvatar(@Param("avatar") String accessUrl, @Param("userId") Integer userId);
+
+    UserInfo selectUserById(Integer userId);
 }

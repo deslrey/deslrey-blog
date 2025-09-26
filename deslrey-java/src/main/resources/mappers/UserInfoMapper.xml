@@ -9,6 +9,7 @@
         <result column="pass_word" property="passWord"/>
         <result column="email" property="email"/>
         <result column="salt" property="salt"/>
+        <result column="avatar" property="avatar"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
         <result column="exist" property="exist"/>
@@ -25,6 +26,13 @@
         where user_name = #{oldUserName}
     </update>
 
+    <update id="updateUserAvatar">
+        update user_info
+        set avatar      = #{avatar},
+            update_time = NOW()
+        where id = #{userId}
+    </update>
+
 
     <select id="selectUserByName" resultMap="BaseResultMap" parameterType="java.lang.String">
         select id, user_name, pass_word, email, salt, avatar
@@ -39,5 +47,16 @@
            or email = #{email}
     </select>
 
+    <select id="selectUserIdByName" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select id
+        from user_info
+        where user_name = #{userName}
+    </select>
+
+    <select id="selectUserById" resultType="org.deslrey.entity.po.UserInfo" parameterType="java.lang.Integer">
+        select id, user_name, pass_word, email, salt, avatar
+        from user_info
+        where id = #{userId}
+    </select>
 
 </mapper>
