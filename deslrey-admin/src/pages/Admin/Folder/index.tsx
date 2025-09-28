@@ -22,7 +22,7 @@ const FolderPage: React.FC = () => {
     const [order, setOrder] = useState<Order>('asc');
     const [orderBy, setOrderBy] = useState<keyof Folder>('createTime');
 
-    // 弹窗控制
+    // 表单弹窗控制
     const [open, setOpen] = useState(false);
     const [form, setForm] = useState<{ id?: number; folderName: string; path: string }>({
         folderName: '',
@@ -31,6 +31,9 @@ const FolderPage: React.FC = () => {
 
     // 是否编辑模式
     const [isEdit, setIsEdit] = useState(false);
+
+    // 确认弹窗控制
+    const [confirmOpen, setConfirmOpen] = useState(false);
 
     const fetchData = async (pageNum = 1, pageSize = rowsPerPage) => {
         const res = await request.get(folderApi.list, {
@@ -78,8 +81,27 @@ const FolderPage: React.FC = () => {
         setForm(prev => ({ ...prev, [key]: value }));
     };
 
-    // 提交（新增或编辑）
-    const handleSubmit = async () => {
+    // 校验函数
+    const validateForm = () => {
+        if (!form.folderName.trim()) {
+            Message.warning('请输入文件夹名称');
+            return false;
+        }
+        if (!form.path.trim()) {
+            Message.warning('请输入存储路径');
+            return false;
+        }
+        return true;
+    };
+
+    // 打开确认弹窗（先校验）
+    const handleOpenConfirm = () => {
+        if (!validateForm()) return;
+        setConfirmOpen(true);
+    };
+
+    // 确认提交
+    const handleConfirmSubmit = async () => {
         try {
             if (isEdit && form.id) {
                 // 编辑
@@ -93,11 +115,11 @@ const FolderPage: React.FC = () => {
         } catch (err: any) {
             Message.error(err.message || "请求失败");
         } finally {
+            setConfirmOpen(false);
             setOpen(false);
             fetchData(1, rowsPerPage);
         }
     };
-
 
     // 切换排序
     const handleSort = (property: keyof Folder) => {
@@ -173,7 +195,7 @@ const FolderPage: React.FC = () => {
 
             {/* 新增 / 编辑弹窗 */}
             <Dialog open={open} onClose={() => setOpen(false)}>
-                <DialogTitle>{isEdit ? "编辑文件夹" : "新增文件夹"}</DialogTitle>
+                <DialogTitle sx={{ textAlign: 'center' }}>{isEdit ? "编辑文件夹" : "新增文件夹"}</DialogTitle>
                 <DialogContent>
                     <TextField
                         margin="dense"
@@ -190,9 +212,21 @@ const FolderPage: React.FC = () => {
                         onChange={(e) => handleFormChange('path', e.target.value)}
                     />
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setOpen(false)}>取消</Button>
-                    <Button variant="contained" onClick={handleSubmit}>保存</Button>
+                <DialogActions sx={{ justifyContent: 'center', gap: 2, pb: 2 }}>
+                    <Button variant="outlined" onClick={() => setOpen(false)}>取消</Button>
+                    <Button variant="contained" onClick={handleOpenConfirm}>保存</Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* 确认弹窗 */}
+            <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)}>
+                <DialogTitle sx={{ textAlign: 'center' }}>确认操作</DialogTitle>
+                <DialogContent sx={{ textAlign: 'center', mt: 1 }}>
+                    {isEdit ? '是否确定要保存修改？' : '是否确定要新增文件夹？'}
+                </DialogContent>
+                <DialogActions sx={{ justifyContent: 'center', gap: 2, pb: 2 }}>
+                    <Button variant="outlined" onClick={() => setConfirmOpen(false)}>取消</Button>
+                    <Button variant="contained" onClick={handleConfirmSubmit}>确定</Button>
                 </DialogActions>
             </Dialog>
         </div>

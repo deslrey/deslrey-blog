@@ -6,6 +6,10 @@ import {
     Autocomplete,
     Chip,
     Popper,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import styles from './index.module.scss';
@@ -48,8 +52,41 @@ const EditArticle: React.FC = () => {
     const [tags, setTags] = useState<Tag[]>([]);
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
 
+    //  弹窗状态
+    const [openConfirmSave, setOpenConfirmSave] = useState(false);
+    const [openConfirmDraft, setOpenConfirmDraft] = useState(false);
 
-    const handleSave = async () => {
+    //  校验函数
+    const validateForm = (type: 'save' | 'draft') => {
+        if (type === 'save') {
+            if (!title.trim()) return Message.warning('请输入文章标题'), false;
+            if (!category) return Message.warning('请选择文章分类'), false;
+            if (selectedTagIds.length === 0) return Message.warning('请选择至少一个标签'), false;
+            if (!description.trim()) return Message.warning('请输入文章描述'), false;
+            if (!content.trim()) return Message.warning('请输入文章内容'), false;
+            return true;
+        } else {
+            if (!title.trim() && !content.trim()) {
+                Message.warning('请至少填写标题或内容');
+                return false;
+            }
+            return true;
+        }
+    };
+
+    //  点击保存按钮时，先弹出确认框
+    const handleSaveClick = () => {
+        if (validateForm('save')) setOpenConfirmSave(true);
+    };
+
+    //  点击存草稿按钮时，先弹出确认框
+    const handleDraftClick = () => {
+        if (validateForm('draft')) setOpenConfirmDraft(true);
+    };
+
+    //  确认保存
+    const handleConfirmSave = async () => {
+        setOpenConfirmSave(false);
         const payload = {
             title,
             content,
@@ -57,84 +94,52 @@ const EditArticle: React.FC = () => {
             tagIdList: selectedTagIds,
             des: description,
         };
-
         try {
             const res = await request.post(editArticleApi.addArticle, payload);
             if (res && res.code === 200) {
-                Message.success(res.message)
-                setTitle('');
-                setContent('');
-                setDescription('');
-                setCategory(null);
-                setSelectedTagIds([]);
+                Message.success(res.message);
+                resetForm();
             } else {
-                Message.error("保存失败")
+                Message.error(res.message || '保存失败');
             }
-        } catch (error) {
+        } catch {
             Message.error('保存失败');
         }
     };
 
-    const handleDraft = () => {
-        if (operateType === OperateType.article) {
-            newDraft()
-        } else {
-            updateDraft()
+    //  确认保存草稿
+    const handleConfirmDraft = async () => {
+        setOpenConfirmDraft(false);
+        const payload = {
+            id: operateId,
+            title,
+            content,
+            des: description,
+        };
+        try {
+            const api = operateType === OperateType.article
+                ? editArticleApi.addDraft
+                : editArticleApi.updateDraft;
+            const res = await request.post(api, payload);
+            if (res && res.code === 200) {
+                Message.success(res.message);
+                resetForm();
+            } else {
+                Message.error(res.message || '草稿保存失败');
+            }
+        } catch {
+            Message.error('草稿保存失败');
         }
     };
 
-
-    const newDraft = async () => {
-        const payload = {
-            id: operateId,
-            title,
-            content,
-            des: description,
-        };
-
-        try {
-            const res = await request.post(editArticleApi.addDraft, payload)
-            if (res && res.code === 200) {
-                setTitle('')
-                setCategory(null)
-                setDescription('')
-                setContent('')
-                setSelectedTagIds([])
-                Message.success(res.message)
-
-            } else {
-                Message.error(res.message)
-            }
-        } catch (error) {
-            Message.error("草稿保存失败")
-        }
-    }
-
-    const updateDraft = async () => {
-        const payload = {
-            id: operateId,
-            title,
-            content,
-            des: description,
-        };
-
-        try {
-            const res = await request.post(editArticleApi.updateDraft, payload)
-            if (res && res.code === 200) {
-                setTitle('')
-                setCategory(null)
-                setDescription('')
-                setContent('')
-                setSelectedTagIds([])
-                Message.success(res.message)
-
-            } else {
-                Message.error(res.message)
-            }
-        } catch (error) {
-            Message.error("草稿保存失败")
-        }
-    }
+    //  重置表单
+    const resetForm = () => {
+        setTitle('');
+        setContent('');
+        setDescription('');
+        setCategory(null);
+        setSelectedTagIds([]);
+    };
 
     const fetchCategories = async () => {
         try {
@@ -268,10 +273,10 @@ const EditArticle: React.FC = () => {
             </div>
 
             <div className={styles.butBox}>
-                <Button variant="contained" color="primary" onClick={handleSave}>
+                <Button variant="contained" color="primary" onClick={handleSaveClick}>
                     保存文章
                 </Button>
-                <Button variant="contained" color="primary" onClick={handleDraft}>
+                <Button variant="contained" color="primary" onClick={handleDraftClick}>
                     存为草稿
                 </Button>
             </div>
@@ -285,6 +290,30 @@ const EditArticle: React.FC = () => {
                     data-color-mode="light"
                 />
             </div>
+
+            {/*  保存确认弹窗 */}
+            <Dialog open={openConfirmSave} onClose={() => setOpenConfirmSave(false)}>
+                <DialogTitle sx={{ textAlign: 'center' }}>确认保存</DialogTitle>
+                <DialogContent sx={{ textAlign: 'center', mt: 1 }}>
+                    确定要保存该文章吗？
+                </DialogContent>
+                <DialogActions sx={{ justifyContent: 'center', gap: 2, pb: 2 }}>
+                    <Button variant="outlined" onClick={() => setOpenConfirmSave(false)}>取消</Button>
+                    <Button variant="contained" onClick={handleConfirmSave}>确定保存</Button>
+                </DialogActions>
+            </Dialog>
+
+            {/*  草稿确认弹窗 */}
+            <Dialog open={openConfirmDraft} onClose={() => setOpenConfirmDraft(false)}>
+                <DialogTitle sx={{ textAlign: 'center' }}>确认保存草稿</DialogTitle>
+                <DialogContent sx={{ textAlign: 'center', mt: 1 }}>
+                    确定要保存为草稿吗？
+                </DialogContent>
+                <DialogActions sx={{ justifyContent: 'center', gap: 2, pb: 2 }}>
+                    <Button variant="outlined" onClick={() => setOpenConfirmDraft(false)}>取消</Button>
+                    <Button variant="contained" onClick={handleConfirmDraft}>确定保存</Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };

@@ -8,11 +8,14 @@ import {
     TableRow,
     Paper,
     TablePagination,
-
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Button
 } from "@mui/material";
 
 import { SquarePen, PenLine } from 'lucide-react';
-
 import request from "../../../utils/request";
 import type { ArticleTpye } from "../../../interfaces";
 import { OperateType } from "../../../interfaces";
@@ -21,17 +24,20 @@ import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { articleApi } from "../../../api/adminApi";
 
-
 const Article: React.FC = () => {
-
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const [articles, setArticles] = useState<ArticleTpye[]>([]);
-    const [page, setPage] = useState(0); // MUI 页码是从 0 开始的
-    const [rowsPerPage, setRowsPerPage] = useState(5); // 每页条数
-    const [total, setTotal] = useState(0); // 总记录数
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [total, setTotal] = useState(0);
 
-    // 拉取后端分页数据
+    // 弹窗控制
+    const [openDialog, setOpenDialog] = useState(false);
+    const [dialogType, setDialogType] = useState<"add" | "edit" | null>(null);
+    const [editId, setEditId] = useState<number | null>(null);
+
+    // 拉取数据
     const fetchData = async (pageNum = 1, pageSize = rowsPerPage) => {
         const res = await request.get(articleApi.list, {
             params: {
@@ -43,7 +49,6 @@ const Article: React.FC = () => {
         const data = res.data;
         setArticles(data.list);
         setTotal(data.total);
-
         setPage(data.pageNum - 1);
         setRowsPerPage(data.pageSize);
     };
@@ -52,25 +57,36 @@ const Article: React.FC = () => {
         fetchData(1, rowsPerPage);
     }, []);
 
-    // 处理页码切换
     const handleChangePage = (_: unknown, newPage: number) => {
         fetchData(newPage + 1, rowsPerPage);
     };
 
-    // 处理每页条数切换
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newSize = parseInt(event.target.value, 10);
         setRowsPerPage(newSize);
-        fetchData(1, newSize); // 重置到第一页
+        fetchData(1, newSize);
     };
 
     const handlerAdd = () => {
-        navigate('/admin/addArticle')
-    }
+        setDialogType("add");
+        setOpenDialog(true);
+    };
 
     const handlerEdit = (id: number) => {
-        navigate(`/admin/editArticle?type=${OperateType.article}&id=${id}`)
-    }
+        setEditId(id);
+        setDialogType("edit");
+        setOpenDialog(true);
+    };
+
+    // 确认弹窗点击
+    const handleConfirm = () => {
+        if (dialogType === "add") {
+            navigate("/admin/addArticle");
+        } else if (dialogType === "edit" && editId !== null) {
+            navigate(`/admin/editArticle?type=${OperateType.article}&id=${editId}`);
+        }
+        setOpenDialog(false);
+    };
 
     return (
         <div className={styles.articleBox}>
@@ -100,16 +116,12 @@ const Article: React.FC = () => {
                                 <TableRow
                                     key={article.id}
                                     hover
-                                    sx={{
-                                        "&:last-child td, &:last-child th": { border: 0 },
-                                    }}
+                                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                                 >
                                     <TableCell>{article.id}</TableCell>
                                     <TableCell>{article.title}</TableCell>
                                     <TableCell>{article.category}</TableCell>
-                                    <TableCell>
-                                        {dayjs(article.createTime).format("YYYY-MM-DD HH:mm")}
-                                    </TableCell>
+                                    <TableCell>{dayjs(article.createTime).format("YYYY-MM-DD HH:mm")}</TableCell>
                                     <TableCell>
                                         {article.updateTime
                                             ? dayjs(article.updateTime).format("YYYY-MM-DD HH:mm")
@@ -127,19 +139,17 @@ const Article: React.FC = () => {
 
                             {articles.length < rowsPerPage && (
                                 <TableRow className={styles.emptyRow}>
-                                    <TableCell colSpan={9} />
+                                    <TableCell colSpan={10} />
                                 </TableRow>
                             )}
                         </TableBody>
-
                     </Table>
                 </TableContainer>
 
-                {/* 分页组件 */}
                 <TablePagination
                     component="div"
-                    count={total} // 后端返回的总数
-                    page={page}   // 当前页（0-based）
+                    count={total}
+                    page={page}
                     onPageChange={handleChangePage}
                     rowsPerPage={rowsPerPage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
@@ -149,8 +159,22 @@ const Article: React.FC = () => {
                         `第 ${from}-${to} 条 / 共 ${count !== -1 ? count : `更多`} 条`
                     }
                 />
-
             </Paper>
+
+            {/* 确认弹窗 */}
+            <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+                <DialogTitle>确认操作</DialogTitle>
+                <DialogContent sx={{ textAlign: "center", fontSize: 16, mt: 1 }}>
+                    {dialogType === "add"
+                        ? "是否确定要新增文章？"
+                        : "是否确定要编辑该文章？"}
+                </DialogContent>
+                <DialogActions sx={{ justifyContent: "center", gap: 2 }}>
+                    <Button variant="outlined" onClick={() => setOpenDialog(false)}>取消</Button>
+                    <Button variant="contained" onClick={handleConfirm}>确定</Button>
+                </DialogActions>
+            </Dialog>
+
         </div>
     );
 };
