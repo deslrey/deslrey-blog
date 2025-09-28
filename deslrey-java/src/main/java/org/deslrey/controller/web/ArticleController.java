@@ -1,5 +1,6 @@
 package org.deslrey.controller.web;
 
+import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.vo.ArchiveVO;
 import org.deslrey.entity.vo.ArticleVO;
@@ -46,4 +47,11 @@ public class ArticleController {
     public Results<List<ArchiveVO>> archiveList() {
         return articleService.archiveList();
     }
+
+    @GetMapping("articles")
+    public Results<PageInfo<Article>> articles(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize) {
+        return articleService.articles(page, pageSize);
+    }
+
+
 }

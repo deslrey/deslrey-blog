@@ -5,6 +5,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/zh-cn";
 import Link from "next/link";
 import { LatestReleasesVO } from "@/interfaces/Article";
+import { api } from "@/api";
 
 dayjs.extend(relativeTime);
 dayjs.locale("zh-cn");
@@ -14,7 +15,7 @@ const LatestReleases = async () => {
     let articleList: LatestReleasesVO[] = []
 
     try {
-        const res = await fetch('http://localhost:8080/deslrey/article/LatestReleases', {
+        const res = await fetch(api.latestReleases.articleList, {
             cache: 'no-store'
         })
 

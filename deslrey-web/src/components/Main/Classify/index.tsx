@@ -1,23 +1,23 @@
 import React from "react";
 import styles from "./classify.module.scss";
 import { CategoryVO } from "@/interfaces/Article";
+import { api } from "@/api";
 
 const Classify = async () => {
 
     let classifyList: CategoryVO[] = []
 
     try {
-        const res = await fetch("http://localhost:8080/deslrey/category/list", {
+        const res = await fetch(api.classify.categoryCountList, {
             cache: 'no-store'
         })
 
         if (!res.ok) {
             classifyList = []
+        } else {
+            const result = await res.json()
+            classifyList = result.data || []
         }
-
-        const result = await res.json()
-        classifyList = result.data || []
-
     } catch (error) {
         classifyList = []
     }

@@ -34,4 +34,7 @@ public interface ArticleMapper {
     int insertArticle(Article article);
 
     Article editArticle(@Param("articleId") Integer articleId);
+
+    List<Article> selectArticles();
+
 }

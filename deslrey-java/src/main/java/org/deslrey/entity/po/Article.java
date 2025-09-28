@@ -51,6 +51,11 @@ public class Article implements Serializable {
     private Integer views;
 
     /**
+     * 阅读时间
+     */
+    private Integer readTime;
+
+    /**
      * 创建日期
      */
     private LocalDateTime createTime;

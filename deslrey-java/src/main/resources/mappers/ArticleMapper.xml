@@ -8,6 +8,7 @@
         <result column="content" property="content"/>
         <result column="word_count" property="wordCount"/>
         <result column="views" property="views"/>
+        <result column="read_time" property="readTime"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
         <result column="category" property="category"/>
@@ -58,7 +59,7 @@
     </select>
 
     <select id="archiveList" resultMap="BaseResultMap">
-        select id, title, create_time as createTime, edit
+        select id, title, create_time, edit
         from article
         where exist = 1;
     </select>
@@ -83,6 +84,19 @@
         select id, title, content, des, category
         from article
         where id = #{articleId}
+    </select>
+
+    <select id="selectArticles" resultMap="BaseResultMap">
+        select id,
+               title,
+               word_count,
+               views,
+               read_time,
+               create_time,
+               edit,
+               sticky
+        from article
+        order by create_time desc
     </select>
 
 </mapper>

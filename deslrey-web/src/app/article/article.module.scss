@@ -9,12 +9,16 @@
 .container {
     width: 100%;
     max-width: 800px;
+    min-height: 600px; /* 固定最小高度 */
+    display: flex; /* 让容器成为 flex */
+    flex-direction: column; /* 垂直布局 */
 }
 
 .list {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    flex: 1; /* 占据剩余空间，推动分页到底部 */
 }
 
 .item {
@@ -55,4 +59,44 @@
 
 .edit {
     color: #ff4d4f;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto; /*  把分页固定在底部 */
+    gap: 8px;
+
+    .pageBtn {
+        padding: 6px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 6px;
+        color: #ccc;
+        background: rgba(255, 255, 255, 0.05);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 14px;
+
+        &:hover {
+            background: var(--activeColor);
+            border-color: var(--activeColor);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(var(--activeColor-rgb), 0.3);
+        }
+    }
+
+    .activePage {
+        background: var(--activeColor);
+        border-color: var(--activeColor);
+        color: #fff;
+        pointer-events: none;
+    }
+
+    .ellipsis {
+        padding: 6px 10px;
+        color: #999;
+        font-size: 14px;
+    }
 }

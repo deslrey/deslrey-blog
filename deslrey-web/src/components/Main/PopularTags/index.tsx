@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./popularTags.module.scss";
 import { TagList } from "@/json/Article";
 import { TagVO } from "@/interfaces/Article";
+import { api } from "@/api";
 
 const PopularTags = async () => {
 
@@ -9,7 +10,7 @@ const PopularTags = async () => {
 
     try {
 
-        const res = await fetch("http://localhost:8080/deslrey/tag/list/", {
+        const res = await fetch(api.popularTags.tagCountList, {
             cache: 'no-store'
         })
 

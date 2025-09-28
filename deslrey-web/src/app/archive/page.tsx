@@ -3,21 +3,24 @@ import styles from "./archive.module.scss";
 import dayjs from "dayjs";
 import { ArchiveVO } from "@/interfaces/Article";
 import Link from "next/link";
+import { api } from "@/api";
 
 const Archive = async () => {
     let articles: ArchiveVO[] = [];
 
     try {
-        const res = await fetch("http://localhost:8080/deslrey/article/archiveList", {
+        const res = await fetch(api.archive.archiveList, {
             cache: "no-store",
         });
 
         if (!res.ok) {
             articles = [];
+        } else {
+            const result = await res.json();
+            console.log('result ======> ', result)
+            articles = result.data || [];
         }
 
-        const result = await res.json();
-        articles = result.data || [];
     } catch (error) {
         articles = [];
     }

@@ -1,5 +1,6 @@
 import { BytemdViewer } from '@/components/Markdown/viewer'
 import styles from './index.module.scss'
+import { api } from '@/api'
 
 export default async function Page({
     params,
@@ -8,7 +9,7 @@ export default async function Page({
 }) {
     const { slug } = await params
 
-    const data = await fetch('http://localhost:8080/deslrey/article/detail/1')
+    const data = await fetch(`${api.articleDateil.detail}/${slug}`)
     const posts = await data.json()
 
     return (

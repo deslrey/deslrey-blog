@@ -160,4 +160,17 @@ public class ArticleServiceImpl implements ArticleService {
         articleDraftVO.setTagIdList(articleTagList);
         return Results.ok(articleDraftVO);
     }
+
+    @Override
+    public Results<PageInfo<Article>> articles(int page, int pageSize) {
+        PageHelper.startPage(page, pageSize);
+
+        List<Article> articleList = articleMapper.selectArticles();
+        if (articleList == null || articleList.isEmpty()) {
+            return Results.ok(new PageInfo<>(new ArrayList<>()));
+        }
+
+        PageInfo<Article> articlePageInfo = new PageInfo<>(articleList);
+        return Results.ok(articlePageInfo);
+    }
 }
