@@ -2,6 +2,7 @@ package org.deslrey.service;
 
 import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Tag;
+import org.deslrey.entity.vo.ArticleVO;
 import org.deslrey.entity.vo.TagCountVO;
 import org.deslrey.result.Results;
 
@@ -26,4 +27,6 @@ public interface TagService {
     Results<Void> addTag(Tag tag);
 
     Results<Void> updateTagTitle(Tag tag);
+
+    Results<List<ArticleVO>> articleTagsByTitle(String title);
 }

@@ -42,4 +42,13 @@
         from tag
     </select>
 
+    <select id="selectIdByTitle" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select id
+        from tag
+        where tag_title = #{title}
+        order by create_time desc
+        limit 1
+    </select>
+
+
 </mapper>

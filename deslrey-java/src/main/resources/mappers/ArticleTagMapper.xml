@@ -18,4 +18,14 @@
         where article_id = #{articleId}
     </select>
 
+    <select id="selectArticleByTagId" resultType="org.deslrey.entity.vo.ArticleVO"
+            parameterType="java.lang.Integer">
+        select a.id, a.title
+        from article_tag t
+                 left join article a
+                           on t.article_id = a.id
+        where t.tag_id = #{tagId}
+    </select>
+
+
 </mapper>

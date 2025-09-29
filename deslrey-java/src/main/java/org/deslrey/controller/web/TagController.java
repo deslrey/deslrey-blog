@@ -2,6 +2,7 @@ package org.deslrey.controller.web;
 
 import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Tag;
+import org.deslrey.entity.vo.ArticleVO;
 import org.deslrey.entity.vo.TagCountVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.TagService;
@@ -52,4 +53,8 @@ public class TagController {
         return tagService.updateTagTitle(tag);
     }
 
+    @GetMapping("selectTagsByTitle/{title}")
+    public Results<List<ArticleVO>> articleTagsByTitle(@PathVariable String title) {
+        return tagService.articleTagsByTitle(title);
+    }
 }

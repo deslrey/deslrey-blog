@@ -3,7 +3,9 @@ package org.deslrey.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Tag;
+import org.deslrey.entity.vo.ArticleVO;
 import org.deslrey.entity.vo.TagCountVO;
+import org.deslrey.mapper.ArticleTagMapper;
 import org.deslrey.mapper.TagMapper;
 import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
@@ -30,6 +32,9 @@ public class TagServiceImpl implements TagService {
 
     @Autowired
     private TagMapper tagMapper;
+
+    @Autowired
+    private ArticleTagMapper articleTagMapper;
 
     @Override
     public Results<PageInfo<Tag>> tagList(int page, int pageSize) {
@@ -84,5 +89,25 @@ public class TagServiceImpl implements TagService {
             return Results.ok("修改成功");
         }
         return Results.fail("更新失败");
+    }
+
+    @Override
+    public Results<List<ArticleVO>> articleTagsByTitle(String title) {
+        if (StringUtils.isEmpty(title)) {
+            return Results.ok(new ArrayList<>(0));
+        }
+
+        Integer tagId = tagMapper.selectIdByTitle(title);
+
+        if (tagId == null) {
+            return Results.ok(new ArrayList<>(0));
+        }
+
+        List<ArticleVO> articleVOList = articleTagMapper.selectArticleByTagId(tagId);
+        if (articleVOList == null || articleVOList.isEmpty()) {
+            return Results.ok(new ArrayList<>(0));
+        }
+
+        return Results.ok(articleVOList);
     }
 }
