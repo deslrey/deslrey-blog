@@ -44,6 +44,26 @@
     }
 }
 
+.item {
+    text-decoration: none;
+    color: rgba(var(--activeColor-rgb), 0.2);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &:visited {
+        color: rgba(var(--activeColor-rgb), 0.2);
+    }
+
+    &:hover {
+        background: rgba(42, 42, 42, 0.2);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+}
+
 .title {
     font-weight: 500;
 }

@@ -3,6 +3,7 @@ import styles from "./popularTags.module.scss";
 import { TagList } from "@/json/Article";
 import { TagVO } from "@/interfaces/Article";
 import { api } from "@/api";
+import Link from "next/link";
 
 const PopularTags = async () => {
 
@@ -32,10 +33,12 @@ const PopularTags = async () => {
                     tagList.length === 0 ? (
                         <div className={styles.empty}>暂无更多标签</div>
                     ) : (tagList.map(tag => (
-                        <div key={tag.id} className={styles.tagItem}>
-                            <span className={styles.title}>{tag.title}</span>
-                            <span className={styles.total}>{tag.total}</span>
-                        </div>
+                        <Link key={tag.id} href={`/tag/${tag.title}`} className={styles.item}>
+                            <div key={tag.id} className={styles.tagItem}>
+                                <span className={styles.title}>{tag.title}</span>
+                                <span className={styles.total}>{tag.total}</span>
+                            </div>
+                        </Link>
                     )))
                 }
             </div>
