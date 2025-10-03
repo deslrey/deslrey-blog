@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./classify.module.scss";
 import { CategoryVO } from "@/interfaces/Article";
 import { api } from "@/api";
+import Link from "next/link";
 
 const Classify = async () => {
 
@@ -30,10 +31,11 @@ const Classify = async () => {
                     <div className={styles.empty}>暂无分类</div>
                 ) :
                     (classifyList.map((item, index) => (
-                        <div key={index} className={styles.classifyItem}>
-                            <span className={styles.title}>{item.title}</span>
-                            <span className={styles.total}>{item.total}</span>
-                        </div>
+                        <Link key={index} href={`/category/${item.title}`} className={styles.item}>
+                            <div key={index} className={styles.classifyItem}>
+                                <span className={styles.title}>{item.title}</span>
+                                <span className={styles.total}>{item.total}</span>
+                            </div></Link>
                     )))}
             </div>
         </div>

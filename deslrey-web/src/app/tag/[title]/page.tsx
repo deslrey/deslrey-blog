@@ -8,20 +8,20 @@ const TagPage = async ({ params }: { params: Promise<{ title: string }> }) => {
     const { title } = await params;
     const decodedTitle = decodeURIComponent(title);
 
-    let articleTags: Article[] = [];
+    let articles: Article[] = [];
 
     try {
         const res = await fetch(`${api.tagPage.articleTagsByTitle}/${decodedTitle}`, {
             cache: "no-store",
         });
         if (!res.ok) {
-            articleTags = [];
+            articles = [];
         } else {
             const result = await res.json();
-            articleTags = result.data || [];
+            articles = result.data || [];
         }
     } catch (error) {
-        articleTags = [];
+        articles = [];
     }
 
     return (
@@ -29,14 +29,14 @@ const TagPage = async ({ params }: { params: Promise<{ title: string }> }) => {
             <div className={styles.header}>
                 <h1 className={styles.headerTitle}>#{decodedTitle}</h1>
                 <p className={styles.headerDesc}>
-                    共 {articleTags.length} 篇文章
+                    共 {articles.length} 篇文章
                 </p>
             </div>
 
             <div className={styles.content}>
-                {articleTags.length > 0 ? (
+                {articles.length > 0 ? (
                     <ul className={styles.articleList}>
-                        {articleTags.map((article) => (
+                        {articles.map((article) => (
                             <li key={article.id} className={styles.articleItem}>
                                 <Link href={`/blog/${article.id}`} className={styles.articleLink}>
                                     <span className={styles.dot}>•</span>
