@@ -7,7 +7,7 @@ import { plugins } from "./config";
 import { Progress } from "antd";
 import type { ProgressProps } from "antd";
 
-import "./index.scss";
+// import "./index.scss";
 import { CodeBlockEnhancer } from "@/util/codeBlockEnhancer";
 
 interface BytemdViewerProps {

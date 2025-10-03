@@ -36,10 +36,13 @@
     line-height: 1.4;
 }
 
-.markdown-toc ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+ul {
+    // list-style: none;
+    padding: 20px;
+}
+
+ol {
+    padding-left: 20px;
 }
 
 .markdown-toc li {
@@ -157,10 +160,10 @@ pre:hover .code-copy-btn {
         margin-top: 70px;
         width: 100%;
         max-width: 900px;
-        padding: 0 1rem; /* 可选，避免内容贴边 */
+        // padding: 0 1rem;
     }
 
-    .markdown-body {
-        padding: 0;
-    }
+    // .markdown-body {
+    //     padding: 0;
+    // }
 }
