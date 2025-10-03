@@ -28,5 +28,9 @@ export const api = {
 
     tagPage: {
         articleTagsByTitle: baseUrl + "/tag/selectTagsByTitle"
+    },
+
+    categoryPage: {
+        articleByTitle: baseUrl + "/category/articleByTitle"
     }
 }

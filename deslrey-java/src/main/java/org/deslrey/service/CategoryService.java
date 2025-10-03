@@ -1,7 +1,9 @@
 package org.deslrey.service;
 
 import com.github.pagehelper.PageInfo;
+import org.deslrey.entity.po.Article;
 import org.deslrey.entity.po.Category;
+import org.deslrey.entity.vo.ArticleVO;
 import org.deslrey.entity.vo.CategoryCountVO;
 import org.deslrey.entity.vo.CategoryVO;
 import org.deslrey.result.Results;
@@ -27,4 +29,6 @@ public interface CategoryService {
     Results<Void> updateCategoryTitle(Category category);
 
     Results<Void> addCategory(Category category);
+
+    Results<List<Article>> articleByCategory(String category);
 }

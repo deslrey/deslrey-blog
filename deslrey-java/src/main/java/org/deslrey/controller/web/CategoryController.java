@@ -1,7 +1,9 @@
 package org.deslrey.controller.web;
 
 import com.github.pagehelper.PageInfo;
+import org.deslrey.entity.po.Article;
 import org.deslrey.entity.po.Category;
+import org.deslrey.entity.vo.ArticleVO;
 import org.deslrey.entity.vo.CategoryCountVO;
 import org.deslrey.entity.vo.CategoryVO;
 import org.deslrey.result.Results;
@@ -53,5 +55,9 @@ public class CategoryController {
         return categoryService.addCategory(category);
     }
 
+    @GetMapping("articleByTitle/{category}")
+    public Results<List<Article>> articleByTitle(@PathVariable String category) {
+        return categoryService.articleByCategory(category);
+    }
 
 }

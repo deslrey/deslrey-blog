@@ -3,7 +3,9 @@ package org.deslrey.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.deslrey.convert.CategoryConvert;
+import org.deslrey.entity.po.Article;
 import org.deslrey.entity.po.Category;
+import org.deslrey.entity.vo.ArticleVO;
 import org.deslrey.entity.vo.CategoryCountVO;
 import org.deslrey.entity.vo.CategoryVO;
 import org.deslrey.mapper.ArticleMapper;
@@ -93,5 +95,17 @@ public class CategoryServiceImpl implements CategoryService {
             return Results.ok("添加成功");
         }
         return Results.fail("添加失败");
+    }
+
+    @Override
+    public Results<List<Article>> articleByCategory(String category) {
+        if (StringUtils.isEmpty(category)) {
+            return Results.ok(new ArrayList<>());
+        }
+        List<Article> articleVOList = articleMapper.selectArticleByCategory(category);
+        if (articleVOList == null || articleVOList.isEmpty()) {
+            return Results.ok(new ArrayList<>());
+        }
+        return Results.ok(articleVOList);
     }
 }

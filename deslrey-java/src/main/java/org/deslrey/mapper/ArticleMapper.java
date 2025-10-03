@@ -6,6 +6,7 @@ import org.deslrey.entity.admin.vo.ArticleAdminVO;
 import org.deslrey.entity.admin.vo.ArticleDraftVO;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.vo.ArchiveVO;
+import org.deslrey.entity.vo.ArticleVO;
 import org.deslrey.entity.vo.LatestReleasesVO;
 
 import java.util.List;
@@ -37,4 +38,5 @@ public interface ArticleMapper {
 
     List<Article> selectArticles();
 
+    List<Article> selectArticleByCategory(String category);
 }
