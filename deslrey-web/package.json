@@ -10,8 +10,6 @@
     },
     "dependencies": {
         "@ant-design/icons": "5.x",
-        "@ant-design/nextjs-registry": "^1.1.0",
-        "@ant-design/v5-patch-for-react-19": "^1.0.3",
         "@bytemd/plugin-breaks": "^1.22.0",
         "@bytemd/plugin-frontmatter": "^1.22.0",
         "@bytemd/plugin-gfm": "^1.22.0",
@@ -21,7 +19,6 @@
         "@bytemd/react": "^1.22.0",
         "@next/mdx": "^15.5.2",
         "ahooks": "^3.9.2",
-        "antd": "^5.27.0",
         "axios": "^1.11.0",
         "bytemd": "^1.22.0",
         "classnames": "^2.5.1",
