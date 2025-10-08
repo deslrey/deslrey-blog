@@ -4,21 +4,12 @@ import * as React from "react";
 import { Viewer } from "@bytemd/react";
 import { plugins } from "./config";
 
-import { Progress } from "antd";
-import type { ProgressProps } from "antd";
-
 // import "./index.scss";
 import { CodeBlockEnhancer } from "@/util/codeBlockEnhancer";
 
 interface BytemdViewerProps {
     body: string;
 }
-
-const conicColors: ProgressProps["strokeColor"] = {
-    "0%": "#87d068",
-    "50%": "#ffe58f",
-    "100%": "#ffccc7",
-};
 
 export const BytemdViewer = ({ body }: BytemdViewerProps) => {
     const containerRef = React.useRef<HTMLDivElement | null>(null);
@@ -28,9 +19,7 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
         Array<{ id: string; text: string; level: number }>
     >([]);
     const [activeId, setActiveId] = React.useState<string>("");
-    const [progress, setProgress] = React.useState<number>(0);
 
-    //抽出来 供 scroll 和 回到顶部 都能用
     const getScrollParent = (
         element: HTMLElement | null
     ): HTMLElement | Window => {
@@ -103,41 +92,6 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
         });
     }, [body]);
 
-    // 单独的 useEffect 处理滚动进度
-    React.useEffect(() => {
-        const scrollContainer = getScrollParent(contentRef.current);
-
-        const onScroll = () => {
-            let scrollTop: number, scrollHeight: number, clientHeight: number;
-
-            if (scrollContainer === window) {
-                scrollTop = window.scrollY || document.documentElement.scrollTop;
-                scrollHeight = document.documentElement.scrollHeight;
-                clientHeight = window.innerHeight;
-            } else {
-                const el = scrollContainer as HTMLElement;
-                scrollTop = el.scrollTop;
-                scrollHeight = el.scrollHeight;
-                clientHeight = el.clientHeight;
-            }
-
-            if (scrollHeight > clientHeight) {
-                const total = Math.max(1, scrollHeight - clientHeight);
-                const percent = (scrollTop / total) * 100;
-                setProgress(Math.round(percent));
-            } else {
-                setProgress(0);
-            }
-        };
-
-        onScroll();
-        scrollContainer.addEventListener("scroll", onScroll, { passive: true });
-
-        return () => {
-            scrollContainer.removeEventListener("scroll", onScroll);
-        };
-    }, []);
-
 
     const scrollToHeading = React.useCallback((id: string) => {
         const el = document.getElementById(id);
@@ -147,8 +101,8 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
     }, []);
 
     return (
-        <div className="layout">
-            <div className="content" ref={contentRef}>
+        <div className="markdown-layout">
+            <div className="markdown-content" ref={contentRef}>
                 <div ref={containerRef} >
                     <Viewer value={body} plugins={plugins} />
                 </div>
@@ -180,17 +134,7 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
                                 </li>
                             ))}
                 </ul>
-                <div className="markdown-toc-progress">
-                    <Progress
-                        type="circle"
-                        percent={progress}
-                        size={20}
-                        showInfo={false}
-                        strokeColor={conicColors}
-                    />
-                    <span className="dot" /> {progress}%
-                </div>
-                <a className="markdown-toc-top" href="#top" onClick={handleScrollToTop}>
+                <a href="#top" onClick={handleScrollToTop}>
                     回到顶部
                 </a>
             </aside>
