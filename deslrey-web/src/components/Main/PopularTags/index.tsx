@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./popularTags.module.scss";
-import { TagList } from "@/json/Article";
 import { TagVO } from "@/interfaces/Article";
 import { api } from "@/api";
 import Link from "next/link";
