@@ -1,44 +1,31 @@
-// size
-$navHeight: 60px;
-$footerHeight: 120px;
-$centerWidth: 1200px;
-$asideWidth: 260px;
-$layoutWidth: 1000px;
-$topTitleHeight: 440px;
-$btnWidth: 70px;
+// ========================
+// 基础主题样式 (base.scss)
+// ========================
 
-// 圆角
-$bigRadius: 20px;
-$midRadius: 12px;
+// 1. 定义全局 CSS 变量
+:root {
+    // 默认是“明亮模式”
+    --color-bg: #ffffff;
+    --color-text: #1a1a1a;
+    --color-border: #e0e0e0;
+    --color-footer: #647fbc;
+    --transition-speed: 0.3s;
+}
 
-// 间距
-$space: 20px;
+// 2. 黑暗模式
+[data-theme="dark"] {
+    --color-bg: #121212;
+    --color-text: #f5f5f5;
+    --color-footer: #2f5755;
+    --color-border: #333;
+}
 
-// 不变的颜色
-$codeOther: #c9d1d9;
-// 按钮/字体高亮/hover
-$hoverColor: var(--hoverColor, rgb(98, 164, 218));
-
-// ---------黑色-----------
-// 主色
-$themeColor: var(--themeColor, rgb(12, 29, 27));
-// 副色1
-$themeColor1: var(--themeColor1, rgb(22, 54, 51));
-// 副色2
-$themeColor2: var(--themeColor2, rgb(39, 95, 89));
-// 字体色
-$textColor: var(--textColor, rgb(255, 255, 255));
-// 切换开关灰色
-$switchOff: var(--switchOff, rgb(77, 77, 77));
-// placeholder
-$tip: var(--tip, rgb(116, 116, 116));
-// App背景色
-$bodyColor: var(--bodyColor, rgb(0, 0, 0));
-// footer透明背景色
-$footerBg: var(--footerBg, rgba(0, 0, 0, 0.3));
-// 代码块背景
-$codeBg: var(--codeBg, rgb(37, 43, 48));
-// 稍微不明显的字体颜色（版权信息页）
-$textColor2: var(--textColor2, rgb(167, 167, 167));
-// 行内代码
-$inlineCode: var(--inlineCode, rgb(29, 71, 67));
+// 3. 应用到全局基础样式
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: "Inter", "PingFang SC", sans-serif;
+    transition:
+        background-color var(--transition-speed) ease,
+        color var(--transition-speed) ease;
+}
