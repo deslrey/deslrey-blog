@@ -32,7 +32,7 @@ export default function RootLayout({
                         <ColorProvider>
                             <Nav />
                             {children}
-                            <Footer />
+                            {/* <Footer /> */}
                         </ColorProvider>
                     </ThemeProvider>
                 </StyledComponentsRegistry>

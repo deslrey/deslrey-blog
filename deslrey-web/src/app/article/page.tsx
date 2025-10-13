@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { Article } from "@/interfaces/Article";
 import { api } from "@/api";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 interface ArticlePageProps {
     searchParams?: Promise<{
@@ -14,7 +15,7 @@ interface ArticlePageProps {
 const ArticlePage = async ({ searchParams }: ArticlePageProps) => {
     const params = await searchParams;
     const page = Number(params?.page || 1);
-    const pageSize = 10;
+    const pageSize = 4;
     let articleList: Article[] = [];
     let total = 0;
     let hasNextPage = false;
@@ -47,16 +48,12 @@ const ArticlePage = async ({ searchParams }: ArticlePageProps) => {
         } else {
             if (current <= 4) {
                 // 前半段
-                pages.push(1, 2, 3, 4, 5, "...", totalPages);
+                pages.push(1, 2, 3, "...", totalPages);
             } else if (current >= totalPages - 3) {
                 // 后半段
                 pages.push(
                     1,
                     "...",
-                    totalPages - 4,
-                    totalPages - 3,
-                    totalPages - 2,
-                    totalPages - 1,
                     totalPages
                 );
             } else {
@@ -64,9 +61,7 @@ const ArticlePage = async ({ searchParams }: ArticlePageProps) => {
                 pages.push(
                     1,
                     "...",
-                    current - 1,
                     current,
-                    current + 1,
                     "...",
                     totalPages
                 );
@@ -112,7 +107,7 @@ const ArticlePage = async ({ searchParams }: ArticlePageProps) => {
                                 href={`/article?page=${page - 1}`}
                                 className={styles.pageBtn}
                             >
-                                上一页
+                                <ArrowLeft />
                             </Link>
                         )}
 
@@ -138,7 +133,7 @@ const ArticlePage = async ({ searchParams }: ArticlePageProps) => {
                                 href={`/article?page=${page + 1}`}
                                 className={styles.pageBtn}
                             >
-                                下一页
+                                <ArrowRight />
                             </Link>
                         )}
                     </div>

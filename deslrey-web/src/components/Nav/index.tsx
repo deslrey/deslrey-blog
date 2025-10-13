@@ -8,6 +8,7 @@ import Link from "next/link";
 import Checkbox from "../Checkbox";
 import { usePathname } from "next/navigation";
 import BlogTitle from "../BlogTitle";
+import ThemeToggle from "../ThemeToggle/ThemeToggle";
 
 const NavItem: React.FC<{ item: NavObj; onClick?: () => void }> = ({
     item,
@@ -59,8 +60,10 @@ const Nav: React.FC = () => {
                         onClick={() => setOpen(false)}
                     />
                 ))}
+                <ThemeToggle />
             </div>
         </nav>
+
     );
 };
 

@@ -8,6 +8,16 @@
     width: 150px;
     height: 40px;
     box-sizing: border-box;
+    transition: all var(--transition-speed) ease;
+
+    /* 小屏幕时改为竖排 */
+    @media (max-width: 768px) {
+        flex-direction: column;
+        width: 50px;
+        height: auto;
+        gap: 10px;
+        padding: 6px 0;
+    }
 }
 
 .themeToggleBtn {
@@ -32,5 +42,15 @@
     svg {
         width: 18px;
         height: 18px;
+    }
+
+    /* 小屏幕时每个按钮垂直分布且有间距 */
+    @media (max-width: 768px) {
+        width: 100%;
+        height: 40px;
+
+        &:not(:last-child) {
+            margin-bottom: 6px;
+        }
     }
 }
