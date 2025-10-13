@@ -1,14 +1,14 @@
 .tagPage {
     width: 100%;
+    max-width: 900px;
+    margin: 9.9% auto 0;
     padding: 0 20px;
-    font-family: "Helvetica Neue", Arial, sans-serif;
-    color: #333;
-    margin-top: 205px;
+    color: var(--color-text);
     min-height: 70%;
 }
 
 .header {
-    color: white;
+    color: var(--color-text);
     padding: 50px 30px;
     border-radius: 16px;
     text-align: center;
@@ -51,7 +51,7 @@
     align-items: center;
     gap: 10px;
     text-decoration: none;
-    color: #333;
+    color: var(--color-text);
     transition: all 0.2s ease;
 
     &:hover {
@@ -73,6 +73,6 @@
 .empty {
     text-align: center;
     padding: 40px 0;
-    color: #999;
+    color: var(--color-text);
     font-size: 16px;
 }

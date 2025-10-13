@@ -17,7 +17,7 @@ const About = () => {
                 />
                 <h2 className={styles.name}>deslrey</h2>
                 <p className={styles.bio}>
-                     👋 你好，我是一名前端开发者，我在学习 React、TypeScript 和现代
+                    👋 你好，我是一名前端开发者，我在学习 React、TypeScript 和现代
                     Web 技术。
                     {/* 👋 你好，我是一名前端开发者，热爱 React、TypeScript 和现代
                     Web 技术。 */}

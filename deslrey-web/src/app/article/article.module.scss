@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     padding: 20px;
-    margin-top: 205px;
+    margin-top: 9.9%;
     min-height: 70%;
 }
 
@@ -37,7 +37,7 @@
 .title {
     font-size: 18px;
     font-weight: 600;
-    color: #fff;
+    color: var(--color-text);
     text-decoration: none;
 }
 
@@ -52,7 +52,7 @@
 
 .meta {
     font-size: 12px;
-    color: #999;
+    color: var(--color-text);
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
@@ -73,7 +73,7 @@
         padding: 6px 12px;
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 6px;
-        color: #ccc;
+        color: var(--color-text);
         background: rgba(255, 255, 255, 0.05);
         text-decoration: none;
         transition: all 0.3s ease;
@@ -82,7 +82,7 @@
         &:hover {
             background: var(--activeColor);
             border-color: var(--activeColor);
-            color: #fff;
+            color: var(--color-text);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(var(--activeColor-rgb), 0.3);
         }
@@ -91,13 +91,13 @@
     .activePage {
         background: var(--activeColor);
         border-color: var(--activeColor);
-        color: #fff;
+        color: var(--color-text);
         pointer-events: none;
     }
 
     .ellipsis {
         padding: 6px 10px;
-        color: #999;
+        color: var(--color-text);
         font-size: 14px;
     }
 }

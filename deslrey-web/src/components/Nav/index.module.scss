@@ -87,7 +87,7 @@
         flex-direction: column;
         position: fixed;
         top: 50px;
-         min-width:0%;
+        min-width: 0%;
         right: -160px;
         height: 100%;
         width: 160px;
@@ -141,7 +141,7 @@
     font-size: 16px;
     cursor: pointer;
     text-decoration: none;
-    color: #fff;
+    color: var(--color-text);
     position: relative;
 
     &:hover {

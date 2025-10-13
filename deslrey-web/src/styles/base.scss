@@ -1,26 +1,22 @@
 // ========================
-// 基础主题样式 (base.scss)
+// base.scss （支持暗色 + 玻璃效果）
 // ========================
 
-// 1. 定义全局 CSS 变量
 :root {
-    // 默认是“明亮模式”
+    /* ===== Light 模式 ===== */
     --color-bg: #ffffff;
     --color-text: #1a1a1a;
-    --color-border: #e0e0e0;
-    --color-footer: #647fbc;
+    --color-footer: #73b3d9;
     --transition-speed: 0.3s;
 }
 
-// 2. 黑暗模式
+/* ===== Dark 模式 ===== */
 [data-theme="dark"] {
-    --color-bg: #121212;
+    --color-bg: #0f1115;
     --color-text: #f5f5f5;
-    --color-footer: #2f5755;
-    --color-border: #333;
+    --color-footer: #4a716f;
 }
 
-// 3. 应用到全局基础样式
 body {
     background-color: var(--color-bg);
     color: var(--color-text);

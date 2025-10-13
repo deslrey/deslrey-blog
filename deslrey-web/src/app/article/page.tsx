@@ -14,7 +14,7 @@ interface ArticlePageProps {
 const ArticlePage = async ({ searchParams }: ArticlePageProps) => {
     const params = await searchParams;
     const page = Number(params?.page || 1);
-    const pageSize = 5;
+    const pageSize = 10;
     let articleList: Article[] = [];
     let total = 0;
     let hasNextPage = false;
