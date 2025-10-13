@@ -2,7 +2,7 @@
 @use "../../styles/hovers/_mixins.scss" as mixins;
 @use "../../styles/hovers/_options.scss" as options;
 
-/* Underline From Center */
+/* 下划线动画混入 */
 @mixin underline-from-center {
     $duration: options.$mediumDuration;
 
@@ -34,6 +34,7 @@
     }
 }
 
+/* 顶层导航容器 */
 .NavWrapper {
     position: fixed;
     top: 0;
@@ -51,6 +52,7 @@
     }
 }
 
+/* 桌面端导航 */
 .NavMain {
     display: flex;
     flex-direction: row;
@@ -64,7 +66,6 @@
     border-radius: 20px;
     background: rgba(255, 255, 255, 0.1);
     position: relative;
-
     box-shadow:
         0 5px 15px rgba(0, 0, 0, 0.2),
         0 10px 30px rgba(0, 0, 0, 0.15),
@@ -82,37 +83,44 @@
         padding: 10px 20px;
     }
 
+    /*  移动端样式：底部弹出菜单 */
     @media (max-width: 768px) {
         z-index: 1000;
         flex-direction: column;
         position: fixed;
-        top: 50px;
-        min-width: 0%;
-        right: -160px;
-        height: 100%;
-        width: 160px;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(10px);
-        box-shadow: -4px 0 12px rgba(0, 0, 0, 0.3);
-        transform: none;
-        border-radius: 0;
+        bottom: -100%;
+        left: 0;
+        width: 100%;
+        min-width: 100%;
+        height: 70%;
+        padding: 20px 0;
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.25);
         border: none;
-        transition: right 0.3s ease;
+        border-radius: 20px 20px 0 0;
+        transition:
+            bottom 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 0.3s ease;
     }
 
+    /*  打开状态 */
     &.open {
         @media (max-width: 768px) {
-            right: 0;
+            bottom: 0;
+            opacity: 1;
+            transform: translateY(0);
         }
     }
 }
 
+/* 滚动时去除阴影 */
 .NavMain.scrolled {
     width: 100%;
     box-shadow: none;
     transform: none;
 }
 
+/* 背景遮罩层 */
 .overlay {
     position: fixed;
     top: 0;
@@ -123,6 +131,7 @@
     z-index: 998;
 }
 
+/* 移动端汉堡按钮 */
 .mobileToggle {
     display: none;
     position: absolute;
@@ -134,15 +143,18 @@
     }
 }
 
+/* 导航项基础样式 */
 .navItem {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
     font-size: 16px;
     cursor: pointer;
     text-decoration: none;
     color: var(--color-text);
     position: relative;
+    transition: color 0.3s ease;
 
     &:hover {
         color: options.$activeColor;
@@ -167,17 +179,25 @@
     }
 }
 
+/* 当前页高亮 */
 .active {
     color: options.$activeColor;
 }
 
+/* 图标 */
 .icon {
     font-size: 16px;
     line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    /* 移动端隐藏图标 */
+    @media (max-width: 768px) {
+        display: none;
+    }
 }
+
+/* 标题 */
 .title {
     font-size: 16px;
     line-height: 1;
@@ -186,6 +206,56 @@
     justify-content: center;
 }
 
+/* 下划线动画 */
 .underlineFromCenter {
     @include underline-from-center;
+}
+
+/* 上浮淡入动画定义 */
+@keyframes floatUp {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* 默认隐藏 */
+.navItem,
+.themeToggleGroup {
+    @media (max-width: 768px) {
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+            opacity 0.3s ease,
+            transform 0.3s ease;
+    }
+}
+
+.NavMain.open {
+    @media (max-width: 768px) {
+        .navItem,
+        .themeToggleGroup {
+            animation: floatUp 0.4s ease forwards;
+        }
+
+        .navItem:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        .navItem:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .navItem:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+        .navItem:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+        .themeToggleGroup {
+            animation-delay: 0.5s;
+        }
+    }
 }
