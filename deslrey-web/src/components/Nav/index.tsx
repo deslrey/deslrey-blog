@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./index.module.scss";
 import SysIcon from "../SysIcon";
 import { NavObj, NavList } from "./config";
@@ -30,28 +30,49 @@ const NavItem: React.FC<{ item: NavObj; onClick?: () => void }> = ({
 };
 const Nav: React.FC = () => {
     const [open, setOpen] = useState(false);
+    const [scrolly, setScrollY] = useState(0)
+
     const navMainRef = useRef<HTMLDivElement>(null);
+    const refRef = useRef<number | null>(null)
+
+    useEffect(() => {
+        const handleScrolly = () => {
+            if (refRef.current) {
+                cancelAnimationFrame(refRef.current)
+            }
+            refRef.current = requestAnimationFrame(() => {
+                setScrollY(window.scrollY)
+                console.log("value ======>", window.scrollY);
+
+            })
+        }
+
+        window.addEventListener("scroll", handleScrolly, { passive: true })
+
+        setScrollY(window.scrollY)
+
+        return () => {
+            window.removeEventListener("scroll", handleScrolly)
+            if (refRef.current) {
+                cancelAnimationFrame(refRef.current)
+            }
+        }
+    }, [])
+
 
     return (
-        <nav className={styles.NavWrapper}>
-
+        <nav className={`${styles.NavWrapper} ${scrolly > 200 ? styles.scrolled : ""}`}>
             {/* <BlogTitle /> */}
-
-            {/* 移动端汉堡按钮 */}
             <div className={styles.mobileToggle}>
                 <Checkbox open={open} onToggle={setOpen} />
             </div>
 
-            {/* 菜单内容 */}
-            {open && (
-                <div
-                    className={styles.overlay}
-                    onClick={() => setOpen(false)}
-                />
-            )}
+            {open && <div className={styles.overlay} onClick={() => setOpen(false)} />}
+
             <div
                 ref={navMainRef}
-                className={`${styles.NavMain} ${open ? styles.open : ""}`}
+                className={`${styles.NavMain} ${open ? styles.open : ""} ${scrolly > 200 ? styles.scrolled : ""
+                    }`}
             >
                 {NavList.map((item) => (
                     <NavItem
@@ -63,6 +84,7 @@ const Nav: React.FC = () => {
                 <ThemeToggle />
             </div>
         </nav>
+
 
     );
 };

@@ -42,6 +42,9 @@
     width: 100%;
     margin-top: 10px;
     z-index: 2000;
+    transition:
+        margin-top 0.3s ease,
+        background 0.3s ease;
 
     @media (max-width: 768px) {
         background: rgba(255, 255, 255, 0.15);
@@ -72,7 +75,13 @@
         inset 0 0 10px rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     transform: perspective(1000px) rotateX(2deg);
-    transition: all 0.3s ease;
+    transform-origin: center;
+    transition:
+        transform 0.6s ease-in-out,
+        // 调整动画时间和缓动
+        border-radius 0.4s ease,
+        box-shadow 0.4s ease,
+        padding 0.4s ease;
 
     &.scrolled {
         width: 100%;
@@ -111,6 +120,22 @@
             transform: translateY(0);
         }
     }
+}
+
+.NavMain.scrolled {
+    transform: perspective(1000px) rotateX(0deg) scaleX(1);
+    border-radius: 0;
+    padding: 10px 20px;
+    transition:
+        transform 0.6s ease-in-out,
+        border-radius 0.4s ease,
+        box-shadow 0.4s ease,
+        padding 0.4s ease;
+}
+
+.NavWrapper.scrolled {
+    margin-top: 0;
+    transition: margin-top 1s ease;
 }
 
 /* 滚动时去除阴影 */
