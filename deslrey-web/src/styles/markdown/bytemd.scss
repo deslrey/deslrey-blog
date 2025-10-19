@@ -188,16 +188,14 @@
 
 /* === TOC 样式 === */
 .markdown-toc {
-    position: sticky;
-    top: 150px;
-    width: 300px;
-    max-width: 350px;
-    max-height: calc(100vh - 250px);
+    position: fixed;
+    top: 200px;
+    left: calc(50% + 900px / 2 + 1rem);
+    width: 260px;
+    max-height: calc(100vh - 150px);
     overflow-y: auto;
-    padding: 1rem;
-    border-radius: 0.75rem;
     font-size: 0.8rem;
-    line-height: 1.4;
+    padding-right: 8px;
 }
 
 .markdown-toc-title {
