@@ -37,14 +37,10 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
     };
 
     const handleScrollToTop = (e?: React.MouseEvent) => {
-        if (e) e.preventDefault();
-        const scrollContainer = getScrollParent(contentRef.current);
-        if (scrollContainer === window) {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        } else {
-            (scrollContainer as HTMLElement).scrollTo({ top: 0, behavior: "smooth" });
-        }
+        e?.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
     };
+
 
     React.useEffect(() => {
         const container = containerRef.current;
