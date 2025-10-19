@@ -20,27 +20,10 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
     >([]);
     const [activeId, setActiveId] = React.useState<string>("");
 
-    const getScrollParent = (
-        element: HTMLElement | null
-    ): HTMLElement | Window => {
-        if (!element) return window;
-
-        let parent = element.parentElement;
-        while (parent) {
-            const { overflow, overflowY } = window.getComputedStyle(parent);
-            if (/(auto|scroll)/.test(overflow + overflowY)) {
-                return parent;
-            }
-            parent = parent.parentElement;
-        }
-        return window;
-    };
-
     const handleScrollToTop = (e?: React.MouseEvent) => {
         e?.preventDefault();
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
-
 
     React.useEffect(() => {
         const container = containerRef.current;
