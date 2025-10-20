@@ -6,12 +6,14 @@ import { plugins } from "./config";
 
 // import "./index.scss";
 import { CodeBlockEnhancer } from "@/util/codeBlockEnhancer";
+import { Article } from "@/interfaces/Article";
+import DetailHead from "../DetailHead";
 
 interface BytemdViewerProps {
-    body: string;
+    article: Article;
 }
 
-export const BytemdViewer = ({ body }: BytemdViewerProps) => {
+export const BytemdViewer = ({ article }: BytemdViewerProps) => {
     const containerRef = React.useRef<HTMLDivElement | null>(null);
     const contentRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -19,6 +21,23 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
         Array<{ id: string; text: string; level: number }>
     >([]);
     const [activeId, setActiveId] = React.useState<string>("");
+
+    const content = article.content as string
+
+    const headData: Article = {
+        id: article.id,
+        title: article.title,
+        wordCount: article.wordCount,
+        views: article.views,
+        readTime: article.readTime,
+        createTime: article.createTime,
+        updateTime: article.updateTime,
+        category: article.category,
+        edit: article.edit,
+        des: article.des,
+        sticky: article.sticky
+    };
+
 
     const handleScrollToTop = (e?: React.MouseEvent) => {
         e?.preventDefault();
@@ -36,7 +55,7 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
         observer.observe(container, { childList: true, subtree: true });
 
         return () => observer.disconnect();
-    }, [body]);
+    }, [content]);
 
 
     React.useEffect(() => {
@@ -69,7 +88,7 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
 
             return () => observer.disconnect();
         });
-    }, [body]);
+    }, [content]);
 
 
     const scrollToHeading = React.useCallback((id: string) => {
@@ -79,11 +98,17 @@ export const BytemdViewer = ({ body }: BytemdViewerProps) => {
         el.scrollIntoView({ behavior: "smooth", block: "start" });
     }, []);
 
+
+
+
     return (
         <div className="markdown-layout">
+
             <div className="markdown-content" ref={contentRef}>
+
+                <DetailHead data={headData} />
                 <div ref={containerRef} >
-                    <Viewer value={body} plugins={plugins} />
+                    <Viewer value={content} plugins={plugins} />
                 </div>
             </div>
             <aside className="markdown-toc">

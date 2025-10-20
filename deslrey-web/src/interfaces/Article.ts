@@ -7,6 +7,10 @@ export interface Article {
     wordCount: number;
     readTime: number;
     sticky: boolean;
+    views?: number;
+    updateTime?: Date;
+    category?: string;
+    content?: string
 }
 
 export interface Classify {

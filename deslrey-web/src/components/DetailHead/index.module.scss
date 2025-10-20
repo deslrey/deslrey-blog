@@ -1,0 +1,75 @@
+.detailHeadPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    gap: 10px;
+    // background-color: rgba(var(--activeColor-rgb), 0.2);
+    border-radius: 20px;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.description {
+    font-size: 1.1rem;
+    color: var(--color-text);
+    margin-bottom: 15px;
+}
+
+.meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--color-text);
+}
+
+.metaRow {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .metaRow {
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
+}
+
+.edit {
+    width: 90%;
+    min-height: 80px;
+    background-color: var(--color-detail-head);
+    border: 2px solid var(--color-detail-head-border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.editedNotice {
+    font-size: 0.85rem;
+    color: var(--color-text);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+}
+
+.alertIcon {
+    color: #f59e0b;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}

@@ -46,6 +46,7 @@
                content,
                word_count,
                views,
+               read_time,
                create_time,
                update_time,
                category,
