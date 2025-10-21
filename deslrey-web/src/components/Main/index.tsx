@@ -4,7 +4,7 @@ import styles from "./index.module.scss";
 import LatestReleases from "./LatestReleases";
 import Classify from "./Classify";
 import PopularTags from "./PopularTags";
-import LoaderComponent from "../LoaderComponent";
+import LoaderComponent from "../Loading/LoaderComponent";
 
 const Main: React.FC = () => {
     return (
