@@ -32,5 +32,10 @@ export const api = {
 
     categoryPage: {
         articleByTitle: baseUrl + "/category/articleByTitle"
+    },
+    
+    detailHeadPage: {
+        sex: baseUrl + "/carousel/sex",
+        scenery: baseUrl + "/carousel/scenery"
     }
 }

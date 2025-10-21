@@ -9,18 +9,36 @@ export default async function Page({
 }) {
     const { slug } = await params;
 
-    const res = await fetch(`${api.articleDateil.detail}/${slug}`, {
-        cache: 'no-store',
-    });
-    const result = await res.json();
+    let post
 
-    const post = result.data;
+    try {
+        const res = await fetch(`${api.articleDateil.detail}/${slug}`, {
+            cache: 'no-store',
+        });
+        const result = await res.json();
 
-    console.log(post)
+        post = result.data;
+    } catch (error) {
+        post = null
+    }
+
+    let carouseUrl = ''
+
+    try {
+
+        const carouselRes = await fetch(`${api.detailHeadPage.scenery}`, {
+            cache: 'no-store'
+        })
+        const carouse = await carouselRes.json()
+        // carouseUrl = carouse.data
+    } catch (error) {
+        carouseUrl = ''
+    }
+
 
     return (
         <div className={styles.bolgBox}>
-            <BytemdViewer article={post} />
+            <BytemdViewer article={post} carouseUrl={carouseUrl} />
         </div>
     );
 }

@@ -11,9 +11,10 @@ import DetailHead from "../DetailHead";
 
 interface BytemdViewerProps {
     article: Article;
+    carouseUrl: string
 }
 
-export const BytemdViewer = ({ article }: BytemdViewerProps) => {
+export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
     const containerRef = React.useRef<HTMLDivElement | null>(null);
     const contentRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -106,7 +107,7 @@ export const BytemdViewer = ({ article }: BytemdViewerProps) => {
 
             <div className="markdown-content" ref={contentRef}>
 
-                <DetailHead data={headData} />
+                <DetailHead data={headData} carouseUrl={carouseUrl} />
                 <div ref={containerRef} >
                     <Viewer value={content} plugins={plugins} />
                 </div>

@@ -5,9 +5,11 @@ import { TriangleAlert } from 'lucide-react';
 
 interface DetailHeadProps {
   data: Article;
+  carouseUrl: string;
 }
 
-const DetailHead: React.FC<DetailHeadProps> = ({ data }) => {
+const DetailHead: React.FC<DetailHeadProps> = ({ data, carouseUrl }) => {
+
   const {
     title,
     des,
@@ -34,7 +36,15 @@ const DetailHead: React.FC<DetailHeadProps> = ({ data }) => {
   const isEdited = updateTime && createTime && new Date(updateTime) > new Date(createTime);
 
   return (
-    <div className={styles.detailHeadPage}>
+    <div
+      className={styles.detailHeadPage}
+      style={{
+        backgroundImage: `url(${carouseUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
       <h1 className={styles.title}>{title}</h1>
       {des && <p className={styles.description}>{des}</p>}
 
