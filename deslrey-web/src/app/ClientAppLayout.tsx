@@ -1,21 +1,33 @@
 'use client';
 
+import { useEffect, useState } from "react";
 import { useTheme } from "@/components/ThemeProvider/ThemeProvider";
 import Nav from "@/components/Nav";
 import ColorProvider from "@/components/ColorProvider";
-import Footer from "@/components/Footer";
 import styles from "./layout.module.scss";
-import classNames from "classnames";
 
 export default function ClientAppLayout({ children }: { children: React.ReactNode }) {
     const { theme } = useTheme();
+    const [loaded, setLoaded] = useState(false);
+
+    const bgUrl = theme === 'dark' ? '/images/bg0.webp' : '/images/bg1.webp';
+
+    useEffect(() => {
+        const img = new Image();
+        img.src = bgUrl;
+        img.onload = () => setLoaded(true);
+    }, [bgUrl]);
 
     return (
-        <div className={classNames(styles.PageBox, theme === 'dark' ? styles.bg0 : styles.bg1)}>
+        <div
+            className={`${styles.PageBox} ${loaded ? styles.loaded : ''}`}
+            style={{
+                '--bg-url': `url(${bgUrl})`
+            } as React.CSSProperties}
+        >
             <ColorProvider>
                 <Nav />
                 {children}
-                {/* <Footer /> */}
             </ColorProvider>
         </div>
     );

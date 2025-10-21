@@ -1,22 +1,25 @@
 .PageBox {
-    background-position: center center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    position: relative;
     width: 100%;
     min-height: 100vh;
-    transition:
-        background-color 0.3s ease,
-        color 0.3s ease;
-    -webkit-tap-highlight-color: transparent;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-.bg0 {
-    background-image: url(../images/bg0.webp);
+/* 高清背景层 */
+.PageBox::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: var(--bg-url); /* 高清图 */
+    background-position: center center;
+    background-size: cover;
+    opacity: 0;
+    transition: opacity 1s ease;
+    z-index: -1;
 }
-.bg1 {
-    background-image: url(../images/bg1.webp);
-}
-.bg2 {
-    background-image: url(../images/bg2.webp);
+
+.PageBox.loaded::after {
+    opacity: 1;
 }
