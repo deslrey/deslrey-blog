@@ -1,32 +1,33 @@
-/* From Uiverse.io by vinodjangid07 */
 .loader {
-    width: fit-content;
-    height: fit-content;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    transform: scale(1.4);
+    /* 默认大点 */
+    transition: transform 0.3s ease;
 }
 
 .truckWrapper {
-    width: 200px;
-    height: 100px;
+    width: 250px;
+    /* 放大卡车 */
+    height: 120px;
     display: flex;
     flex-direction: column;
-    position: relative;
     align-items: center;
     justify-content: flex-end;
+    position: relative;
     overflow-x: hidden;
 }
 
-/* truck upper body */
+/* 卡车上下浮动动画 */
 .truckBody {
-    width: 130px;
-    height: fit-content;
+    width: 160px;
     margin-bottom: 6px;
     animation: motion 1s linear infinite;
 }
 
-/* truck suspension animation*/
 @keyframes motion {
     0% {
         transform: translateY(0px);
@@ -41,61 +42,55 @@
     }
 }
 
-/* truck's tires */
 .truckTires {
-    width: 130px;
-    height: fit-content;
+    width: 160px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 0px 10px 0px 15px;
+    padding: 0 15px;
     position: absolute;
     bottom: 0;
 }
 
 .truckTires svg {
-    width: 24px;
+    width: 28px;
 }
 
 .road {
     width: 100%;
-    height: 1.5px;
+    height: 2px;
     background-color: #282828;
     position: relative;
     bottom: 0;
-    align-self: flex-end;
     border-radius: 3px;
 }
 
-.road::before {
-    content: "";
-    position: absolute;
-    width: 20px;
-    height: 100%;
-    background-color: #282828;
-    right: -50%;
-    border-radius: 3px;
-    animation: roadAnimation 1.4s linear infinite;
-    border-left: 10px solid white;
-}
-
+.road::before,
 .road::after {
     content: "";
     position: absolute;
-    width: 10px;
     height: 100%;
     background-color: #282828;
-    right: -65%;
     border-radius: 3px;
     animation: roadAnimation 1.4s linear infinite;
-    border-left: 4px solid white;
+}
+
+.road::before {
+    width: 30px;
+    right: -50%;
+    border-left: 12px solid white;
+}
+
+.road::after {
+    width: 15px;
+    right: -70%;
+    border-left: 6px solid white;
 }
 
 .lampPost {
     position: absolute;
     bottom: 0;
-    right: -90%;
-    height: 90px;
+    right: -100%;
+    height: 100px;
     animation: roadAnimation 1.4s linear infinite;
 }
 
@@ -106,5 +101,34 @@
 
     100% {
         transform: translateX(-350px);
+    }
+}
+
+/* 📱 移动端适配 */
+@media (max-width: 768px) {
+    .loader {
+        transform: scale(0.8);
+        /* 缩小整体 */
+    }
+
+    .truckWrapper {
+        width: 160px;
+        height: 90px;
+    }
+
+    .truckBody {
+        width: 100px;
+    }
+
+    .truckTires {
+        width: 100px;
+    }
+
+    .truckTires svg {
+        width: 20px;
+    }
+
+    .lampPost {
+        height: 70px;
     }
 }
