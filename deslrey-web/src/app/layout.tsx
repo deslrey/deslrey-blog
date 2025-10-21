@@ -1,18 +1,14 @@
+// RootLayout.tsx （服务器组件，不加 'use client'）
 import type { Metadata } from "next";
 import 'bytemd/dist/index.css';
 import 'highlight.js/styles/github.css';
 import '@/styles/global.scss';
 import '@/styles/base.scss';
-import '@/styles/markdown/bytemd.scss'
+import '@/styles/markdown/bytemd.scss';
 
 import StyledComponentsRegistry from "@/lib/StyledComponentsRegistry";
-
-import Footer from "@/components/Footer";
-import Nav from "@/components/Nav";
-import styles from "./layout.module.scss";
-import classNames from "classnames";
-import ColorProvider from "@/components/ColorProvider";
 import ThemeProvider from "@/components/ThemeProvider/ThemeProvider";
+import ClientAppLayout from "./ClientAppLayout";
 
 export const metadata: Metadata = {
     title: "deslrey",
@@ -21,19 +17,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
     children,
-}: Readonly<{
+}: {
     children: React.ReactNode;
-}>) {
+}) {
     return (
         <html lang="en">
-            <body className={classNames(styles.PageBox, styles.bg1)}>
+            <body>
                 <StyledComponentsRegistry>
                     <ThemeProvider>
-                        <ColorProvider>
-                            <Nav />
+                        <ClientAppLayout>
                             {children}
-                            {/* <Footer /> */}
-                        </ColorProvider>
+                        </ClientAppLayout>
                     </ThemeProvider>
                 </StyledComponentsRegistry>
             </body>
