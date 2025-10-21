@@ -42,8 +42,6 @@ const Nav: React.FC = () => {
             }
             refRef.current = requestAnimationFrame(() => {
                 setScrollY(window.scrollY)
-                console.log("value ======>", window.scrollY);
-
             })
         }
 
