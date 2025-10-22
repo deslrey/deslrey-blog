@@ -5,6 +5,8 @@ import org.deslrey.entity.vo.ImageVO;
 import org.deslrey.result.Results;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * <br>
  * 图片接口
@@ -17,5 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ImageService {
     Results<Void> uploadImage(MultipartFile file, Integer folderId);
 
-    Results<PageInfo<ImageVO>> imageList(String type, int page, int pageSize);
+    Results<PageInfo<ImageVO>> imageList(int page, int pageSize);
+
+    Results<PageInfo<ImageVO>> selectImagesByFolderId(Integer folderId, int page, int pageSize);
+
+    Results<List<ImageVO>> obscureFolderName(String folderName);
 }

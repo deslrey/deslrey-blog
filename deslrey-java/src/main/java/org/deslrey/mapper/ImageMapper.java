@@ -19,6 +19,7 @@ public interface ImageMapper {
 
     List<ImageVO> allList();
 
-    List<ImageVO> modicumList();
+    List<ImageVO> selectImagesByFolderId(Integer folderId);
 
+    List<ImageVO> selectObscureFolderName(String folderName);
 }

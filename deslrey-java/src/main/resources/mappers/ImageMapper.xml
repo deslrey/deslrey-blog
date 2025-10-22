@@ -19,16 +19,53 @@
     </insert>
 
     <select id="allList" resultType="org.deslrey.entity.vo.ImageVO">
-        select i.id, f.folder_name as folderName, i.image_name as imageName, i.path, i.url, i.size, i.create_time as createTime
+        select i.id,
+               i.folder_id   as folderId,
+               f.folder_name as folderName,
+               i.image_name  as imageName,
+               i.path,
+               i.url,
+               i.size,
+               i.create_time as createTime
         from image i
                  left join folder f on i.folder_id = f.id
     </select>
 
-
-    <select id="modicumList" resultType="org.deslrey.entity.vo.ImageVO">
-        select f.folder_name as folderName, i.url
+    <select id="selectImagesByFolderId" resultType="org.deslrey.entity.vo.ImageVO"
+            parameterType="java.lang.Integer">
+        select i.id,
+               i.folder_id   as folderId,
+               f.folder_name as folderName,
+               i.image_name  as imageName,
+               i.path,
+               i.url,
+               i.size,
+               i.create_time as createTime
         from image i
                  left join folder f on i.folder_id = f.id
+        where i.folder_id = #{folderId}
     </select>
+
+    <select id="selectObscureFolderName"
+            resultType="org.deslrey.entity.vo.ImageVO"
+            parameterType="java.lang.String">
+        SELECT
+        i.id,
+        i.folder_id AS folderId,
+        f.folder_name AS folderName,
+        i.image_name AS imageName,
+        i.path,
+        i.url,
+        i.size,
+        i.create_time AS createTime
+        FROM image i
+        LEFT JOIN folder f ON i.folder_id = f.id
+        <where>
+            <if test="folderName != null and folderName != ''">
+                f.folder_name LIKE CONCAT('%', #{folderName}, '%')
+            </if>
+        </where>
+    </select>
+
 
 </mapper>

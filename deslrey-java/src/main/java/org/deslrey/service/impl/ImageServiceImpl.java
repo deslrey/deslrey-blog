@@ -13,7 +13,6 @@ import org.deslrey.result.Results;
 import org.deslrey.service.ImageService;
 import org.deslrey.util.ImageUtils;
 import org.deslrey.util.NumberUtils;
-import org.deslrey.util.StaticUtils;
 import org.deslrey.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -90,15 +90,27 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Results<PageInfo<ImageVO>> imageList(String type, int page, int pageSize) {
+    public Results<PageInfo<ImageVO>> imageList(int page, int pageSize) {
         PageHelper.startPage(page, pageSize);
-        List<ImageVO> imageList;
-        if (StringUtils.isEmpty(type) || StaticUtils.ALL_TYPE.equals(type)) {
-            imageList = imageMapper.allList();
-        } else {
-            imageList = imageMapper.modicumList();
-        }
+        List<ImageVO> imageList = imageMapper.allList();
         PageInfo<ImageVO> imageVOPageInfo = new PageInfo<>(imageList);
         return Results.ok(imageVOPageInfo);
+    }
+
+    @Override
+    public Results<PageInfo<ImageVO>> selectImagesByFolderId(Integer folderId, int page, int pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<ImageVO> imageList = imageMapper.selectImagesByFolderId(folderId);
+        PageInfo<ImageVO> imageVOPageInfo = new PageInfo<>(imageList);
+        return Results.ok(imageVOPageInfo);
+    }
+
+    @Override
+    public Results<List<ImageVO>> obscureFolderName(String folderName) {
+        if (StringUtils.isEmpty(folderName)) {
+            return Results.ok(new ArrayList<>());
+        }
+        List<ImageVO> imageList = imageMapper.selectObscureFolderName(folderName);
+        return Results.ok(imageList);
     }
 }

@@ -4,10 +4,11 @@ import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.vo.ImageVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.ImageService;
-import org.deslrey.util.StaticUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * <br>
@@ -31,7 +32,17 @@ public class ImageController {
     }
 
     @GetMapping("list")
-    public Results<PageInfo<ImageVO>> imageList(@RequestParam(defaultValue = StaticUtils.ALL_TYPE) String type, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize) {
-        return imageService.imageList(type, page, pageSize);
+    public Results<PageInfo<ImageVO>> imageList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize) {
+        return imageService.imageList(page, pageSize);
+    }
+
+    @GetMapping("/list/{folderId}")
+    public Results<PageInfo<ImageVO>> selectImagesByFolderId(@PathVariable Integer folderId, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize) {
+        return imageService.selectImagesByFolderId(folderId, page, pageSize);
+    }
+
+    @GetMapping("obscure")
+    public Results<List<ImageVO>> obscureFolderName(String folderName) {
+        return imageService.obscureFolderName(folderName);
     }
 }
