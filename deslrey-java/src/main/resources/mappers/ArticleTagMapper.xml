@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.deslrey.mapper.ArticleTagMapper">
 
     <resultMap id="BaseResultMap" type="org.deslrey.entity.po.ArticleTag">
@@ -7,25 +9,37 @@
         <result column="tag_id" property="tagId"/>
     </resultMap>
 
-    <insert id="insertArticleTag">
-        insert into article_tag(article_id, tag_id)
-        values (#{articleId}, #{tagId})
+    <!-- 插入文章-标签关系 -->
+    <insert id="insertArticleTag" parameterType="org.deslrey.entity.po.ArticleTag">
+        insert into article_tag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">article_id,</if>
+            <if test="tagId != null">tag_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">#{articleId},</if>
+            <if test="tagId != null">#{tagId},</if>
+        </trim>
     </insert>
 
+    <!-- 根据文章ID查询标签ID列表 -->
     <select id="selectArticleTagListById" resultType="java.lang.Integer" parameterType="java.lang.Integer">
         select tag_id
         from article_tag
-        where article_id = #{articleId}
+        <where>
+            <if test="articleId != null">article_id = #{articleId}</if>
+        </where>
     </select>
 
-    <select id="selectArticleByTagId" resultType="org.deslrey.entity.vo.ArticleVO"
-            parameterType="java.lang.Integer">
+    <!-- 根据标签ID查询文章列表 -->
+    <select id="selectArticleByTagId" resultType="org.deslrey.entity.vo.ArticleVO" parameterType="java.lang.Integer">
         select a.id, a.title
         from article_tag t
-                 left join article a
-                           on t.article_id = a.id
-        where t.tag_id = #{tagId}
+        left join article a on t.article_id = a.id
+        <where>
+            <if test="tagId != null">t.tag_id = #{tagId}</if>
+            <if test="tagId == null">a.exist = 1</if>
+        </where>
     </select>
-
 
 </mapper>

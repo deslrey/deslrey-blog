@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.deslrey.mapper.UserInfoMapper">
 
     <!-- 通用查询映射结果 -->
@@ -15,55 +17,108 @@
         <result column="exist" property="exist"/>
     </resultMap>
 
-    <insert id="insertUser" parameterType="org.deslrey.entity.po.UserInfo" useGeneratedKeys="true">
-        insert into user_info(user_name, pass_word, email, salt, create_time, update_time, exist)
-        values (#{userName}, #{passWord}, #{email}, #{salt}, NOW(), NOW(), #{exist})
+    <!-- 插入用户（动态检测空参数） -->
+    <insert id="insertUser" parameterType="org.deslrey.entity.po.UserInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName != null and userName != ''">user_name,</if>
+            <if test="passWord != null and passWord != ''">pass_word,</if>
+            <if test="email != null and email != ''">email,</if>
+            <if test="salt != null and salt != ''">salt,</if>
+            create_time,
+            update_time,
+            <if test="exist != null">exist,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userName != null and userName != ''">#{userName},</if>
+            <if test="passWord != null and passWord != ''">#{passWord},</if>
+            <if test="email != null and email != ''">#{email},</if>
+            <if test="salt != null and salt != ''">#{salt},</if>
+            NOW(),
+            NOW(),
+            <if test="exist != null">#{exist},</if>
+        </trim>
     </insert>
 
+    <!-- 修改用户名 -->
     <update id="updateUserNameByName">
         update user_info
-        set user_name = #{newUserName}
-        where user_name = #{oldUserName}
+        <set>
+            <if test="newUserName != null and newUserName != ''">
+                user_name = #{newUserName},
+            </if>
+        </set>
+        <where>
+            <if test="oldUserName != null and oldUserName != ''">
+                user_name = #{oldUserName}
+            </if>
+        </where>
     </update>
 
+    <!-- 修改用户头像 -->
     <update id="updateUserAvatar">
         update user_info
-        set avatar      = #{avatar},
+        <set>
+            <if test="avatar != null and avatar != ''">avatar = #{avatar},</if>
             update_time = NOW()
-        where id = #{userId}
+        </set>
+        <where>
+            <if test="userId != null">id = #{userId}</if>
+        </where>
     </update>
 
+    <!-- 修改密码 -->
     <update id="updatePassWord">
         update user_info
-        set pass_word   = #{passWord},
+        <set>
+            <if test="passWord != null and passWord != ''">pass_word = #{passWord},</if>
             update_time = NOW()
-        where id = #{id}
+        </set>
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
     </update>
 
-
+    <!-- 根据用户名查询 -->
     <select id="selectUserByName" resultMap="BaseResultMap" parameterType="java.lang.String">
         select id, user_name, pass_word, email, salt, avatar
         from user_info
-        where user_name = #{userName}
+        <where>
+            <if test="userName != null and userName != ''">user_name = #{userName}</if>
+        </where>
     </select>
 
+    <!-- 检查用户名或邮箱是否存在 -->
     <select id="selectUserNameOrEmailExist" resultType="java.lang.Integer">
         select count(1)
         from user_info
-        where user_name = #{userName}
-           or email = #{email}
+        <where>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName}
+            </if>
+            <if test="email != null and email != ''">
+                <if test="userName != null and userName != ''">or</if>
+                email = #{email}
+            </if>
+        </where>
     </select>
 
+    <!-- 根据用户名查ID -->
     <select id="selectUserIdByName" resultType="java.lang.Integer" parameterType="java.lang.String">
         select id
         from user_info
-        where user_name = #{userName}
+        <where>
+            <if test="userName != null and userName != ''">user_name = #{userName}</if>
+        </where>
     </select>
 
-    <select id="selectUserById" resultType="org.deslrey.entity.po.UserInfo" parameterType="java.lang.Integer">
+    <!-- 根据ID查询用户 -->
+    <select id="selectUserById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select id, user_name, pass_word, email, salt, avatar
         from user_info
-        where id = #{userId}
+        <where>
+            <if test="userId != null">id = #{userId}</if>
+        </where>
     </select>
 
 </mapper>

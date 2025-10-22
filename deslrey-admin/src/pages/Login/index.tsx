@@ -59,7 +59,7 @@ const LoginPage: React.FC = () => {
                 navigator("/admin")
             }
         } catch (error) {
-            Message.error('登陆失败')
+            // Message.error('登陆失败')
         }
     };
 

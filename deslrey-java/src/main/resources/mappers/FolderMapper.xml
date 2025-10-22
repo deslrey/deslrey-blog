@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.deslrey.mapper.FolderMapper">
 
     <!-- 通用查询映射结果 -->
@@ -10,51 +12,96 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
-    <insert id="save">
-        INSERT INTO folder (folder_name, path, create_time)
-        VALUES (#{folderName}, #{path}, NOW())
+    <!-- 插入文件夹 -->
+    <insert id="save" parameterType="org.deslrey.entity.po.Folder">
+        insert into folder
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="folderName != null and folderName != ''">folder_name,</if>
+            <if test="path != null and path != ''">path,</if>
+            create_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="folderName != null and folderName != ''">#{folderName},</if>
+            <if test="path != null and path != ''">#{path},</if>
+            NOW(),
+        </trim>
     </insert>
 
+    <!-- 更新文件夹（仅更新非空字段） -->
     <update id="updateFolderById" parameterType="org.deslrey.entity.po.Folder">
         update folder
-        set folder_name = #{folderName},
-            path        = #{path}
-        where id = #{id}
+        <set>
+            <if test="folderName != null and folderName != ''">folder_name = #{folderName},</if>
+            <if test="path != null and path != ''">path = #{path},</if>
+            <if test="updateTime != null">create_time = #{updateTime},</if>
+        </set>
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
     </update>
 
-
+    <!-- 查询所有文件夹 -->
     <select id="folderAll" resultMap="BaseResultMap">
         select id, folder_name, path, create_time
         from folder
+        <where>
+            <if test="folderName != null and folderName != ''">
+                folder_name like concat('%', #{folderName}, '%')
+            </if>
+        </where>
+        order by create_time desc
     </select>
 
+    <!-- 查询文件夹列表（仅 id 和名称） -->
     <select id="folderList" resultMap="BaseResultMap">
         select id, folder_name
         from folder
+        <where>
+            <if test="folderName != null and folderName != ''">
+                folder_name like concat('%', #{folderName}, '%')
+            </if>
+        </where>
+        order by id asc
     </select>
 
+    <!-- 判断文件夹名称是否存在 -->
     <select id="existsFolderByName" resultType="boolean" parameterType="string">
-        SELECT EXISTS(SELECT 1
-                      FROM folder
-                      WHERE folder_name = #{folderName})
+        select exists(
+        select 1
+        from folder
+        <where>
+            <if test="folderName != null and folderName != ''">
+                folder_name = #{folderName}
+            </if>
+        </where>
+        )
     </select>
 
+    <!-- 判断ID是否存在 -->
     <select id="selectExistById" resultType="java.lang.Boolean" parameterType="java.lang.Integer">
-        select EXISTS(select 1
-                      from folder
-                      where id = #{id})
+        select exists(
+        select 1
+        from folder
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
+        )
     </select>
 
+    <!-- 根据ID查询文件夹 -->
     <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select id, folder_name, path
         from folder
-        where id = #{id}
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
     </select>
 
-    <select id="folderNameList"  resultMap="BaseResultMap">
+    <!-- 获取全部文件夹名称列表 -->
+    <select id="folderNameList" resultMap="BaseResultMap">
         select id, folder_name
         from folder
+        order by folder_name asc
     </select>
-
 
 </mapper>

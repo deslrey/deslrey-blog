@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.deslrey.mapper.ArticleMapper">
 
     <resultMap id="BaseResultMap" type="org.deslrey.entity.po.Article">
@@ -18,75 +20,99 @@
         <result column="exist" property="exist"/>
     </resultMap>
 
+    <!-- 插入文章 -->
     <insert id="insertArticle" parameterType="org.deslrey.entity.po.Article" keyProperty="id" useGeneratedKeys="true">
-        insert into article(title, content, word_count, views, create_time, update_time, category, des, sticky, edit,
-                            exist)
-        values (#{title}, #{content}, #{wordCount}, #{views}, #{createTime}, #{updateTime},
-                #{category}, #{des}, #{sticky}, #{edit}, #{exist})
-
+        insert into article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="wordCount != null">word_count,</if>
+            <if test="views != null">views,</if>
+            <if test="readTime != null">read_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="category != null">category,</if>
+            <if test="des != null">des,</if>
+            <if test="sticky != null">sticky,</if>
+            <if test="edit != null">edit,</if>
+            <if test="exist != null">exist,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="wordCount != null">#{wordCount},</if>
+            <if test="views != null">#{views},</if>
+            <if test="readTime != null">#{readTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="category != null">#{category},</if>
+            <if test="des != null">#{des},</if>
+            <if test="sticky != null">#{sticky},</if>
+            <if test="edit != null">#{edit},</if>
+            <if test="exist != null">#{exist},</if>
+        </trim>
     </insert>
 
+    <!-- 最新发布 -->
     <select id="latestReleases" resultType="org.deslrey.entity.vo.LatestReleasesVO">
-        select id, title, create_time AS createTime
+        select id, title, create_time as createTime
         from article
         where exist = 1
         order by create_time desc
-        limit 5;
+        limit 5
     </select>
 
+    <!-- 分页获取文章 -->
     <select id="getArticlesByPage" resultMap="BaseResultMap">
         SELECT id, title, views, create_time, category, sticky, edit
         FROM article
-        LIMIT #{pageSize} OFFSET #{offset}
+        <where>
+            <if test="pageSize != null and offset != null">
+                exist = 1
+            </if>
+        </where>
+        <if test="pageSize != null and offset != null">
+            LIMIT #{pageSize} OFFSET #{offset}
+        </if>
     </select>
 
+    <!-- 文章详情 -->
     <select id="detail" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select id,
-               title,
-               content,
-               word_count,
-               views,
-               read_time,
-               create_time,
-               update_time,
-               category,
-               des,
-               sticky,
-               edit,
-               exist
+        select id, title, content, word_count, views, read_time, create_time, update_time, category, des, sticky, edit,
+        exist
         from article
-        where id = #{id}
-          and exist = 1;
+        <where>
+            <if test="id != null">id = #{id}</if>
+            <if test="id != null">and exist = 1</if>
+        </where>
     </select>
 
+    <!-- 归档列表 -->
     <select id="archiveList" resultMap="BaseResultMap">
         select id, title, create_time, edit
         from article
-        where exist = 1;
+        where exist = 1
     </select>
 
+    <!-- 后台文章列表 -->
     <select id="getArticlesAdmin" resultMap="BaseResultMap">
-        SELECT id,
-               title,
-               word_count,
-               views,
-               create_time,
-               update_time,
-               category,
-               des,
-               sticky,
-               edit,
-               exist
+        SELECT id, title, word_count, views, create_time, update_time, category, des, sticky, edit, exist
         FROM article
+        <where>
+            <if test="exist != null">exist = #{exist}</if>
+        </where>
     </select>
 
-    <select id="editArticle" resultMap="BaseResultMap"
-            parameterType="java.lang.Integer">
+    <!-- 编辑文章（获取详情） -->
+    <select id="editArticle" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select id, title, content, des, category
         from article
-        where id = #{articleId}
+        <where>
+            <if test="articleId != null">id = #{articleId}</if>
+        </where>
     </select>
 
+    <!-- 获取全部文章 -->
     <select id="selectArticles" resultMap="BaseResultMap">
         select id,
                title,
@@ -97,14 +123,18 @@
                edit,
                sticky
         from article
+        where exist = 1
         order by create_time desc
     </select>
 
-    <select id="selectArticleByCategory" resultMap="BaseResultMap"
-            parameterType="java.lang.String">
+    <!-- 根据分类查询 -->
+    <select id="selectArticleByCategory" resultMap="BaseResultMap" parameterType="java.lang.String">
         select id, title
         from article
-        where category = #{category}
+        <where>
+            <if test="category != null and category != ''">category = #{category}</if>
+            <if test="category == null or category == ''">exist = 1</if>
+        </where>
     </select>
 
 </mapper>

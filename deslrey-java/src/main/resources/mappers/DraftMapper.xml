@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.deslrey.mapper.DraftMapper">
 
     <!-- 通用查询映射结果 -->
@@ -12,36 +14,66 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
+    <!-- 插入草稿 -->
     <insert id="insertDraft" parameterType="org.deslrey.entity.po.Draft">
-        insert into draft(title, content, des, create_time, update_time)
-        values (#{title}, #{content}, #{des}, NOW(), NOW())
+        insert into draft
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="des != null and des != ''">des,</if>
+            create_time,
+            update_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="des != null and des != ''">#{des},</if>
+            NOW(),
+            NOW(),
+        </trim>
     </insert>
 
+    <!-- 更新草稿（仅更新非空字段） -->
     <update id="updateDraftById" parameterType="org.deslrey.entity.po.Draft">
         update draft
-        set title       = #{title},
-            content     = #{content},
-            des         = #{des},
-            update_time = NOW()
-        where id = #{id}
-
+        <set>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="des != null and des != ''">des = #{des},</if>
+            update_time = NOW(),
+        </set>
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
     </update>
 
+    <!-- 删除草稿 -->
     <delete id="deleteDraft" parameterType="java.lang.Integer">
-        delete
-        from draft
-        where id = #{id}
+        delete from draft
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
     </delete>
 
+    <!-- 查询草稿列表 -->
     <select id="selectDraftList" resultMap="BaseResultMap">
         select id, title, content, des, create_time, update_time
         from draft
+        <where>
+            <if test="title != null and title != ''">
+                title like concat('%', #{title}, '%')
+            </if>
+        </where>
+        order by update_time desc
     </select>
 
+    <!-- 根据ID查询草稿 -->
     <select id="selectDraftById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select id, title, content, des, create_time, update_time
         from draft
-        where id = #{id}
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
     </select>
 
 </mapper>

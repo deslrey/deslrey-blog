@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.deslrey.mapper.ImageMapper">
 
     <!-- 通用查询映射结果 -->
@@ -13,11 +15,28 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
+    <!-- 插入图片（动态字段插入，防止空值报错） -->
     <insert id="insertImage" parameterType="org.deslrey.entity.po.Image">
-        insert into image(folder_id, image_name, path, url, size, create_time)
-            value (#{folderId}, #{imageName}, #{path}, #{url}, #{size}, NOW())
+        insert into image
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="folderId != null">folder_id,</if>
+            <if test="imageName != null and imageName != ''">image_name,</if>
+            <if test="path != null and path != ''">path,</if>
+            <if test="url != null and url != ''">url,</if>
+            <if test="size != null">size,</if>
+            create_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="folderId != null">#{folderId},</if>
+            <if test="imageName != null and imageName != ''">#{imageName},</if>
+            <if test="path != null and path != ''">#{path},</if>
+            <if test="url != null and url != ''">#{url},</if>
+            <if test="size != null">#{size},</if>
+            NOW(),
+        </trim>
     </insert>
 
+    <!-- 查询全部图片（含文件夹名） -->
     <select id="allList" resultType="org.deslrey.entity.vo.ImageVO">
         select i.id,
                i.folder_id   as folderId,
@@ -29,43 +48,49 @@
                i.create_time as createTime
         from image i
                  left join folder f on i.folder_id = f.id
+        order by i.create_time desc
     </select>
 
-    <select id="selectImagesByFolderId" resultType="org.deslrey.entity.vo.ImageVO"
+    <!-- 根据文件夹ID查询图片 -->
+    <select id="selectImagesByFolderId"
+            resultType="org.deslrey.entity.vo.ImageVO"
             parameterType="java.lang.Integer">
         select i.id,
-               i.folder_id   as folderId,
-               f.folder_name as folderName,
-               i.image_name  as imageName,
-               i.path,
-               i.url,
-               i.size,
-               i.create_time as createTime
-        from image i
-                 left join folder f on i.folder_id = f.id
-        where i.folder_id = #{folderId}
-    </select>
-
-    <select id="selectObscureFolderName"
-            resultType="org.deslrey.entity.vo.ImageVO"
-            parameterType="java.lang.String">
-        SELECT
-        i.id,
-        i.folder_id AS folderId,
-        f.folder_name AS folderName,
-        i.image_name AS imageName,
+        i.folder_id as folderId,
+        f.folder_name as folderName,
+        i.image_name as imageName,
         i.path,
         i.url,
         i.size,
-        i.create_time AS createTime
-        FROM image i
-        LEFT JOIN folder f ON i.folder_id = f.id
+        i.create_time as createTime
+        from image i
+        left join folder f on i.folder_id = f.id
         <where>
-            <if test="folderName != null and folderName != ''">
-                f.folder_name LIKE CONCAT('%', #{folderName}, '%')
-            </if>
+            <if test="folderId != null">i.folder_id = #{folderId}</if>
         </where>
+        order by i.create_time desc
     </select>
 
+    <!-- 模糊查询：根据文件夹名匹配图片 -->
+    <select id="selectObscureFolderName"
+            resultType="org.deslrey.entity.vo.ImageVO"
+            parameterType="java.lang.String">
+        select i.id,
+        i.folder_id as folderId,
+        f.folder_name as folderName,
+        i.image_name as imageName,
+        i.path,
+        i.url,
+        i.size,
+        i.create_time as createTime
+        from image i
+        left join folder f on i.folder_id = f.id
+        <where>
+            <if test="folderName != null and folderName != ''">
+                f.folder_name like concat('%', #{folderName}, '%')
+            </if>
+        </where>
+        order by i.create_time desc
+    </select>
 
 </mapper>

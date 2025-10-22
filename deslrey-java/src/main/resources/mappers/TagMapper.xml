@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.deslrey.mapper.TagMapper">
 
     <!-- 通用查询映射结果 -->
@@ -9,46 +11,69 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
+    <!-- 插入标签（动态处理空值） -->
     <insert id="insertTag" parameterType="java.lang.String">
-        insert into tag(tag_title, create_time)
-        values (#{tagTitle}, NOW())
+        insert into tag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tagTitle != null and tagTitle != ''">tag_title,</if>
+            create_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tagTitle != null and tagTitle != ''">#{tagTitle},</if>
+            NOW(),
+        </trim>
     </insert>
 
+    <!-- 修改标签标题 -->
     <update id="updateTagTitle" parameterType="org.deslrey.entity.po.Tag">
         update tag
-        set tag_title = #{tagTitle}
+        <set>
+            <if test="tagTitle != null and tagTitle != ''">tag_title = #{tagTitle},</if>
+        </set>
         where id = #{id}
     </update>
 
-
+    <!-- 标签计数列表 -->
     <select id="tagCountList" resultType="org.deslrey.entity.vo.TagCountVO">
-        select t.id, t.tag_title AS title, COUNT(at.article_id) AS total
+        select t.id,
+               t.tag_title          as title,
+               count(at.article_id) as total
         from tag t
-                 left join article_tag `at` on t.id = `at`.tag_id
-                 left join article `a` on `at`.article_id = `a`.id
+                 left join article_tag at on t.id = at.tag_id
+                 left join article a on at.article_id = a.id
         where a.exist = 1
-        GROUP BY t.id, t.tag_title
-        HAVING total > 0
-        ORDER BY total DESC;
+        group by t.id, t.tag_title
+        having count(at.article_id) > 0
+        order by total desc
     </select>
 
+    <!-- 标签名称列表（用于下拉或快速展示） -->
     <select id="tagNameList" resultMap="BaseResultMap">
         select id, tag_title
         from tag
+        order by create_time desc
     </select>
 
+    <!-- 标签完整列表 -->
     <select id="tagList" resultMap="BaseResultMap">
         select id, tag_title, create_time
         from tag
+        order by create_time desc
     </select>
 
-    <select id="selectIdByTitle" resultType="java.lang.Integer" parameterType="java.lang.String">
+    <!-- 根据标题查询标签ID -->
+    <select id="selectIdByTitle"
+            resultType="java.lang.Integer"
+            parameterType="java.lang.String">
         select id
         from tag
-        where tag_title = #{title}
+        <where>
+            <if test="title != null and title != ''">
+                tag_title = #{title}
+            </if>
+        </where>
         order by create_time desc
         limit 1
     </select>
-
 
 </mapper>
