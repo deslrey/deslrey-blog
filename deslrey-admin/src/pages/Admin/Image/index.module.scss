@@ -58,3 +58,11 @@
     object-fit: contain;
     border-radius: 8px;
 }
+
+.searchFolderName {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    margin-left: 16px;
+}

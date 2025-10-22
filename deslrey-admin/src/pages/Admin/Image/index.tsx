@@ -5,10 +5,10 @@ import {
     Button, TableSortLabel, Autocomplete, TextField
 } from "@mui/material";
 import styles from './index.module.scss';
-import { ListType, type Folder, type Image, type Order } from '../../../interfaces';
+import { type Folder, type Image, type Order } from '../../../interfaces';
 import request from '../../../utils/request';
 import dayjs from 'dayjs';
-import { Copy, Eye, ImageUp } from 'lucide-react';
+import { Copy, Eye, ImageUp, ScanSearch } from 'lucide-react';
 import { Message } from '../../../utils/message';
 import { formatFileSize } from '../../../utils/format';
 import { imageApi } from '../../../api/adminApi';
@@ -31,6 +31,8 @@ const ImageTable: React.FC = () => {
 
     const [openPreview, setOpenPreview] = useState(false);
 
+    const [searchFolderName, setSearchFolderName] = useState<string>('')
+
     // 点击 Eye 打开预览
     const handlePreview = (url: string) => {
         setPreviewUrl(url);
@@ -49,12 +51,12 @@ const ImageTable: React.FC = () => {
     const fetchData = async (pageNum = 1, pageSize = rowsPerPage) => {
         const res = await request.get(imageApi.list, {
             params: {
-                type: ListType.all,
                 page: pageNum,
                 pageSize: pageSize
             }
         });
         const data = res.data;
+
         setImages(data.list);
         setTotal(data.total);
         setPage(data.pageNum - 1);
@@ -99,6 +101,27 @@ const ImageTable: React.FC = () => {
             Message.error("上传失败");
         }
     };
+
+    const obscureFolderName = async () => {
+        if (!searchFolderName) {
+            return
+        }
+
+        try {
+            const res = await request.get(imageApi.obscureFolderName, {
+                params: {
+                    folderName: searchFolderName
+                }
+            })
+            if (res && res.code === 200) {
+                setImages(res.data)
+                Message.success('查找成功')
+                return
+            }
+        } catch (error) {
+
+        }
+    }
 
     // 分页
     const handleChangePage = (_: unknown, newPage: number) => {
@@ -149,6 +172,36 @@ const ImageTable: React.FC = () => {
                         </Button>
                     </label>
                 </div>
+
+                <div className={styles.searchFolderName}>
+                    <Autocomplete
+                        freeSolo
+                        disablePortal
+                        options={folders.map(f => f.folderName)}
+                        value={searchFolderName}
+                        onInputChange={(_, newValue) => setSearchFolderName(newValue)}
+                        sx={{ width: 280 }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="文件夹名称"
+                                variant="outlined"
+                                size="small"
+                                placeholder="输入或选择文件夹名"
+                            />
+                        )}
+                    />
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={obscureFolderName}
+                        sx={{ ml: 2, height: 40 }}
+                        startIcon={<ScanSearch size={18} />}
+                    >
+                        查询
+                    </Button>
+                </div>
+
             </div>
 
             <Paper sx={{ borderRadius: 2, boxShadow: 3 }}>

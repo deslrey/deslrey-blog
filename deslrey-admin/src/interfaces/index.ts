@@ -39,6 +39,7 @@ export interface Category {
 
 export interface Folder {
     id: number;
+    folderId: number;
     folderName: string;
     path: string;
     createTime: Date
@@ -46,6 +47,7 @@ export interface Folder {
 
 export interface Image {
     id: number;
+    folderId: number;
     folderName: string;
     imageName: string;
     path: string;

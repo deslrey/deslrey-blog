@@ -38,6 +38,7 @@ export const folderApi = {
 
 export const imageApi = {
     list: '/admin/image/list',
+    obscureFolderName: '/admin/image/obscure',
     uploadImage: '/admin/image/uploadImage',
     folderNameList: '/admin/folder/folderNameList'
 }
