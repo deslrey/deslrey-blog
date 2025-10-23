@@ -29,39 +29,47 @@ const NavItem: React.FC<{ item: NavObj; onClick?: () => void }> = ({
         </Link>
     );
 };
+
 const Nav: React.FC = () => {
     const [open, setOpen] = useState(false);
-    const [scrolly, setScrollY] = useState(0)
+    const [scrolly, setScrollY] = useState(0);
+    const [isMobile, setIsMobile] = useState(false);
 
     const navMainRef = useRef<HTMLDivElement>(null);
-    const refRef = useRef<number | null>(null)
+    const refRef = useRef<number | null>(null);
+
+    // 判断是否是移动端
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     useEffect(() => {
         const handleScrolly = () => {
-            if (refRef.current) {
-                cancelAnimationFrame(refRef.current)
-            }
+            if (refRef.current) cancelAnimationFrame(refRef.current);
             refRef.current = requestAnimationFrame(() => {
-                setScrollY(window.scrollY)
-            })
-        }
+                if (!isMobile) {
+                    setScrollY(window.scrollY);
+                }
+            });
+        };
 
-        window.addEventListener("scroll", handleScrolly, { passive: true })
-
-        setScrollY(window.scrollY)
+        window.addEventListener("scroll", handleScrolly, { passive: true });
+        setScrollY(window.scrollY);
 
         return () => {
-            window.removeEventListener("scroll", handleScrolly)
-            if (refRef.current) {
-                cancelAnimationFrame(refRef.current)
-            }
-        }
-    }, [])
-
+            window.removeEventListener("scroll", handleScrolly);
+            if (refRef.current) cancelAnimationFrame(refRef.current);
+        };
+    }, [isMobile]);
 
     return (
-        <nav className={`${styles.NavWrapper} ${scrolly > 200 ? styles.scrolled : ""}`}>
-            {/* <BlogTitle /> */}
+        <nav className={`${styles.NavWrapper} ${!isMobile && scrolly > 200 ? styles.scrolled : ""}`}>
             <div className={styles.mobileToggle}>
                 <Checkbox open={open} onToggle={setOpen} />
             </div>
@@ -70,8 +78,7 @@ const Nav: React.FC = () => {
 
             <div
                 ref={navMainRef}
-                className={`${styles.NavMain} ${open ? styles.open : ""} ${scrolly > 200 ? styles.scrolled : ""
-                    }`}
+                className={`${styles.NavMain} ${open ? styles.open : ""} ${!isMobile && scrolly > 200 ? styles.scrolled : ""}`}
             >
                 {NavList.map((item) => (
                     <NavItem
@@ -84,9 +91,8 @@ const Nav: React.FC = () => {
                 <BgSeriesToggle />
             </div>
         </nav>
-
-
     );
 };
+
 
 export default Nav;
