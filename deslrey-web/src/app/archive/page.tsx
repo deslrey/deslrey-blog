@@ -48,7 +48,7 @@ const Archive = async () => {
                     years.map((year) => (
                         <div key={year} className={styles.yearBlock}>
                             <h2 className={styles.year}>{year} -- {grouped[year].length}篇</h2>
-                            <ul className={`${styles.articleList} card-div`}>
+                            <ul className={`${styles.articleList} `}>
                                 {grouped[year]
                                     .sort(
                                         (a, b) =>
@@ -56,7 +56,7 @@ const Archive = async () => {
                                             dayjs(a.createTime).valueOf()
                                     )
                                     .map((article) => (
-                                        <Link href={`/blog/${article.id}`} key={article.id} className={styles.articleItem}>
+                                        <Link href={`/blog/${article.id}`} key={article.id} className={`${styles.articleItem} card-div`}>
                                             <div className={styles.date}>
                                                 {dayjs(article.createTime).format("MM-DD HH:mm:ss")}
                                             </div>
