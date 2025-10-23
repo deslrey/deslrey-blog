@@ -1,0 +1,37 @@
+.bgToggleGroup {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    padding: 4px;
+    width: 150px;
+    height: 40px;
+    box-sizing: border-box;
+    transition: all var(--transition-speed) ease;
+}
+
+.bgToggleBtn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-speed);
+
+    &:hover {
+        color: gold;
+    }
+
+    &.active {
+        color: aqua;
+    }
+
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+}
