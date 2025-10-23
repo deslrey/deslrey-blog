@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { BytemdViewer } from "@/components/Markdown/viewer";
 import { api } from "@/api";
 import styles from "./index.module.scss";
-import LoaderComponent from "@/components/Loading/LoaderComponent";
 import LoadComponent from "@/components/Loading/LoadComponent";
 
 export default function BlogPage({ slug }: { slug: string }) {
@@ -21,16 +20,18 @@ export default function BlogPage({ slug }: { slug: string }) {
 
                 const start = Date.now();
 
-                const [postRes, carouselRes] = await Promise.all([
-                    fetch(`${api.articleDateil.detail}/${slug}`, { cache: "no-store" }),
-                    fetch(`${api.detailHeadPage.scenery}`, { cache: "no-store" }),
-                ]);
+                const [postRes] = await Promise.all([
+                    fetch(`${api.articleDateil.detail}/${slug}`, { cache: "no-store" })]);
+                // const [postRes, carouselRes] = await Promise.all([
+                //     fetch(`${api.articleDateil.detail}/${slug}`, { cache: "no-store" }),
+                //     fetch(`${api.detailHeadPage.scenery}`, { cache: "no-store" }),
+                // ]);
 
                 const postJson = await postRes.json();
-                const carouselJson = await carouselRes.json();
+                // const carouselJson = await carouselRes.json();
 
                 setPost(postJson.data);
-                setCarouseUrl(carouselJson.data || "");
+                // setCarouseUrl(carouselJson.data || "");
 
                 // 🕒 确保动画至少显示 300ms
                 const elapsed = Date.now() - start;

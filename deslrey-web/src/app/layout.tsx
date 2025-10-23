@@ -9,6 +9,7 @@ import '@/styles/markdown/bytemd.scss';
 import StyledComponentsRegistry from "@/lib/StyledComponentsRegistry";
 import ThemeProvider from "@/components/ThemeProvider/ThemeProvider";
 import ClientAppLayout from "./ClientAppLayout";
+import BgSeriesProvider from "@/components/BgSeriesProvider";
 
 export const metadata: Metadata = {
     title: "deslrey",
@@ -25,9 +26,11 @@ export default function RootLayout({
             <body>
                 <StyledComponentsRegistry>
                     <ThemeProvider>
-                        <ClientAppLayout>
-                            {children}
-                        </ClientAppLayout>
+                        <BgSeriesProvider>
+                            <ClientAppLayout>
+                                {children}
+                            </ClientAppLayout>
+                        </BgSeriesProvider>
                     </ThemeProvider>
                 </StyledComponentsRegistry>
             </body>

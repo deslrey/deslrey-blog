@@ -9,6 +9,7 @@ import Checkbox from "../Checkbox";
 import { usePathname } from "next/navigation";
 import BlogTitle from "../BlogTitle";
 import ThemeToggle from "../ThemeToggle/ThemeToggle";
+import BgSeriesToggle from "../BgSeriesToggle";
 
 const NavItem: React.FC<{ item: NavObj; onClick?: () => void }> = ({
     item,
@@ -80,6 +81,7 @@ const Nav: React.FC = () => {
                     />
                 ))}
                 <ThemeToggle />
+                <BgSeriesToggle />
             </div>
         </nav>
 
