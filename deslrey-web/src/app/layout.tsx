@@ -1,9 +1,11 @@
 // RootLayout.tsx （服务器组件，不加 'use client'）
 import type { Metadata } from "next";
 import 'bytemd/dist/index.css';
-import 'highlight.js/styles/github.css';
+// import 'highlight.js/styles/github.css';
+// import 'highlight.js/styles/github-dark.css';
 import '@/styles/global.scss';
 import '@/styles/base.scss';
+import '@/styles/card.scss';
 import '@/styles/markdown/bytemd.scss';
 
 import StyledComponentsRegistry from "@/lib/StyledComponentsRegistry";

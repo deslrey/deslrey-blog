@@ -33,15 +33,12 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
         setMode(savedMode);
 
         const applyTheme = (mode: ThemeMode) => {
-            let activeTheme: ActiveTheme;
-            if (mode === 'system') {
-                activeTheme = prefersDark.matches ? 'dark' : 'light';
-            } else {
-                activeTheme = mode;
-            }
+            let activeTheme: ActiveTheme =
+                mode === 'system' ? (prefersDark.matches ? 'dark' : 'light') : mode;
 
             setTheme(activeTheme);
             document.documentElement.setAttribute('data-theme', activeTheme);
+            updateHighlightStyle(activeTheme);
         };
 
         applyTheme(savedMode);
@@ -51,12 +48,38 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
                 const newTheme: ActiveTheme = e.matches ? 'dark' : 'light';
                 setTheme(newTheme);
                 document.documentElement.setAttribute('data-theme', newTheme);
+                updateHighlightStyle(newTheme);
             }
         };
 
         prefersDark.addEventListener('change', handleSystemChange);
         return () => prefersDark.removeEventListener('change', handleSystemChange);
     }, [mode]);
+
+    const updateHighlightStyle = (activeTheme: ActiveTheme) => {
+        const existingLight = document.querySelector('link[data-hljs="light"]');
+        const existingDark = document.querySelector('link[data-hljs="dark"]');
+
+        if (activeTheme === 'dark') {
+            if (!existingDark) {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = '/highlight/github-dark.css';
+                link.setAttribute('data-hljs', 'dark');
+                document.head.appendChild(link);
+            }
+            if (existingLight) existingLight.remove();
+        } else {
+            if (!existingLight) {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = '/highlight/github.css';
+                link.setAttribute('data-hljs', 'light');
+                document.head.appendChild(link);
+            }
+            if (existingDark) existingDark.remove();
+        }
+    };
 
     const toggleMode = () => {
         const nextMode: ThemeMode =

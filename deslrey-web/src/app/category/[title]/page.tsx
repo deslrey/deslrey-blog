@@ -37,7 +37,7 @@ const Category = async ({ params }: { params: Promise<{ title: string }> }) => {
                 {articles.length > 0 ? (
                     <ul className={styles.articleList}>
                         {articles.map((article) => (
-                            <li key={article.id} className={styles.articleItem}>
+                            <li key={article.id} className={`${styles.articleItem} card-div`}>
                                 <Link href={`/blog/${article.id}`} className={styles.articleLink}>
                                     <span className={styles.dot}>•</span>
                                     <span className={styles.articleTitle}>{article.title}</span>

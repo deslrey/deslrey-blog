@@ -25,7 +25,7 @@ const PopularTags = async () => {
     }
 
     return (
-        <div className={styles.popularTags}>
+        <div className={`${styles.popularTags} card-div`}>
             <h2 className={styles.sectionTitle}>热门标签</h2>
             <div className={styles.tagGrid}>
                 {

@@ -48,7 +48,7 @@ const Archive = async () => {
                     years.map((year) => (
                         <div key={year} className={styles.yearBlock}>
                             <h2 className={styles.year}>{year} -- {grouped[year].length}篇</h2>
-                            <ul className={styles.articleList}>
+                            <ul className={`${styles.articleList} card-div`}>
                                 {grouped[year]
                                     .sort(
                                         (a, b) =>

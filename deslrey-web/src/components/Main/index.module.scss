@@ -3,26 +3,28 @@
     flex-direction: row;
     justify-content: center;
     min-height: 90%;
-    // height: 100%;
     width: 100%;
+    padding: 5% 2%;
     padding-top: 10%;
     gap: 5%;
+
     @media (max-width: 768px) {
         flex-direction: column;
-        padding-top: 400px;
+        padding: 0 10px;
+        padding-top: 100px;
+        gap: 1rem;
     }
 }
 
 .latestReleases {
     width: 30%;
-
     @media (max-width: 768px) {
         width: 100%;
     }
 }
+
 .classTags {
     width: 20%;
-
     @media (max-width: 768px) {
         width: 100%;
     }

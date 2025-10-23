@@ -15,7 +15,7 @@ interface ArticlePageProps {
 const ArticlePage = async ({ searchParams }: ArticlePageProps) => {
     const params = await searchParams;
     const page = Number(params?.page || 1);
-    const pageSize = 4;
+    const pageSize = 10;
     let articleList: Article[] = [];
     let total = 0;
     let hasNextPage = false;
@@ -81,7 +81,7 @@ const ArticlePage = async ({ searchParams }: ArticlePageProps) => {
                         <Link
                             key={item.id}
                             href={`/blog/${item.id}`}
-                            className={styles.item}
+                            className={`${styles.item} card-div`}
                         >
                             <div>
                                 <span className={styles.title}>

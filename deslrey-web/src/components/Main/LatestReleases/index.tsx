@@ -31,7 +31,7 @@ const LatestReleases = async () => {
     }
 
     return (
-        <div className={styles.latestReleases}>
+        <div className={`${styles.latestReleases} card-div`}>
             <h2 className={styles.sectionTitle}>最新更新</h2>
             {
                 articleList.length === 0 ? (

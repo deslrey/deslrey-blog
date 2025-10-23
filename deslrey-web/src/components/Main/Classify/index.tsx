@@ -24,7 +24,7 @@ const Classify = async () => {
     }
 
     return (
-        <div className={styles.classify}>
+        <div className={`${styles.classify} card-div`}>
             <h2 className={styles.sectionTitle}>分类</h2>
             <div className={styles.classifyGrid}>
                 {classifyList.length === 0 ? (

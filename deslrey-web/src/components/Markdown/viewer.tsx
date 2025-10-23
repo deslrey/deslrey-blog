@@ -104,15 +104,13 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
 
     return (
         <div className="markdown-layout">
-
             <div className="markdown-content" ref={contentRef}>
-
                 <DetailHead data={headData} carouseUrl={carouseUrl} />
-                <div ref={containerRef} >
+                <div ref={containerRef}  className="card-div">
                     <Viewer value={content} plugins={plugins} />
                 </div>
             </div>
-            <aside className="markdown-toc">
+            <aside className="markdown-toc card-div">
                 <ul>
                     {headings.length > 0
                         ? headings.map((h) => (

@@ -20,17 +20,18 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    flex: 1; /* 占据剩余空间，推动分页到底部 */
+    flex: 1;
+    padding: 0;
 }
 
 .item {
-    padding: 20px;
+    padding: 15px;
     border-radius: 8px;
     transition: all 0.3s ease;
     cursor: pointer;
     &:hover {
         background: rgba(42, 42, 42, 0.2);
-        transform: translateY(-4px); // 上浮 4px
+        transform: translateY(-1px); // 上浮 4px
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); // 增加浮动阴影
     }
 }
