@@ -33,7 +33,7 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
         setMode(savedMode);
 
         const applyTheme = (mode: ThemeMode) => {
-            let activeTheme: ActiveTheme =
+            const activeTheme: ActiveTheme =
                 mode === 'system' ? (prefersDark.matches ? 'dark' : 'light') : mode;
 
             setTheme(activeTheme);
