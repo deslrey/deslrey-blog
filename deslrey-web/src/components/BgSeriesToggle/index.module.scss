@@ -27,7 +27,7 @@
     }
 
     &.active {
-        color: aqua;
+        color: var(--activeColor);
     }
 
     svg {
