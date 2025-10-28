@@ -37,4 +37,7 @@ public interface ArticleService {
     Results<ArticleDraftVO> editArticle(Integer articleId);
 
     Results<PageInfo<Article>> articles(int page, int pageSize);
+
+    Results<List<ArticleAdminVO>> viewHot();
+
 }

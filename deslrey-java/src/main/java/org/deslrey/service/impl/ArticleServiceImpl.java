@@ -173,4 +173,10 @@ public class ArticleServiceImpl implements ArticleService {
         PageInfo<Article> articlePageInfo = new PageInfo<>(articleList);
         return Results.ok(articlePageInfo);
     }
+
+    @Override
+    public Results<List<ArticleAdminVO>> viewHot() {
+        List<ArticleAdminVO> articleList = articleMapper.selectViewHot();
+        return Results.ok(articleList);
+    }
 }

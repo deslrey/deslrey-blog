@@ -137,4 +137,11 @@
         </where>
     </select>
 
+    <select id="selectViewHot" resultMap="BaseResultMap">
+        select title, views
+        from article
+        order by views desc
+        limit 5
+    </select>
+
 </mapper>

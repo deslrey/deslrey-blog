@@ -9,6 +9,8 @@ import org.deslrey.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <br>
  * 文章控制器   --  管理端
@@ -38,6 +40,12 @@ public class ArticleAdminController {
     @GetMapping("editArticle/{articleId}")
     public Results<ArticleDraftVO> editArticle(@PathVariable Integer articleId) {
         return articleService.editArticle(articleId);
+    }
+
+
+    @GetMapping("viewHot")
+    public Results<List<ArticleAdminVO>> viewHot() {
+        return articleService.viewHot();
     }
 
 }

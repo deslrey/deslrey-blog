@@ -39,4 +39,7 @@ public interface ArticleMapper {
     List<Article> selectArticles();
 
     List<Article> selectArticleByCategory(String category);
+
+    List<ArticleAdminVO> selectViewHot();
+
 }
