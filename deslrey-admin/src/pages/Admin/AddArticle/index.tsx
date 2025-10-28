@@ -17,7 +17,6 @@ import type { Category, Tag } from '../../../interfaces';
 import request from '../../../utils/request';
 import { Message } from '../../../utils/message';
 import { addArticleApi } from '../../../api/adminApi';
-import { useNavigate } from 'react-router-dom';
 
 const CustomPopper = styled(Popper)({
     '& .MuiAutocomplete-listbox': {

@@ -38,7 +38,7 @@ const CustomPopper = styled(Popper)({
 const EditArticle: React.FC = () => {
 
     //  路由接收参数
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams] = useSearchParams()
 
     const operateType = searchParams.get('type')
     const operateId = searchParams.get('id')

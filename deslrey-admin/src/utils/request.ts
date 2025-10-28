@@ -103,7 +103,7 @@ class Request {
 }
 
 const request = new Request({
-    baseURL: "/deslrey",
+    baseURL: import.meta.env.VITE_API_BASE,
     timeout: 5000,
 });
 
