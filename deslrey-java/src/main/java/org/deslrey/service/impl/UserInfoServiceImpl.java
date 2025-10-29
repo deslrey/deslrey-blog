@@ -123,7 +123,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
 
         if (!Objects.equals(oldName, currentUsername)) {
-            return Results.fail(ResultCodeEnum.CODE_401);
+            return Results.fail("输入旧用户名有误");
         }
 
         int result = userInfoMapper.updateUserNameByName(currentUsername, newName);

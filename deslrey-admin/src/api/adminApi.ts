@@ -51,5 +51,6 @@ export const tagApi = {
 }
 
 export const userApi = {
-    updatePassword: '/user/updatePassword'
+    updatePassword: '/user/updatePassword',
+    updateUserName: '/user/updateUserName',
 }
