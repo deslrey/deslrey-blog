@@ -1,6 +1,7 @@
 package org.deslrey.controller.admin;
 
 import com.github.pagehelper.PageInfo;
+import org.deslrey.annotation.RequireLogin;
 import org.deslrey.entity.vo.ImageVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.ImageService;
@@ -26,21 +27,25 @@ public class ImageController {
     @Autowired
     private ImageService imageService;
 
+    @RequireLogin
     @PostMapping("uploadImage")
     public Results<Void> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("folderId") Integer folderId) {
         return imageService.uploadImage(file, folderId);
     }
 
+    @RequireLogin
     @GetMapping("list")
     public Results<PageInfo<ImageVO>> imageList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize) {
         return imageService.imageList(page, pageSize);
     }
 
+    @RequireLogin
     @GetMapping("/list/{folderId}")
     public Results<PageInfo<ImageVO>> selectImagesByFolderId(@PathVariable Integer folderId, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize) {
         return imageService.selectImagesByFolderId(folderId, page, pageSize);
     }
 
+    @RequireLogin
     @GetMapping("obscure")
     public Results<List<ImageVO>> obscureFolderName(String folderName) {
         return imageService.obscureFolderName(folderName);

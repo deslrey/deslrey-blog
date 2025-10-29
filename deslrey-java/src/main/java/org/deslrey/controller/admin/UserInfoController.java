@@ -1,5 +1,6 @@
 package org.deslrey.controller.admin;
 
+import org.deslrey.annotation.RequireLogin;
 import org.deslrey.entity.po.UserInfo;
 import org.deslrey.entity.vo.UserTokenVO;
 import org.deslrey.result.Results;
@@ -34,16 +35,19 @@ public class UserInfoController {
         return userInfoService.register(userInfo);
     }
 
+    @RequireLogin
     @PostMapping("updateUserName")
     public Results<Void> updateUserName(String oldName, String newName) {
         return userInfoService.updateUserName(oldName, newName);
     }
 
+    @RequireLogin
     @PostMapping("updateUserAvatar")
     public Results<String> updateUserAvatar(@RequestParam("file") MultipartFile file) {
         return userInfoService.updateUserAvatar(file);
     }
 
+    @RequireLogin
     @PostMapping("updatePassword")
     public Results<Void> updatePassword(String olbPassWord, String newPassWord) {
         return userInfoService.updatePassword(olbPassWord, newPassWord);

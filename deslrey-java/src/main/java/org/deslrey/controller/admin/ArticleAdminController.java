@@ -1,6 +1,7 @@
 package org.deslrey.controller.admin;
 
 import com.github.pagehelper.PageInfo;
+import org.deslrey.annotation.RequireLogin;
 import org.deslrey.entity.admin.po.ArticleDraft;
 import org.deslrey.entity.admin.vo.ArticleAdminVO;
 import org.deslrey.entity.admin.vo.ArticleDraftVO;
@@ -27,22 +28,25 @@ public class ArticleAdminController {
     @Autowired
     private ArticleService articleService;
 
+    @RequireLogin
     @GetMapping("list")
     public Results<PageInfo<ArticleAdminVO>> articleList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
         return articleService.articleListAdmin(page, pageSize);
     }
 
+    @RequireLogin
     @PostMapping("addArticle")
     public Results<Void> addArticle(@RequestBody ArticleDraft articleDraft) {
         return articleService.addArticle(articleDraft);
     }
 
+    @RequireLogin
     @GetMapping("editArticle/{articleId}")
     public Results<ArticleDraftVO> editArticle(@PathVariable Integer articleId) {
         return articleService.editArticle(articleId);
     }
 
-
+    @RequireLogin
     @GetMapping("viewHot")
     public Results<List<ArticleAdminVO>> viewHot() {
         return articleService.viewHot();

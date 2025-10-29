@@ -1,6 +1,7 @@
 package org.deslrey.controller.admin;
 
 import com.github.pagehelper.PageInfo;
+import org.deslrey.annotation.RequireLogin;
 import org.deslrey.entity.po.Folder;
 import org.deslrey.result.Results;
 import org.deslrey.service.FolderService;
@@ -25,21 +26,25 @@ public class FolderController {
     @Autowired
     private FolderService folderService;
 
+    @RequireLogin
     @GetMapping("list")
     public Results<PageInfo<Folder>> folderList(@RequestParam(defaultValue = "all") String type, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize) {
         return folderService.folderList(type, page, pageSize);
     }
 
+    @RequireLogin
     @GetMapping("folderNameList")
     public Results<List<Folder>> folderNameList() {
         return folderService.folderNameList();
     }
 
+    @RequireLogin
     @PostMapping("addFolder")
     public Results<Void> addFolder(@RequestBody Folder folder) {
         return folderService.addFolder(folder);
     }
 
+    @RequireLogin
     @PostMapping("updateFolder")
     public Results<Void> updateFolder(@RequestBody Folder folder) {
         return folderService.updateFolder(folder);
