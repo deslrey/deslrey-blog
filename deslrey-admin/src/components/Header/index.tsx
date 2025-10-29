@@ -34,7 +34,7 @@ const Header: React.FC = () => {
             </div>
 
             <div className={styles.rightBox}>
-                <span>{timeText}</span>
+                <span>{timeText} - {user.userName}</span>
                 <Button
                     variant="outlined"
                     color="error"
