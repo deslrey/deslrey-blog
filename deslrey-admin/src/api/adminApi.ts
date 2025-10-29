@@ -7,6 +7,7 @@ export const addArticleApi = {
 
 export const articleApi = {
     list: "/admin/article/list",
+    viewHot:"/admin/article/viewHot"
 }
 
 export const categoryApi = {
