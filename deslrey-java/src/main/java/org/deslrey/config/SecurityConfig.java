@@ -31,8 +31,6 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .authorizeRequests()
-                .antMatchers("/user/login", "/user/register", "/public/**").permitAll()
-                .antMatchers("/admin/**").authenticated()
                 .anyRequest().permitAll();
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
