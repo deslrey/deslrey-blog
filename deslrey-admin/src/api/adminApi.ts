@@ -7,7 +7,7 @@ export const addArticleApi = {
 
 export const articleApi = {
     list: "/admin/article/list",
-    viewHot:"/admin/article/viewHot"
+    viewHot: "/admin/article/viewHot"
 }
 
 export const categoryApi = {
@@ -48,4 +48,8 @@ export const tagApi = {
     tagList: '/public/tag/tagList',
     addTag: '/public/tag/addTag',
     updateTagTitle: '/public/tag/updateTagTitle',
+}
+
+export const userApi = {
+    updatePassword: '/user/updatePassword'
 }
