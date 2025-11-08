@@ -1,7 +1,7 @@
 import React from 'react'
 import './index.css'
 
-const LoaderComponent = () => {
+const LoaderComponent: React.FC = () => {
     return (
         <div className="loader-container">
             <div className="loader">
