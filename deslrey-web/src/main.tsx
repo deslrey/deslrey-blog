@@ -7,6 +7,7 @@ import { SnackbarUtilsConfigurator } from './utils/message.tsx'
 
 import './styles/global/global.scss'
 import './styles/base.scss'
+import './styles/card/card.scss'
 import ThemeProvider from './web/components/ThemeProvider/index.tsx'
 import BgSeriesProvider from './web/components/BgSeriesProvider/index.tsx'
 import AppLayout from './web/pages/Layout.tsx'
