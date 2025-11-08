@@ -18,4 +18,5 @@ public interface ArticleMapper {
 
     List<Article> selectArticleList();
 
+    Article selectArticleDetail(Integer id);
 }

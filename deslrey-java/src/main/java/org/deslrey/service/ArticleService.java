@@ -19,4 +19,6 @@ public interface ArticleService {
     Results<List<Article>> LatestReleases();
 
     Results<PageInfo<Article>> articleList(int page, int pageSize);
+
+    Results<Article> articleDetail(Integer id);
 }

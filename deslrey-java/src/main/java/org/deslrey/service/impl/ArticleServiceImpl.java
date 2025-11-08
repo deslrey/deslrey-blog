@@ -4,8 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Article;
 import org.deslrey.mapper.ArticleMapper;
+import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.ArticleService;
+import org.deslrey.util.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +48,18 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> articleList = articleMapper.selectArticleList();
         PageInfo<Article> articlePageInfo = new PageInfo<>(articleList);
         return Results.ok(articlePageInfo);
+    }
 
+    @Override
+    public Results<Article> articleDetail(Integer id) {
+        if (NumberUtils.isLessZero(id)) {
+            return Results.fail(ResultCodeEnum.CODE_501);
+        }
+
+        Article article = articleMapper.selectArticleDetail(id);
+        if (article == null) {
+            return Results.fail("查找文章失败");
+        }
+        return Results.ok(article);
     }
 }
