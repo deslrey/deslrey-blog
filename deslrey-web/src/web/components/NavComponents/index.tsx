@@ -14,8 +14,6 @@ const NavItem: React.FC<{ item: RouteType; onClick?: () => void }> = ({
     const location = useLocation();
     const isActive = location.pathname === item.path;
 
-    console.log('location ======> ', location)
-
     return (
         <Link
             to={item.path}

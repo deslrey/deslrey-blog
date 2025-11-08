@@ -1,0 +1,35 @@
+.PageBox {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition:
+        background-color 0.8s ease,
+        background-image 1s ease;
+}
+
+/* 默认使用图片背景 */
+.PageBox::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: var(--overlay-gradient), var(--bg-url);
+    background-position: center center;
+    background-size: cover;
+    opacity: 0;
+    transition: opacity 1s ease;
+    z-index: -1;
+}
+
+.PageBox.loaded::after {
+    opacity: 1;
+}
+
+/* 纯色模式：不显示背景图 */
+.PageBox.pure::after {
+    background-image: none;
+    background-color: var(--pure-bg);
+    opacity: 1;
+}

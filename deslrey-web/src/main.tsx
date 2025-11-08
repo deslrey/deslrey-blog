@@ -7,10 +7,9 @@ import { SnackbarUtilsConfigurator } from './utils/message.tsx'
 
 import './styles/global/global.scss'
 import './styles/base.scss'
-import Nav from './web/components/NavComponents/index.tsx'
 import ThemeProvider from './web/components/ThemeProvider/index.tsx'
 import BgSeriesProvider from './web/components/BgSeriesProvider/index.tsx'
-import ColorProvider from './web/components/ColorProvider/index.tsx'
+import AppLayout from './web/pages/Layout.tsx'
 
 const element = (
   <BrowserRouter>
@@ -19,10 +18,9 @@ const element = (
         <BgSeriesProvider>
           <SnackbarProvider maxSnack={3}>
             <SnackbarUtilsConfigurator />
-            <ColorProvider>
-              <Nav />
+            <AppLayout>
               <App />
-            </ColorProvider>
+            </AppLayout>
           </SnackbarProvider>
         </BgSeriesProvider>
       </ThemeProvider>
