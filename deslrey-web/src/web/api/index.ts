@@ -5,5 +5,9 @@ export const api = {
     carouselPage: {
         sex: baseUrl + "/carousel/sex",
         scenery: baseUrl + "/carousel/scenery"
+    },
+
+    article: {
+        LatestReleases: baseUrl + '/article/LatestReleases'
     }
 }
