@@ -4,13 +4,9 @@ import styles from "./index.module.scss";
 import BgSeriesToggle from "../BgSeriesToggle";
 import type { RouteType } from "../../../interfaces/router";
 import { useWebRoutes } from "../../../router/config";
-import Checkbox from "../Checkbox/idnex";
 import ThemeToggle from "../ThemeToggle.tsx";
 
-const NavItem: React.FC<{ item: RouteType; onClick?: () => void }> = ({
-    item,
-    onClick,
-}) => {
+const NavItem: React.FC<{ item: RouteType }> = ({ item }) => {
     const location = useLocation();
     const isActive = location.pathname === item.path;
 
@@ -18,7 +14,6 @@ const NavItem: React.FC<{ item: RouteType; onClick?: () => void }> = ({
         <Link
             to={item.path}
             className={`${styles.navItem} ${isActive ? styles.active : ""}`}
-            onClick={onClick}
         >
             {item.icon && <span className={styles.icon}>{item.icon}</span>}
             <span className={styles.title}>{item.title}</span>
@@ -27,67 +22,65 @@ const NavItem: React.FC<{ item: RouteType; onClick?: () => void }> = ({
 };
 
 const Nav: React.FC = () => {
-    const [open, setOpen] = useState(false);
-    const [scrolly, setScrollY] = useState(0);
-    const [isMobile, setIsMobile] = useState(false);
+    const [scrollY, setScrollY] = useState(0);
+    const [visible, setVisible] = useState(true);
+    const lastScrollY = useRef(0);
+    const ticking = useRef(false);
+    const hideThreshold = 100;
+    const showThreshold = 10;
+    const hideTimeout = useRef<NodeJS.Timeout | null>(null);
 
-    const navMainRef = useRef<HTMLDivElement>(null);
-    const refRef = useRef<number | null>(null);
-
-    const navRoutes = useWebRoutes();
-
-    // 判断是否移动端
-    useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth <= 768);
-        handleResize();
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    // 监听滚动
     useEffect(() => {
         const handleScroll = () => {
-            if (refRef.current) cancelAnimationFrame(refRef.current);
-            refRef.current = requestAnimationFrame(() => {
-                if (!isMobile) setScrollY(window.scrollY);
-            });
+            const currentScrollY = window.scrollY;
+            if (!ticking.current) {
+                window.requestAnimationFrame(() => {
+                    const diff = currentScrollY - lastScrollY.current;
+
+                    console.log('diff ======> ', diff)
+
+                    // 向下滚动且超过200px时隐藏
+                    if (diff > 0 && currentScrollY > hideThreshold) {
+                        if (visible) {
+                            if (hideTimeout.current) clearTimeout(hideTimeout.current);
+                            hideTimeout.current = setTimeout(() => {
+                                setVisible(false);
+                            }, 100); // 延迟一点再隐藏，让动画平滑
+                        }
+                    }
+                    // 向上滚动超过100px则显示
+                    else if (diff < 0 && lastScrollY.current - currentScrollY > showThreshold) {
+                        if (!visible) {
+                            setVisible(true);
+                        }
+                    }
+
+                    lastScrollY.current = currentScrollY;
+                    ticking.current = false;
+                });
+                ticking.current = true;
+            }
         };
 
         window.addEventListener("scroll", handleScroll, { passive: true });
-        setScrollY(window.scrollY);
-
         return () => {
             window.removeEventListener("scroll", handleScroll);
-            if (refRef.current) cancelAnimationFrame(refRef.current);
+            if (hideTimeout.current) clearTimeout(hideTimeout.current);
         };
-    }, [isMobile]);
+    }, [visible]);
 
     return (
         <nav
-            className={`${styles.NavWrapper} ${!isMobile && scrolly > 200 ? styles.scrolled : ""
-                }`}
+            className={`
+                ${styles.NavWrapper}
+                ${scrollY > 200 ? styles.scrolled : ""}
+                ${visible ? styles.visible : styles.hidden}
+            `}
         >
-            {/* 移动端汉堡按钮 */}
-            <div className={styles.mobileToggle}>
-                <Checkbox open={open} onToggle={setOpen} />
-            </div>
-
-            {/* 背景遮罩层 */}
-            {open && <div className={styles.overlay} onClick={() => setOpen(false)} />}
-
-            <div
-                ref={navMainRef}
-                className={`${styles.NavMain} ${open ? styles.open : ""
-                    } ${!isMobile && scrolly > 200 ? styles.scrolled : ""}`}
-            >
-                {navRoutes.map((item) => (
-                    <NavItem
-                        key={item.path}
-                        item={item}
-                        onClick={() => setOpen(false)}
-                    />
+            <div className={styles.NavMain}>
+                {useWebRoutes().map((item) => (
+                    <NavItem key={item.path} item={item} />
                 ))}
-
                 <ThemeToggle />
                 <BgSeriesToggle />
             </div>

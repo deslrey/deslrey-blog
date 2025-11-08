@@ -21,6 +21,7 @@
     align-items: center;
     justify-content: center;
     transition: color var(--transition-speed);
+    color: var(--color-text);
 
     &:hover {
         color: gold;
