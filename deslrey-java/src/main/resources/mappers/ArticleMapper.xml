@@ -29,7 +29,13 @@
     </select>
 
     <select id="selectArticleList" resultMap="BaseResultMap">
-        select id, title, create_time, update_time, category, des, edit
+        select id,
+               title,
+               views,
+               create_time,
+               update_time,
+               category,
+               edit
         from article
         where exist = 1
         order by create_time desc

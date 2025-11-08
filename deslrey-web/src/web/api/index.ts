@@ -8,7 +8,8 @@ export const api = {
     },
 
     article: {
-        LatestReleases: baseUrl + '/article/LatestReleases'
+        LatestReleases: baseUrl + '/article/LatestReleases',
+        articleList: baseUrl + '/article/list'
     },
 
     category: {

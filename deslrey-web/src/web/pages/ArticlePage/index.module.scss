@@ -1,0 +1,114 @@
+.article {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    // margin-top: 9.9%;
+    min-height: 70%;
+}
+
+.container {
+    width: 100%;
+    margin-top: 10%;
+    max-width: 800px;
+    min-height: 600px; /* 固定最小高度 */
+    display: flex; /* 让容器成为 flex */
+    flex-direction: column; /* 垂直布局 */
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    padding: 0;
+}
+
+.item {
+    padding: 15px;
+    border-radius: 8px;
+    min-height: 100px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    &:hover {
+        background: rgba(42, 42, 42, 0.2);
+        transform: translateY(-1px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-text);
+    text-decoration: none;
+}
+
+.sticky {
+    margin-left: 8px;
+    font-size: 12px;
+    color: var(--activeColor);
+    border: 1px solid rgba(var(--activeColor-rgb), 0.4);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.meta {
+    font-size: 12px;
+    color: var(--color-text);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.edit {
+    color: #ff4d4f;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    gap: 8px;
+
+    .pageBtn {
+        padding: 6px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 6px;
+        color: var(--color-text);
+        background: rgba(255, 255, 255, 0.05);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 14px;
+
+        &:hover {
+            background: var(--activeColor);
+            border-color: var(--activeColor);
+            color: var(--color-text);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(var(--activeColor-rgb), 0.3);
+        }
+    }
+
+    .pageBtn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .activePage {
+        background: var(--activeColor);
+        border-color: var(--activeColor);
+        color: var(--color-text);
+        pointer-events: none;
+    }
+
+    .ellipsis {
+        padding: 6px 10px;
+        color: var(--color-text);
+        font-size: 14px;
+    }
+}
