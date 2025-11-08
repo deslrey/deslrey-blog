@@ -15,4 +15,7 @@ import java.util.List;
  */
 public interface ArticleMapper {
     List<Article> selectLatestReleases();
+
+    List<Article> selectArticleList();
+
 }

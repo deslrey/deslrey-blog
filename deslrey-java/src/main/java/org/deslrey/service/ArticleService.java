@@ -1,5 +1,6 @@
 package org.deslrey.service;
 
+import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Article;
 import org.deslrey.result.Results;
 
@@ -17,4 +18,5 @@ import java.util.List;
 public interface ArticleService {
     Results<List<Article>> LatestReleases();
 
+    Results<PageInfo<Article>> articleList(int page, int pageSize);
 }

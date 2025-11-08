@@ -1,5 +1,7 @@
 package org.deslrey.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Article;
 import org.deslrey.mapper.ArticleMapper;
 import org.deslrey.result.Results;
@@ -32,5 +34,18 @@ public class ArticleServiceImpl implements ArticleService {
             return Results.ok(new ArrayList<>());
         }
         return Results.ok(articleList);
+    }
+
+    @Override
+    public Results<PageInfo<Article>> articleList(int page, int pageSize) {
+        if (page < 1)
+            page = 1;
+        if (pageSize < 1)
+            pageSize = 1;
+        PageHelper.startPage(page, pageSize);
+        List<Article> articleList = articleMapper.selectArticleList();
+        PageInfo<Article> articlePageInfo = new PageInfo<>(articleList);
+        return Results.ok(articlePageInfo);
+
     }
 }
