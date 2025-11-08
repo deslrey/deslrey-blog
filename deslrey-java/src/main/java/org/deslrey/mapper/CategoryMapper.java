@@ -1,6 +1,6 @@
 package org.deslrey.mapper;
 
-import org.deslrey.entity.vo.CategoryCountVO;
+import org.deslrey.entity.vo.CountVO;
 
 import java.util.List;
 
@@ -14,5 +14,5 @@ import java.util.List;
  * @since 2025/11/8 14:30
  */
 public interface CategoryMapper {
-    List<CategoryCountVO> selectCategoryCount();
+    List<CountVO> selectCategoryCount();
 }

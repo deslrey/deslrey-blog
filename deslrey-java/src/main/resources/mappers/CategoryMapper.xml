@@ -11,7 +11,7 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
-    <select id="selectCategoryCount" resultType="org.deslrey.entity.vo.CategoryCountVO">
+    <select id="selectCategoryCount" resultType="org.deslrey.entity.vo.CountVO">
         select c.id, c.category_title as title, COUNT(a.id) as total
         from category c
                  left join article a on a.category = c.category_title

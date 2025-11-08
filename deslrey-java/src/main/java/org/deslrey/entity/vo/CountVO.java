@@ -12,7 +12,7 @@ import lombok.Data;
  * @since 2025/9/15 14:57
  */
 @Data
-public class CategoryCountVO {
+public class CountVO {
 
     /**
      * 主键

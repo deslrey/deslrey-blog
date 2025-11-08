@@ -1,6 +1,6 @@
 package org.deslrey.service;
 
-import org.deslrey.entity.vo.CategoryCountVO;
+import org.deslrey.entity.vo.CountVO;
 import org.deslrey.result.Results;
 
 import java.util.List;
@@ -15,5 +15,5 @@ import java.util.List;
  * @since 2025/11/8 14:29
  */
 public interface CategoryService {
-    Results<List<CategoryCountVO>> categoryCount();
+    Results<List<CountVO>> categoryCount();
 }

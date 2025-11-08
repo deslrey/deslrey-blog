@@ -1,7 +1,7 @@
 package org.deslrey.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.deslrey.entity.vo.CategoryCountVO;
+import org.deslrey.entity.vo.CountVO;
 import org.deslrey.mapper.CategoryMapper;
 import org.deslrey.result.Results;
 import org.deslrey.service.CategoryService;
@@ -29,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Results<List<CategoryCountVO>> categoryCount() {
-        List<CategoryCountVO> categoryCountVOList = categoryMapper.selectCategoryCount();
+        List<CountVO> categoryCountVOList = categoryMapper.selectCategoryCount();
         if (categoryCountVOList == null || categoryCountVOList.isEmpty()) {
             return Results.ok(new ArrayList<>());
         }
