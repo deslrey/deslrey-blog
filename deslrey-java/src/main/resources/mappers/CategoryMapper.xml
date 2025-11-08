@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.deslrey.mapper.CategoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.deslrey.entity.po.Category">
+        <id column="id" property="id"/>
+        <result column="category_title" property="categoryTitle"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
+    </resultMap>
+
+    <select id="selectCategoryCount" resultType="org.deslrey.entity.vo.CategoryCountVO">
+        select c.id, c.category_title as title, COUNT(a.id) as total
+        from category c
+                 left join article a on a.category = c.category_title
+        where a.exist = 1
+        group by c.id, c.category_title
+        order by total desc
+    </select>
+
+
+</mapper>
