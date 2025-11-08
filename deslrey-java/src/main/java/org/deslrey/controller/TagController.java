@@ -1,9 +1,7 @@
 package org.deslrey.controller;
 
-import com.github.pagehelper.PageInfo;
-import org.deslrey.entity.po.Tag;
-import org.deslrey.entity.vo.ArticleVO;
-import org.deslrey.entity.vo.TagCountVO;
+
+import org.deslrey.entity.vo.CountVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +25,9 @@ public class TagController {
     @Autowired
     private TagService tagService;
 
-    @GetMapping("tagCountList")
-    public Results<List<TagCountVO>> tagCountList() {
-        return tagService.tagCountList();
+    @GetMapping("tagCount")
+    public Results<List<CountVO>> tagCount() {
+        return tagService.tagCount();
     }
 
 }

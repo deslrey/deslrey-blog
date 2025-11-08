@@ -28,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper categoryMapper;
 
     @Override
-    public Results<List<CategoryCountVO>> categoryCount() {
+    public Results<List<CountVO>> categoryCount() {
         List<CountVO> categoryCountVOList = categoryMapper.selectCategoryCount();
         if (categoryCountVOList == null || categoryCountVOList.isEmpty()) {
             return Results.ok(new ArrayList<>());
