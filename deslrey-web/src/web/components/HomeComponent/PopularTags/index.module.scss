@@ -1,0 +1,78 @@
+.popularTags {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 768px) {
+        padding: 16px;
+    }
+}
+
+.sectionTitle {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--color-text);
+    @media (max-width: 768px) {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+}
+
+.tagGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tagItem {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(var(--activeColor-rgb), 0.2);
+        color: var(--activeColor);
+    }
+}
+
+.item {
+    text-decoration: none;
+    color: rgba(var(--activeColor-rgb), 0.2);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &:visited {
+        color: rgba(var(--activeColor-rgb), 0.2);
+    }
+
+    &:hover {
+        background: rgba(42, 42, 42, 0.2);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.title {
+    font-weight: 500;
+}
+
+.total {
+    font-size: 12px;
+    color: var(--color-text);
+}
+
+.empty {
+    color: var(--color-text);
+}

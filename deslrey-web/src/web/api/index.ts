@@ -13,6 +13,10 @@ export const api = {
 
     category: {
         categoryCount: baseUrl + '/category/categoryCount'
+    },
+
+    tag: {
+        tagCount: baseUrl + '/tag/tagCount'
     }
 
 }
