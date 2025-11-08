@@ -13,3 +13,9 @@ export interface Article {
     content?: string;
     exist?: boolean
 }
+
+export interface CountType {
+    id: number;
+    title: string;
+    total: number;
+}

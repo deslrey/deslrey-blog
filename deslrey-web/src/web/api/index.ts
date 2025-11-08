@@ -9,5 +9,10 @@ export const api = {
 
     article: {
         LatestReleases: baseUrl + '/article/LatestReleases'
+    },
+
+    category: {
+        categoryCount: baseUrl + '/category/categoryCount'
     }
+
 }
