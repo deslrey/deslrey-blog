@@ -1,0 +1,9 @@
+const baseUrl = "http://localhost:8080/deslrey";
+
+export const api = {
+
+    carouselPage: {
+        sex: baseUrl + "/carousel/sex",
+        scenery: baseUrl + "/carousel/scenery"
+    }
+}
