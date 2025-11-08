@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.deslrey.mapper.ArticleMapper">
+
+    <resultMap id="BaseResultMap" type="org.deslrey.entity.po.Article">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="word_count" property="wordCount"/>
+        <result column="views" property="views"/>
+        <result column="read_time" property="readTime"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
+        <result column="category" property="category"/>
+        <result column="des" property="des"/>
+        <result column="sticky" property="sticky"/>
+        <result column="edit" property="edit"/>
+        <result column="exist" property="exist"/>
+    </resultMap>
+
+    <select id="selectLatestReleases"  resultMap="BaseResultMap">
+        select id, title, create_time
+        from article
+        where exist = 1
+        order by create_time desc
+        limit 5
+    </select>
+
+
+</mapper>
