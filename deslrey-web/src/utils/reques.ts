@@ -1,7 +1,6 @@
 import axios from "axios";
 import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import { Message } from "./message";
-import { useUserStore } from "../stores/UserStore";
 
 export interface Results<T = any> {
     code: number;
@@ -18,10 +17,10 @@ class Request {
         // 请求拦截器
         this.instance.interceptors.request.use(
             (config) => {
-                const token = useUserStore.getState().user.token;
-                if (token && config.headers) {
-                    config.headers.Authorization = `token-${token}`;
-                }
+                // const token = useUserStore.getState().user.token;
+                // if (token && config.headers) {
+                //     config.headers.Authorization = `token-${token}`;
+                // }
                 return config;
             },
             (error) => Promise.reject(error)
@@ -33,17 +32,17 @@ class Request {
                 const res = response.data;
 
                 // 检查响应头是否有新 token
-                const newToken = response.headers['authorization'];
-                if (newToken && newToken.startsWith("token-")) {
-                    useUserStore.getState().setUser({
-                        ...useUserStore.getState().user,
-                        token: newToken.replace("token-", ""),
-                    });
-                }
+                // const newToken = response.headers['authorization'];
+                // if (newToken && newToken.startsWith("token-")) {
+                //     useUserStore.getState().setUser({
+                //         ...useUserStore.getState().user,
+                //         token: newToken.replace("token-", ""),
+                //     });
+                // }
 
                 if (res.code === 401) {
                     Message.error("登录超时，请重新登录");
-                    useUserStore.getState().clearUser();
+                    // useUserStore.getState().clearUser();
                     window.location.href = "/login";
                     return Promise.reject(res);
                 }
