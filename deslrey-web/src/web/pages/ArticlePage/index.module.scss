@@ -5,6 +5,11 @@
     padding: 20px;
     // margin-top: 9.9%;
     min-height: 70%;
+
+    @media (max-width: 768px) {
+        padding: 0 10px;
+        padding-top: 100px;
+    }
 }
 
 .container {

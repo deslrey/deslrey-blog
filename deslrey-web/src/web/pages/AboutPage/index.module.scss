@@ -6,9 +6,11 @@
     padding: 20px;
     min-height: 70%;
 
-    @media (max-height: 768px) {
-        min-height: 85.4%;
+    @media (max-width: 768px) {
+        padding: 0 10px;
+        padding-top: 100px;
     }
+
 }
 
 .container {
