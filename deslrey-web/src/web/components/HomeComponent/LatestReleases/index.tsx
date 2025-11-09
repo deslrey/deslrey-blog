@@ -41,7 +41,7 @@ const LatestReleases: React.FC = () => {
                             <div key={article.id} className={styles.timelineItem}>
                                 <div className={styles.dot} />
                                 <div className={styles.content}>
-                                    <Link to={`/blog/${article.id}`}>
+                                    <Link to={`/detail/${article.id}`}>
                                         <h3 className={styles.title}>{article.title}</h3>
                                     </Link>
                                 </div>

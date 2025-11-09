@@ -66,7 +66,7 @@ const ArticlePage: React.FC = () => {
                     {articles.map((item) => (
                         <Link
                             key={item.id}
-                            to={`/blog/${item.id}`}
+                            to={`/detail/${item.id}`}
                             className={`${styles.item} card-div`}
                         >
                             <div>

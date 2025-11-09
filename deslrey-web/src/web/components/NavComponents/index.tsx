@@ -37,15 +37,13 @@ const Nav: React.FC = () => {
                 window.requestAnimationFrame(() => {
                     const diff = currentScrollY - lastScrollY.current;
 
-                    console.log('diff ======> ', diff)
-
                     // 向下滚动且超过200px时隐藏
                     if (diff > 0 && currentScrollY > hideThreshold) {
                         if (visible) {
                             if (hideTimeout.current) clearTimeout(hideTimeout.current);
                             hideTimeout.current = setTimeout(() => {
                                 setVisible(false);
-                            }, 100); // 延迟一点再隐藏，让动画平滑
+                            }, 100); // 延迟一点再隐藏
                         }
                     }
                     // 向上滚动超过100px则显示

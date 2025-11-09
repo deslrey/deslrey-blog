@@ -1,0 +1,13 @@
+.blogBox {
+    font-size: 1rem;
+    padding-top: 150px;
+    width: 100%;
+
+    @media (max-width: 1024px) {
+        padding-top: 100px;
+    }
+
+    @media (max-width: 768px) {
+        padding-top: 80px;
+    }
+}

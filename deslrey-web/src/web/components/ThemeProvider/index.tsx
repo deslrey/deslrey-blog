@@ -62,7 +62,7 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
             if (!existingDark) {
                 const link = document.createElement('link');
                 link.rel = 'stylesheet';
-                link.href = '/highlight/github-dark.css';
+                link.href = '/highlight/vs2015.css';
                 link.setAttribute('data-hljs', 'dark');
                 document.head.appendChild(link);
             }
@@ -71,7 +71,7 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
             if (!existingLight) {
                 const link = document.createElement('link');
                 link.rel = 'stylesheet';
-                link.href = '/highlight/github.css';
+                link.href = '/highlight/vs.css';
                 link.setAttribute('data-hljs', 'light');
                 document.head.appendChild(link);
             }
