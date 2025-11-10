@@ -6,13 +6,11 @@ import { CodeBlockEnhancer } from "../../../utils/codeBlockEnhancer";
 import DetailHead from "../DetailHead";
 
 import hljs from "highlight.js";
-
-
-import './index.scss'
+import "./index.scss";
 
 interface BytemdViewerProps {
     article: Article;
-    carouseUrl: string
+    carouseUrl: string;
 }
 
 export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
@@ -24,7 +22,7 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
     >([]);
     const [activeId, setActiveId] = React.useState<string>("");
 
-    const content = article.content as string
+    const content = article.content as string;
 
     const headData: Article = {
         id: article.id,
@@ -37,15 +35,15 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         category: article.category,
         edit: article.edit,
         des: article.des,
-        sticky: article.sticky
+        sticky: article.sticky,
     };
-
 
     const handleScrollToTop = (e?: React.MouseEvent) => {
         e?.preventDefault();
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
+    // ✅ 修复 highlight.js 重复高亮的问题
     React.useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
@@ -53,20 +51,26 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         const enhancer = new CodeBlockEnhancer({ container });
         enhancer.enhance();
 
-        requestAnimationFrame(() => {
-            hljs.highlightAll();
-        });
+        // 高亮函数（只处理未高亮的代码块）
+        const highlightCode = () => {
+            const blocks = container.querySelectorAll("pre code:not([data-highlighted])");
+            blocks.forEach((block) => hljs.highlightElement(block as HTMLElement));
+        };
+
+        // 初次渲染
+        requestAnimationFrame(() => highlightCode());
+
+        // 监听内容变化
         const observer = new MutationObserver(() => {
             enhancer.enhance();
-            hljs.highlightAll();
+            highlightCode();
         });
 
         observer.observe(container, { childList: true, subtree: true });
-
         return () => observer.disconnect();
     }, [content]);
 
-
+    // 生成目录 & 滚动定位
     React.useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
@@ -75,7 +79,7 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
             const headingEls = Array.from(container.querySelectorAll("h2, h3")) as HTMLElement[];
             if (!headingEls.length) return;
 
-            const newHeadings = headingEls.map(h => ({
+            const newHeadings = headingEls.map((h) => ({
                 id: h.id,
                 text: h.textContent?.trim() || "",
                 level: Number(h.tagName.substring(1)),
@@ -84,7 +88,7 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
 
             const observer = new IntersectionObserver(
                 (entries) => {
-                    entries.forEach(entry => {
+                    entries.forEach((entry) => {
                         if (entry.isIntersecting) {
                             setActiveId(entry.target.id);
                         }
@@ -93,22 +97,16 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
                 { root: null, rootMargin: "-40% 0px -60% 0px", threshold: 0 }
             );
 
-            headingEls.forEach(el => observer.observe(el));
-
+            headingEls.forEach((el) => observer.observe(el));
             return () => observer.disconnect();
         });
     }, [content]);
 
-
     const scrollToHeading = React.useCallback((id: string) => {
         const el = document.getElementById(id);
         if (!el) return;
-
         el.scrollIntoView({ behavior: "smooth", block: "start" });
     }, []);
-
-
-
 
     return (
         <div className="markdown-layout">
@@ -118,6 +116,7 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
                     <Viewer value={content} plugins={plugins} />
                 </div>
             </div>
+
             <aside className="markdown-toc card-div">
                 <ul>
                     {headings.length > 0
@@ -149,7 +148,6 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
                     回到顶部
                 </a>
             </aside>
-
         </div>
     );
 };

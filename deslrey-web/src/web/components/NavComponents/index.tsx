@@ -43,7 +43,7 @@ const Nav: React.FC = () => {
                             if (hideTimeout.current) clearTimeout(hideTimeout.current);
                             hideTimeout.current = setTimeout(() => {
                                 setVisible(false);
-                            }, 100); // 延迟一点再隐藏
+                            }, 50); // 延迟一点再隐藏
                         }
                     }
                     // 向上滚动超过100px则显示
