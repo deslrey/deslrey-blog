@@ -283,6 +283,14 @@ ul {
     color: var(--activeColor);
 }
 
+.markdown-toc li.active a {
+    color: var(--activeColor);
+    font-weight: 600;
+    border-left: 2px solid var(--activeColor);
+    padding-left: 6px;
+    transition: all 0.2s;
+}
+
 /* === Skeleton 加载动画 === */
 .markdown-toc li.skeleton {
     height: 16px;

@@ -43,7 +43,6 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    // ✅ 修复 highlight.js 重复高亮的问题
     React.useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
@@ -51,16 +50,12 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         const enhancer = new CodeBlockEnhancer({ container });
         enhancer.enhance();
 
-        // 高亮函数（只处理未高亮的代码块）
         const highlightCode = () => {
             const blocks = container.querySelectorAll("pre code:not([data-highlighted])");
             blocks.forEach((block) => hljs.highlightElement(block as HTMLElement));
         };
-
-        // 初次渲染
         requestAnimationFrame(() => highlightCode());
 
-        // 监听内容变化
         const observer = new MutationObserver(() => {
             enhancer.enhance();
             highlightCode();
@@ -75,37 +70,59 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         const container = containerRef.current;
         if (!container) return;
 
-        requestAnimationFrame(() => {
-            const headingEls = Array.from(container.querySelectorAll("h2, h3")) as HTMLElement[];
-            if (!headingEls.length) return;
+        const headingEls = Array.from(container.querySelectorAll("h2, h3")) as HTMLElement[];
+        if (!headingEls.length) return;
 
-            const newHeadings = headingEls.map((h) => ({
-                id: h.id,
-                text: h.textContent?.trim() || "",
-                level: Number(h.tagName.substring(1)),
+        const newHeadings = headingEls.map((h) => ({
+            id: h.id,
+            text: h.textContent?.trim() || "",
+            level: Number(h.tagName.substring(1)),
+        }));
+        setHeadings(newHeadings);
+
+        const getOffsets = () =>
+            headingEls.map((el) => ({
+                id: el.id,
+                offsetTop: el.getBoundingClientRect().top + window.scrollY,
             }));
-            setHeadings(newHeadings);
 
-            const observer = new IntersectionObserver(
-                (entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            setActiveId(entry.target.id);
-                        }
-                    });
-                },
-                { root: null, rootMargin: "-40% 0px -60% 0px", threshold: 0 }
-            );
+        let headingOffsets = getOffsets();
 
-            headingEls.forEach((el) => observer.observe(el));
-            return () => observer.disconnect();
+        const handleScroll = () => {
+            const scrollY = window.scrollY + 120;
+            let currentId = headingOffsets[0].id;
+
+            for (let i = 0; i < headingOffsets.length; i++) {
+                const { id, offsetTop } = headingOffsets[i];
+                if (scrollY >= offsetTop) {
+                    currentId = id;
+                } else {
+                    break;
+                }
+            }
+            setActiveId(currentId);
+        };
+
+        const resizeObserver = new ResizeObserver(() => {
+            headingOffsets = getOffsets();
+            handleScroll();
         });
+        resizeObserver.observe(container);
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll();
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            resizeObserver.disconnect();
+        };
     }, [content]);
+
 
     const scrollToHeading = React.useCallback((id: string) => {
         const el = document.getElementById(id);
         if (!el) return;
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, []);
 
     return (
