@@ -19,4 +19,6 @@ public interface ArticleMapper {
     List<Article> selectArticleList();
 
     Article selectArticleDetail(Integer id);
+
+    List<Article> selectArticleByCategory(String title);
 }

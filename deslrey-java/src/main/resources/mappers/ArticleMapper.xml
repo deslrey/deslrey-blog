@@ -51,4 +51,14 @@
         </where>
     </select>
 
+    <select id="selectArticleByCategory" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        select id, title
+        from article
+        <where>
+            <if test="title != null and title != ''">category = #{title}</if>
+            <if test="title != null and title != ''">and exist = 1</if>
+        </where>
+    </select>
+
 </mapper>
