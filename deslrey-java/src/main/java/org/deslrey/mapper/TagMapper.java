@@ -16,4 +16,5 @@ import java.util.List;
 public interface TagMapper {
     List<CountVO> selectTagCount();
 
+    Integer selectIdByTitle(String title);
 }

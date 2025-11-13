@@ -1,5 +1,6 @@
 package org.deslrey.service;
 
+import org.deslrey.entity.po.Article;
 import org.deslrey.entity.vo.CountVO;
 import org.deslrey.result.Results;
 
@@ -16,4 +17,6 @@ import java.util.List;
  */
 public interface TagService {
     Results<List<CountVO>> tagCount();
+
+    Results<List<Article>> tagArticle(String title);
 }
