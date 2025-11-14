@@ -44,7 +44,7 @@ const CategoryPage: React.FC = () => {
                     <ul className={styles.articleList}>
                         {articles.map((article) => (
                             <li key={article.id} className={`${styles.articleItem} card-div`}>
-                                <Link to={`/blog/${article.id}`} className={styles.articleLink}>
+                                <Link to={`/detail/${article.id}`} className={styles.articleLink}>
                                     <span className={styles.dot}>•</span>
                                     <span className={styles.articleTitle}>{article.title}</span>
                                 </Link>
