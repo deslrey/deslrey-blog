@@ -14,7 +14,8 @@ export const api = {
     },
 
     category: {
-        categoryCount: baseUrl + '/category/categoryCount'
+        categoryCount: baseUrl + '/category/categoryCount',
+        categoryArticle: baseUrl + '/category/'
     },
 
     tag: {
