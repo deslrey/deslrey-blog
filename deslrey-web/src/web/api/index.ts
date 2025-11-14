@@ -19,7 +19,8 @@ export const api = {
     },
 
     tag: {
-        tagCount: baseUrl + '/tag/tagCount'
+        tagCount: baseUrl + '/tag/tagCount',
+        tagArticle: baseUrl + '/tag/'
     }
 
 }

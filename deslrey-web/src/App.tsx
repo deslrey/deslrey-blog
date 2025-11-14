@@ -8,6 +8,7 @@ const ArchivePage = lazy(() => import('./web/pages/ArchivePage'))
 const AboutPage = lazy(() => import('./web/pages/AboutPage'))
 const ArticleDetailPage = lazy(() => import('./web/pages/ArticleDetailPage'))
 const CategoryPage = lazy(() => import('./web/pages/CategoryPage'))
+const TagPage = lazy(() => import('./web/pages/TagPage'))
 
 
 //  404
@@ -23,6 +24,7 @@ const App: React.FC = () => {
       <Route path='about' element={<AboutPage />} />
       <Route path='detail/:id' element={<ArticleDetailPage />} />
       <Route path='category/:category' element={<CategoryPage />} />
+      <Route path='tag/:tag' element={<TagPage   />} />
       <Route path='*' element={<NotFoundPage />} />
     </Routes>
   )
