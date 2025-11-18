@@ -6,6 +6,7 @@ import request from "../../utils/reques";
 import styles from './index.module.scss'
 import ColorProvider from "../components/ColorProvider";
 import Nav from "../components/NavComponents";
+import TitleSyncComponent from "../components/TitleSyncComponent";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     const { theme } = useTheme();
@@ -65,6 +66,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             } as React.CSSProperties}
         >
             <ColorProvider>
+                <TitleSyncComponent />
                 <Nav />
                 {children}
             </ColorProvider>

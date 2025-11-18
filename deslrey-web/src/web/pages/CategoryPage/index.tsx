@@ -32,6 +32,40 @@ const CategoryPage: React.FC = () => {
         fetchData(decoded);
     }, [category]);
 
+    useEffect(() => {
+        if (!title) return;
+
+        // 页面标题
+        document.title = `分类: ${title} - deslrey博客`;
+
+        // description
+        const description = document.querySelector('meta[name="description"]');
+        const descContent = `分类「${title}」下共有 ${articles.length} 篇文章。`;
+
+        if (description) {
+            description.setAttribute("content", descContent);
+        } else {
+            const meta = document.createElement("meta");
+            meta.name = "description";
+            meta.content = descContent;
+            document.head.appendChild(meta);
+        }
+
+        // keywords
+        const keywords = document.querySelector('meta[name="keywords"]');
+        const keywordsContent = `${title}, 分类, 博客文章`;
+
+        if (keywords) {
+            keywords.setAttribute("content", keywordsContent);
+        } else {
+            const meta = document.createElement("meta");
+            meta.name = "keywords";
+            meta.content = keywordsContent;
+            document.head.appendChild(meta);
+        }
+
+    }, [title, articles.length]);
+
     return (
         <div className={styles.category}>
             <div className={styles.header}>

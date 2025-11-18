@@ -7,34 +7,64 @@ import { api } from "../../api";
 
 const TagPage: React.FC = () => {
 
-    const { tag } = useParams<{ tag: string }>()
-    const [articles, setArticles] = useState<Article[]>([])
-    const [title, setTitle] = useState<string>('')
+    const { tag } = useParams<{ tag: string }>();
+    const [articles, setArticles] = useState<Article[]>([]);
+    const [title, setTitle] = useState<string>("");
 
     const fetchData = async (decodeTag: string) => {
-        if (!decodeTag) {
-            return
-        }
+        if (!decodeTag) return;
         try {
-            const res = await request.get(api.tag.tagArticle + `${decodeTag}`)
+            const res = await request.get(api.tag.tagArticle + `${decodeTag}`);
             if (res && res.code === 200) {
-                setArticles(res.data)
+                setArticles(res.data);
             } else {
-                setArticles([])
+                setArticles([]);
             }
         } catch (error) {
-            setArticles([])
+            setArticles([]);
         }
-    }
+    };
 
     useEffect(() => {
-        if (!tag) {
-            return
+        if (!tag) return;
+
+        const decode = decodeURIComponent(tag);
+        setTitle(decode);
+        fetchData(decode);
+    }, [tag]);
+
+    useEffect(() => {
+        if (!title) return;
+
+        // 修改页面标题
+        document.title = `标签: ${title} - deslrey博客`;
+
+        // 修改 meta description
+        const description = document.querySelector('meta[name="description"]');
+        if (description) {
+            description.setAttribute(
+                "content",
+                `包含标签「${title}」的所有文章，共 ${articles.length} 篇。`
+            );
+        } else {
+            const meta = document.createElement("meta");
+            meta.name = "description";
+            meta.content = `包含标签「${title}」的所有文章，共 ${articles.length} 篇。`;
+            document.head.appendChild(meta);
         }
-        const decode = decodeURIComponent(tag)
-        setTitle(tag)
-        fetchData(decode)
-    }, [tag])
+
+        // 修改 meta keywords
+        const keywords = document.querySelector('meta[name="keywords"]');
+        if (keywords) {
+            keywords.setAttribute("content", `${title}, 标签, 博客文章`);
+        } else {
+            const meta = document.createElement("meta");
+            meta.name = "keywords";
+            meta.content = `${title}, 标签, 博客文章`;
+            document.head.appendChild(meta);
+        }
+
+    }, [title, articles.length]);
 
     return (
         <div className={styles.tagPage}>
