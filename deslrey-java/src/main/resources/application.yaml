@@ -18,7 +18,7 @@ mybatis:
 
 server:
   servlet:
-    context-path: /deslrey
+    context-path: /deslrey/api
   port: 8080
 
 
