@@ -10,17 +10,17 @@ const HomePage: React.FC = () => {
     return (
         <div className={styles.homePage}>
             <div className={styles.latestReleases}>
-                <Suspense fallback={<LoaderComponent />}>
-                    <LatestReleases />
-                </Suspense>
+                {/* <Suspense fallback={<LoaderComponent />}> */}
+                <LatestReleases />
+                {/* </Suspense> */}
             </div>
             <div className={styles.classTags}>
-                <Suspense fallback={<LoaderComponent />}>
-                    <Classify />
-                </Suspense>
-                <Suspense fallback={<LoaderComponent />}>
-                    <PopularTags />
-                </Suspense>
+                {/* <Suspense fallback={<LoaderComponent />}> */}
+                <Classify />
+                {/* </Suspense> */}
+                {/* <Suspense fallback={<LoaderComponent />}> */}
+                <PopularTags />
+                {/* </Suspense> */}
             </div>
         </div>
     )
