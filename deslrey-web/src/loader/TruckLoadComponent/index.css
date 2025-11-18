@@ -1,0 +1,129 @@
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    transform: scale(1.4);
+    transition: transform 0.3s ease;
+}
+
+.truckWrapper {
+    width: 250px;
+    /* 放大卡车 */
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* 卡车上下浮动动画 */
+.truckBody {
+    width: 160px;
+    margin-bottom: 6px;
+    animation: motion 1s linear infinite;
+}
+
+@keyframes motion {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(3px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.truckTires {
+    width: 160px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+    position: absolute;
+    bottom: 0;
+}
+
+.truckTires svg {
+    width: 28px;
+}
+
+.road {
+    width: 100%;
+    height: 2px;
+    background-color: #282828;
+    position: relative;
+    bottom: 0;
+    border-radius: 3px;
+}
+
+.road::before,
+.road::after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    background-color: #282828;
+    border-radius: 3px;
+    animation: roadAnimation 1.4s linear infinite;
+}
+
+.road::before {
+    width: 30px;
+    right: -50%;
+    border-left: 12px solid white;
+}
+
+.road::after {
+    width: 15px;
+    right: -70%;
+    border-left: 6px solid white;
+}
+
+.lampPost {
+    position: absolute;
+    bottom: 0;
+    right: -100%;
+    height: 100px;
+    animation: roadAnimation 1.4s linear infinite;
+}
+
+@keyframes roadAnimation {
+    0% {
+        transform: translateX(0px);
+    }
+
+    100% {
+        transform: translateX(-350px);
+    }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+
+    .truckWrapper {
+        width: 40%;
+        height: 30%;
+    }
+
+    .truckBody {
+        width: 100px;
+    }
+
+    .truckTires {
+        width: 100px;
+    }
+
+    .truckTires svg {
+        width: 20px;
+    }
+
+    .lampPost {
+        height: 70px;
+    }
+}
