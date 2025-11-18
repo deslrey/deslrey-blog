@@ -70,53 +70,86 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         const container = containerRef.current;
         if (!container) return;
 
-        const headingEls = Array.from(container.querySelectorAll("h2, h3")) as HTMLElement[];
-        if (!headingEls.length) return;
+        let headingEls: HTMLElement[] = [];
+        let headingOffsets: { id: string; offsetTop: number }[] = [];
+        let initialized = false;
+        let stableTimer: any = null;
 
-        const newHeadings = headingEls.map((h) => ({
-            id: h.id,
-            text: h.textContent?.trim() || "",
-            level: Number(h.tagName.substring(1)),
-        }));
-        setHeadings(newHeadings);
+        /** 检测 DOM 是否 100ms 内不再变化 */
+        const markStable = () => {
+            clearTimeout(stableTimer);
+            stableTimer = setTimeout(() => {
+                if (!initialized) {
+                    initTOC();
+                    initialized = true;
+                } else {
+                    updateOffsets();
+                }
+            }, 120);
+        };
 
-        const getOffsets = () =>
-            headingEls.map((el) => ({
+        /** 初始化 TOC（只执行一次） */
+        const initTOC = () => {
+            headingEls = Array.from(container.querySelectorAll("h2, h3")) as HTMLElement[];
+
+            setHeadings(
+                headingEls.map((h) => ({
+                    id: h.id,
+                    text: h.textContent?.trim() || "",
+                    level: Number(h.tagName.substring(1)),
+                }))
+            );
+
+            updateOffsets();
+            handleScroll();
+        };
+
+        /** 重新计算 offsetTop */
+        const updateOffsets = () => {
+            headingEls = Array.from(container.querySelectorAll("h2, h3")) as HTMLElement[];
+
+            headingOffsets = headingEls.map((el) => ({
                 id: el.id,
                 offsetTop: el.getBoundingClientRect().top + window.scrollY,
             }));
+        };
 
-        let headingOffsets = getOffsets();
-
+        /** 滚动高亮 */
         const handleScroll = () => {
             const scrollY = window.scrollY + 120;
-            let currentId = headingOffsets[0].id;
+            let currentId = headingOffsets[0]?.id;
 
             for (let i = 0; i < headingOffsets.length; i++) {
                 const { id, offsetTop } = headingOffsets[i];
-                if (scrollY >= offsetTop) {
-                    currentId = id;
-                } else {
-                    break;
-                }
+                if (scrollY >= offsetTop) currentId = id;
+                else break;
             }
-            setActiveId(currentId);
+
+            setActiveId(currentId || "");
         };
 
-        const resizeObserver = new ResizeObserver(() => {
-            headingOffsets = getOffsets();
-            handleScroll();
+        /** 监听 DOM 完成渲染 */
+        const mo = new MutationObserver(() => {
+            markStable();
         });
-        resizeObserver.observe(container);
+        mo.observe(container, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+        });
 
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        handleScroll();
+        window.addEventListener("scroll", handleScroll);
+
+        // 初始触发一次
+        markStable();
 
         return () => {
             window.removeEventListener("scroll", handleScroll);
-            resizeObserver.disconnect();
+            mo.disconnect();
+            clearTimeout(stableTimer);
         };
     }, [content]);
+
 
 
     const scrollToHeading = React.useCallback((id: string) => {

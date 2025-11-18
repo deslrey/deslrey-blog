@@ -17,10 +17,10 @@ const ArticleDetailPage: React.FC = () => {
         const fetchData = async () => {
             try {
                 const res = await request.get(`${api.article.articleDetail + id}`)
-                console.log('res ======> ', res)
+                // console.log('res ======> ', res)
 
                 if (res && res.code === 200) {
-                    console.log('data ======> ', res.data)
+                    // console.log('data ======> ', res.data)
                     setPost(res.data)
                 }
             } catch (error) {
