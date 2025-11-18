@@ -2,6 +2,7 @@ package org.deslrey.controller;
 
 import org.deslrey.result.Results;
 import org.deslrey.util.StaticUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +22,15 @@ import java.util.concurrent.ThreadLocalRandom;
 @RequestMapping("/carousel")
 public class CarouselController {
 
-    private static final String sexImagePath = StaticUtils.BASE_URL + "bg/sex/";
-    private static final String sceneryImagePath = StaticUtils.BASE_URL + "bg/scenery/";
+    @Value("${carousel.sex-api}")
+    private String sexImagePath;
+
+    @Value("${carousel.scenery-api}")
+    private String sceneryImagePath;
+
+//    private static final String sexImagePath = StaticUtils.BASE_URL + "bg/sex/";
+
+//    private static final String sceneryImagePath = StaticUtils.BASE_URL + "bg/scenery/";
 
     private static final int sexSum = 2401;
     private static final int scenerySum = 1600;

@@ -24,3 +24,7 @@ server:
 
 custom:
   static-source-path: D:\repository\images
+
+carousel:
+  sex-api: http://localhost:8080/deslrey/api/staticSource/bg/sex/
+  scenery-api: http://localhost:8080/deslrey/api/staticSource/bg/scenery/
