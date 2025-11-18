@@ -7,12 +7,16 @@ import styles from './index.module.scss'
 import ColorProvider from "../components/ColorProvider";
 import Nav from "../components/NavComponents";
 import TitleSyncComponent from "../components/TitleSyncComponent";
+import MobileNav from "../components/MobileNav";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     const { theme } = useTheme();
     const { series } = useBgSeries();
     const [bgUrl, setBgUrl] = useState('');
     const [loaded, setLoaded] = useState(false);
+
+    const [isMobile, setIsMobile] = useState(false);
+
 
     useEffect(() => {
         const getBg = async () => {
@@ -58,6 +62,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         img.onload = () => setLoaded(true);
     }, [bgUrl]);
 
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     return (
         <div
             className={`${styles.PageBox} ${loaded ? styles.loaded : ''} ${series === 'pure' ? styles.pure : ''}`}
@@ -67,7 +79,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         >
             <ColorProvider>
                 <TitleSyncComponent />
-                <Nav />
+                {isMobile ? <MobileNav /> : <Nav />}
                 {children}
             </ColorProvider>
         </div>

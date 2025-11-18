@@ -20,6 +20,21 @@ const HomePage: React.FC = () => {
                 {/* </Suspense> */}
                 {/* <Suspense fallback={<LoaderComponent />}> */}
                 <PopularTags />
+                <PopularTags />
+                <PopularTags />
+                <PopularTags />
+                <PopularTags />
+                <PopularTags />
+                <PopularTags />
+                <PopularTags />
+                <PopularTags />
+                <PopularTags />
+                <PopularTags />
+                <PopularTags />
+                <PopularTags />
+                <PopularTags />
+                <PopularTags />
+                <PopularTags />
                 {/* </Suspense> */}
             </div>
         </div>
