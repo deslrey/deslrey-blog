@@ -14,8 +14,8 @@ const ArticlePage: React.FC = () => {
     const [page, setPage] = useState(1);
     const [pageSize] = useState(5);
     const [total, setTotal] = useState(0);
-    const [hasNextPage, setHasNextPage] = useState(false);
-    const [hasPreviousPage, setHasPreviousPage] = useState(false);
+    const [_hasNextPage, setHasNextPage] = useState(false);
+    const [_hasPreviousPage, setHasPreviousPage] = useState(false);
 
     useEffect(() => {
         const fetchArticles = async () => {

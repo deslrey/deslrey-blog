@@ -10,7 +10,7 @@ const ArticleDetailPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
 
     const [post, setPost] = useState<Article>();
-    const [carouseUrl, setCarouseUrl] = useState("");
+    const [carouseUrl, _setCarouseUrl] = useState("");
 
     // 文章数据请求
     useEffect(() => {

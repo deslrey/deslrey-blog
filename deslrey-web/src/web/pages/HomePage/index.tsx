@@ -1,8 +1,9 @@
-import React, { Suspense } from 'react'
+// import React, { Suspense } from 'react'
+import React from 'react'
 
 import styles from './index.module.scss'
 import LatestReleases from '../../components/HomeComponent/LatestReleases'
-import LoaderComponent from '../../../loader/LoaderComponent'
+// import LoaderComponent from '../../../loader/LoaderComponent'
 import Classify from '../../components/HomeComponent/Classify'
 import PopularTags from '../../components/HomeComponent/PopularTags'
 

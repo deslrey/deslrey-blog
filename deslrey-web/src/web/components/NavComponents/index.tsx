@@ -22,13 +22,13 @@ const NavItem: React.FC<{ item: RouteType }> = ({ item }) => {
 };
 
 const Nav: React.FC = () => {
-    const [scrollY, setScrollY] = useState(0);
+    const [scrollY, _setScrollY] = useState(0);
     const [visible, setVisible] = useState(true);
     const lastScrollY = useRef(0);
     const ticking = useRef(false);
     const hideThreshold = 100;
     const showThreshold = 10;
-    const hideTimeout = useRef<NodeJS.Timeout | null>(null);
+    const hideTimeout = useRef<any>(null);
 
     useEffect(() => {
         const handleScroll = () => {
