@@ -47,15 +47,15 @@ class Request {
                     return Promise.reject(res);
                 }
 
-                if (res.code !== 200) {
-                    Message.error(res.message);
-                    return Promise.reject(res);
-                }
+                // if (res.code !== 200) {
+                //     Message.error(res.message);
+                //     return Promise.reject(res);
+                // }
 
                 return response;
             },
             (error) => {
-                Message.error("请求异常");
+                // Message.error("请求异常");
                 return Promise.reject(error);
             }
         );
