@@ -12,28 +12,22 @@ const ArticleDetailPage: React.FC = () => {
 
     const [post, setPost] = useState<Article>();
     const [carouseUrl, _setCarouseUrl] = useState("");
-    const [showLoading, setShowLoading] = useState(true); // ← 新增
+    const [showLoading, setShowLoading] = useState(true);
 
-    // 请求文章
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const res = await request.get(`${api.article.articleDetail + id}`);
-
                 if (res && res.code === 200) {
                     setPost(res.data);
-
-                    // 让加载动画至少显示 5 秒
-                    setTimeout(() => {
-                        setShowLoading(false);
-                    }, 5000);
                 }
+                setShowLoading(false)
             } catch (error) {
-                console.log(error);
+                setShowLoading(false)
             }
         };
 
-        setShowLoading(true); // 每次切换文章重新进入加载态
+        setShowLoading(true);
         fetchData();
     }, [id]);
 
@@ -68,11 +62,14 @@ const ArticleDetailPage: React.FC = () => {
         <div className={styles.blogBox}>
             {showLoading ? (
                 <BanterComponent />
+            ) : post ? (
+                <BytemdViewer article={post} carouseUrl={carouseUrl} />
             ) : (
-                post && <BytemdViewer article={post} carouseUrl={carouseUrl} />
+                <div className={styles.empty}>暂无数据</div>
             )}
         </div>
     );
+
 };
 
 export default ArticleDetailPage;

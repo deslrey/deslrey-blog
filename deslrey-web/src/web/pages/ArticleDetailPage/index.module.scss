@@ -3,6 +3,11 @@
     padding-top: 150px;
     width: 100%;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+
     @media (max-width: 1024px) {
         padding-top: 100px;
     }
@@ -10,4 +15,11 @@
     @media (max-width: 768px) {
         padding-top: 80px;
     }
+}
+
+.empty {
+    font-size: 1.4rem;
+    color: var(--color-text);
+    text-align: center;
+    padding: 20px;
 }

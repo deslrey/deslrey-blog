@@ -6,6 +6,8 @@ import { CodeBlockEnhancer } from "../../../utils/codeBlockEnhancer";
 import DetailHead from "../DetailHead";
 
 import hljs from "highlight.js";
+hljs.configure({ ignoreUnescapedHTML: true });
+
 import "./index.scss";
 
 interface BytemdViewerProps {
@@ -50,19 +52,15 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         const enhancer = new CodeBlockEnhancer({ container });
         enhancer.enhance();
 
-        const highlightCode = () => {
-            const blocks = container.querySelectorAll("pre code:not([data-highlighted])");
-            blocks.forEach((block) => hljs.highlightElement(block as HTMLElement));
-        };
-        requestAnimationFrame(() => highlightCode());
-
-        const observer = new MutationObserver(() => {
-            enhancer.enhance();
-            highlightCode();
+        requestAnimationFrame(() => {
+            const blocks = container.querySelectorAll("pre code");
+            blocks.forEach((block: any) => {
+                if (block.dataset.highlighted) {
+                    delete block.dataset.highlighted;
+                }
+                hljs.highlightElement(block);
+            });
         });
-
-        observer.observe(container, { childList: true, subtree: true });
-        return () => observer.disconnect();
     }, [content]);
 
     // 生成目录 & 滚动定位
@@ -168,7 +166,7 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
             </div>
 
             <aside className="markdown-toc card-div">
-                目录: 
+                目录:
                 <ul>
                     {headings.length > 0
                         ? headings.map((h) => (
