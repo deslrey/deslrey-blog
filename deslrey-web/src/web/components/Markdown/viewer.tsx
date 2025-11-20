@@ -168,6 +168,7 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
             </div>
 
             <aside className="markdown-toc card-div">
+                目录: 
                 <ul>
                     {headings.length > 0
                         ? headings.map((h) => (
