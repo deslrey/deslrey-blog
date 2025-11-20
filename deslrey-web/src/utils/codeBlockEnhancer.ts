@@ -17,7 +17,8 @@ import {
     siRedis,
     siCss,
     siSass
-} from 'simple-icons/icons';
+} from 'simple-icons';
+
 
 type CodeBlockEnhancerOptions = {
     container: HTMLElement;
