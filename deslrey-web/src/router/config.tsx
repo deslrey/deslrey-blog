@@ -18,9 +18,9 @@ export const useWebRoutes = (): RouteType[] => [
         icon: <Newspaper />
     },
     {
-        path: '/archive',
-        disPlayName: '归档',
-        title: '归档',
+        path: '/note',
+        disPlayName: '摘记',
+        title: '摘记',
         element: null,
         icon: <Archive />
     },
