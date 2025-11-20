@@ -1,0 +1,30 @@
+.headerBox {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr; // 左 中 右
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(#fff, 0.4);
+
+    .leftBox {
+        justify-self: start;
+        padding-left: 10%;
+        .avatar {
+            width: 7%;
+            height: 7%;
+            border-radius: 50%;
+        }
+    }
+
+    .midBox {
+        justify-self: center;
+    }
+
+    .rightBox {
+        justify-self: end;
+        padding-right: 30px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+}
