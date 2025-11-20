@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import styles from './index.module.scss'
 import { useRoutes, type RouteType } from './config'
 import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom'
-import WithLoading from '../../components/WithLoading'
 import Header from '../../components/Header'
+import LoaderComponent from '../../components/LoaderComponent'
 
 const SideItem: React.FC<{ item: RouteType }> = ({ item }) => {
     if (!item.disPlayName)
@@ -44,7 +44,7 @@ const Admin: React.FC = () => {
                     ))}
                 </div>
                 <div className={styles.contentBox}>
-                    <WithLoading>
+                    <Suspense fallback={<LoaderComponent />}>
                         <Routes>
                             {sideList.map((item: RouteType) => (
                                 <Route key={item.path} path={item.path} element={item.element} />
@@ -56,8 +56,7 @@ const Admin: React.FC = () => {
                             {/* 兜底 404 处理 */}
                             <Route path="*" element={<div>页面不存在</div>} />
                         </Routes>
-                    </WithLoading>
-
+                    </Suspense>
                 </div>
             </div>
         </div>
