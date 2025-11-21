@@ -316,6 +316,13 @@ ul {
     }
 }
 
+.no-toc {
+    color: var(--color-text);
+    font-size: 14px;
+    padding: 8px 0;
+}
+
+
 /* === 编辑器外观 === */
 .bytemd {
     border: 1px solid #d1d5db;

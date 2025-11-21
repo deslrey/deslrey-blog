@@ -172,8 +172,8 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
             <aside className="markdown-toc card-div">
                 目录:
                 <ul>
-                    {headings.length > 0
-                        ? headings.map((h) => (
+                    {headings.length > 0 ? (
+                        headings.map((h) => (
                             <li
                                 key={h.id}
                                 className={`lv-${h.level} ${activeId === h.id ? "active" : ""}`}
@@ -189,13 +189,9 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
                                 </a>
                             </li>
                         ))
-                        : Array(5)
-                            .fill(0)
-                            .map((_, i) => (
-                                <li key={i} className="skeleton">
-                                    <span />
-                                </li>
-                            ))}
+                    ) : (
+                        <li className="no-toc">暂无目录</li>
+                    )}
                 </ul>
                 <a href="#top" onClick={handleScrollToTop}>
                     回到顶部
