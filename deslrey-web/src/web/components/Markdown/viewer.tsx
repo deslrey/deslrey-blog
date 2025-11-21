@@ -6,9 +6,9 @@ import { CodeBlockEnhancer } from "../../../utils/codeBlockEnhancer";
 import DetailHead from "../DetailHead";
 
 import hljs from "highlight.js";
-hljs.configure({ ignoreUnescapedHTML: true });
-
 import "./index.scss";
+
+hljs.configure({ ignoreUnescapedHTML: true });
 
 interface BytemdViewerProps {
     article: Article;
@@ -52,15 +52,19 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         const enhancer = new CodeBlockEnhancer({ container });
         enhancer.enhance();
 
-        requestAnimationFrame(() => {
-            const blocks = container.querySelectorAll("pre code");
-            blocks.forEach((block: any) => {
-                if (block.dataset.highlighted) {
-                    delete block.dataset.highlighted;
-                }
-                hljs.highlightElement(block);
-            });
+        const highlightCode = () => {
+            const blocks = container.querySelectorAll("pre code:not([data-highlighted])");
+            blocks.forEach((block) => hljs.highlightElement(block as HTMLElement));
+        };
+        requestAnimationFrame(() => highlightCode());
+
+        const observer = new MutationObserver(() => {
+            enhancer.enhance();
+            highlightCode();
         });
+
+        observer.observe(container, { childList: true, subtree: true });
+        return () => observer.disconnect();
     }, [content]);
 
     // 生成目录 & 滚动定位
