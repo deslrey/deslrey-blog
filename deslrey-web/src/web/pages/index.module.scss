@@ -1,7 +1,7 @@
 .PageBox {
     position: relative;
     width: 100%;
-    min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -10,7 +10,7 @@
         background-image 1s ease;
 }
 
-/* 默认使用图片背景 */
+/* 默认背景（桌面端用正常全屏） */
 .PageBox::after {
     content: "";
     position: fixed;
@@ -18,18 +18,32 @@
     background-image: var(--overlay-gradient), var(--bg-url);
     background-position: center center;
     background-size: cover;
+    background-repeat: no-repeat;
     opacity: 0;
     transition: opacity 1s ease;
     z-index: -1;
+    pointer-events: none;
 }
 
 .PageBox.loaded::after {
     opacity: 1;
 }
 
-/* 纯色模式：不显示背景图 */
+/* 纯色模式 */
 .PageBox.pure::after {
     background-image: none;
     background-color: var(--pure-bg);
     opacity: 1;
+}
+
+/* 移动端特殊处理：避免地址栏缩放导致背景抖动/拉伸 */
+@media (max-width: 768px) {
+    .PageBox::after {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 150vh; /* 背景足够大，不会因为地址栏伸缩而重新计算 */
+        transform: translateY(-25vh); /* 居中修正 */
+        inset: unset; /* 禁用桌面端的 inset: 0 */
+    }
 }
