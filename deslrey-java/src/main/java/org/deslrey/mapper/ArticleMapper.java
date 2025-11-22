@@ -21,4 +21,7 @@ public interface ArticleMapper {
     Article selectArticleDetail(Integer id);
 
     List<Article> selectArticleByCategory(String title);
+
+    List<Article> selectViewHot();
+
 }

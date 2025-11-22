@@ -62,4 +62,10 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return Results.ok(article);
     }
+
+    @Override
+    public Results<List<Article>> viewHot() {
+        List<Article> articleList = articleMapper.selectViewHot();
+        return Results.ok(articleList);
+    }
 }

@@ -40,4 +40,9 @@ public class ArticleController {
         return articleService.articleDetail(id);
     }
 
+    @GetMapping("viewHot")
+    public Results<List<Article>> viewHot() {
+        return articleService.viewHot();
+    }
+
 }
