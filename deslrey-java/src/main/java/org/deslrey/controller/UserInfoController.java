@@ -1,0 +1,36 @@
+package org.deslrey.controller;
+
+import org.deslrey.annotation.RequireLogin;
+import org.deslrey.entity.po.UserInfo;
+import org.deslrey.entity.vo.UserTokenVO;
+import org.deslrey.result.Results;
+import org.deslrey.service.UserInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * <br>
+ * 用户控制层
+ * </br>
+ *
+ * @author deslrey
+ * @version 1.0
+ * @since 2025/11/21 18:30
+ */
+@RestController
+@RequestMapping("user")
+public class UserInfoController {
+
+    @Autowired
+    private UserInfoService userInfoService;
+
+//    @RequireLogin
+    @PostMapping("login")
+    public Results<UserTokenVO> login(@RequestBody UserInfo userInfo) {
+        return userInfoService.login(userInfo);
+    }
+
+}
