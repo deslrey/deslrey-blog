@@ -24,4 +24,5 @@ public interface ArticleService {
 
     Results<List<Article>> viewHot();
 
+    Results<PageInfo<Article>> adminArticleList(int page, int pageSize);
 }

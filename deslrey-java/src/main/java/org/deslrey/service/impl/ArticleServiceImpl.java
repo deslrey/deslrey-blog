@@ -51,6 +51,18 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public Results<PageInfo<Article>> adminArticleList(int page, int pageSize) {
+        if (page < 1)
+            page = 1;
+        if (pageSize < 1)
+            pageSize = 1;
+        PageHelper.startPage(page, pageSize);
+        List<Article> articleList = articleMapper.selectAdminArticleList();
+        PageInfo<Article> articlePageInfo = new PageInfo<>(articleList);
+        return Results.ok(articlePageInfo);
+    }
+
+    @Override
     public Results<Article> articleDetail(Integer id) {
         if (NumberUtils.isLessZero(id)) {
             return Results.fail(ResultCodeEnum.CODE_501);

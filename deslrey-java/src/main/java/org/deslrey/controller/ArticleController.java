@@ -1,6 +1,7 @@
 package org.deslrey.controller;
 
 import com.github.pagehelper.PageInfo;
+import org.deslrey.annotation.RequireLogin;
 import org.deslrey.entity.po.Article;
 import org.deslrey.result.Results;
 import org.deslrey.service.ArticleService;
@@ -35,6 +36,11 @@ public class ArticleController {
         return articleService.articleList(page, pageSize);
     }
 
+    @GetMapping("admin-list")
+    public Results<PageInfo<Article>> adminArticleList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
+        return articleService.adminArticleList(page, pageSize);
+    }
+
     @GetMapping("articleDetail/{id}")
     public Results<Article> articleDetail(@PathVariable Integer id) {
         return articleService.articleDetail(id);
@@ -44,5 +50,6 @@ public class ArticleController {
     public Results<List<Article>> viewHot() {
         return articleService.viewHot();
     }
+
 
 }

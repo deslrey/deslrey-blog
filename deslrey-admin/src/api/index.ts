@@ -14,7 +14,7 @@ export const addArticleApi = {
 };
 
 export const articleApi = {
-    list: "/article/list",
+    list: "/article/admin-list",
     viewHot: "/article/viewHot"
 }
 

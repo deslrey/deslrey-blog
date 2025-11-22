@@ -41,6 +41,23 @@
         order by create_time desc
     </select>
 
+
+    <select id="selectAdminArticleList" resultMap="BaseResultMap">
+        SELECT id,
+               title,
+               word_count,
+               views,
+               create_time,
+               update_time,
+               category,
+               des,
+               sticky,
+               edit,
+               exist
+        FROM article
+
+    </select>
+
     <select id="selectArticleDetail" resultMap="BaseResultMap"
             parameterType="java.lang.Integer">
         select id, title, content, word_count, views, read_time, create_time, update_time, category, des, sticky, edit
@@ -67,5 +84,7 @@
         order by views desc
         limit 5
     </select>
+
+
 
 </mapper>

@@ -24,4 +24,6 @@ public interface ArticleMapper {
 
     List<Article> selectViewHot();
 
+    List<Article> selectAdminArticleList();
+
 }
