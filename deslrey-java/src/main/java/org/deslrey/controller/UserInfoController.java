@@ -27,10 +27,14 @@ public class UserInfoController {
     @Autowired
     private UserInfoService userInfoService;
 
-//    @RequireLogin
     @PostMapping("login")
     public Results<UserTokenVO> login(@RequestBody UserInfo userInfo) {
         return userInfoService.login(userInfo);
+    }
+
+    @PostMapping("register")
+    public Results<Void> register(@RequestBody UserInfo userInfo) {
+        return userInfoService.register(userInfo);
     }
 
 }

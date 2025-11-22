@@ -15,4 +15,6 @@ import org.deslrey.result.Results;
  */
 public interface UserInfoService {
     Results<UserTokenVO> login(UserInfo userInfo);
+
+    Results<Void> register(UserInfo userInfo);
 }

@@ -13,4 +13,8 @@ import org.deslrey.entity.po.UserInfo;
  */
 public interface UserInfoMapper {
     UserInfo selectUserByName(String userName);
+
+    int selectUserNameOrEmailExist(String userName, String email);
+
+    int insertUser(UserInfo user);
 }

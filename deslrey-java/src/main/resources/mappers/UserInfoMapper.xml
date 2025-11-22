@@ -17,11 +17,49 @@
         <result column="exist" property="exist"/>
     </resultMap>
 
+    <!-- 插入用户 -->
+    <insert id="insertUser" parameterType="org.deslrey.entity.po.UserInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName != null and userName != ''">user_name,</if>
+            <if test="passWord != null and passWord != ''">pass_word,</if>
+            <if test="email != null and email != ''">email,</if>
+            <if test="salt != null and salt != ''">salt,</if>
+            create_time,
+            update_time,
+            <if test="exist != null">exist,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userName != null and userName != ''">#{userName},</if>
+            <if test="passWord != null and passWord != ''">#{passWord},</if>
+            <if test="email != null and email != ''">#{email},</if>
+            <if test="salt != null and salt != ''">#{salt},</if>
+            NOW(),
+            NOW(),
+            <if test="exist != null">#{exist},</if>
+        </trim>
+    </insert>
+
     <select id="selectUserByName" resultMap="BaseResultMap" parameterType="java.lang.String">
         select id,user_name,pass_word,email,salt,avatar,exist
         from user_info
         <where>
             <if test="userName != null and userName != ''">user_name = #{userName}</if>
+        </where>
+    </select>
+
+    <!-- 检查用户名或邮箱是否存在 -->
+    <select id="selectUserNameOrEmailExist" resultType="java.lang.Integer">
+        select count(1)
+        from user_info
+        <where>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName}
+            </if>
+            <if test="email != null and email != ''">
+                <if test="userName != null and userName != ''">or</if>
+                email = #{email}
+            </if>
         </where>
     </select>
 

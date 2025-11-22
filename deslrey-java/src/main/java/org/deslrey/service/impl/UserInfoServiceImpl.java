@@ -72,4 +72,38 @@ public class UserInfoServiceImpl implements UserInfoService {
         return Results.ok(userTokenVO, "登陆成功");
 
     }
+
+    @Override
+    public Results<Void> register(UserInfo userInfo) {
+        if (userInfo == null) {
+            return Results.fail(ResultCodeEnum.CODE_501);
+        }
+        if (StringUtils.isBlank(userInfo.getUserName()) || StringUtils.isBlank(userInfo.getEmail())) {
+            return Results.fail("用户名或邮箱不能为空");
+        }
+        if (StringUtils.isBlank(userInfo.getPassWord())) {
+            return Results.fail("密码不能为空");
+        }
+
+        int result = userInfoMapper.selectUserNameOrEmailExist(userInfo.getUserName(), userInfo.getEmail());
+        if (result > 0) {
+            return Results.fail(ResultCodeEnum.ACCOUNT_EXIST);
+        }
+
+        String salt = PasswordUtils.generateSalt();
+        String hashPassword = PasswordUtils.hashPassword(userInfo.getPassWord(), salt);
+
+        UserInfo user = new UserInfo();
+        user.setUserName(userInfo.getUserName());
+        user.setPassWord(hashPassword);
+        user.setEmail(userInfo.getEmail());
+        user.setSalt(salt);
+        user.setExist(true);
+
+        result = userInfoMapper.insertUser(user);
+        if (result > 0) {
+            return Results.ok("注册成功");
+        }
+        return Results.fail("注册失败");
+    }
 }
