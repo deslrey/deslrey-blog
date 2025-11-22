@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from './index.module.scss'
 import request from '../../../utils/request'
-import { userApi } from '../../../api/adminApi'
+import { userApi } from '../../../api'
 import { Message } from '../../../utils/message'
 import { TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
 import qs from 'qs'

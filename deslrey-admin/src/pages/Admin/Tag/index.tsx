@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 import request from '../../../utils/request';
 import { Message } from '../../../utils/message';
 import { FolderPlus, SquarePen } from 'lucide-react';
-import { tagApi } from '../../../api/adminApi';
+import { tagApi } from '../../../api';
 
 const TagPage: React.FC = () => {
 

@@ -10,7 +10,7 @@ import request from '../../../utils/request';
 import dayjs from 'dayjs';
 import { FolderPlus, SquarePen } from 'lucide-react';
 import { Message } from '../../../utils/message';
-import { folderApi } from '../../../api/adminApi';
+import { folderApi } from '../../../api';
 
 const FolderPage: React.FC = () => {
     const [folders, setFolders] = useState<Folder[]>([]);

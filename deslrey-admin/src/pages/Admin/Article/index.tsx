@@ -22,7 +22,7 @@ import { OperateType } from "../../../interfaces";
 import styles from "./index.module.scss";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
-import { articleApi } from "../../../api/adminApi";
+import { articleApi } from "../../../api";
 
 const Article: React.FC = () => {
     const navigate = useNavigate();

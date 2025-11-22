@@ -23,7 +23,7 @@ import styles from "./index.module.scss";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { Message } from "../../../utils/message";
-import { draftApi } from "../../../api/adminApi";
+import { draftApi } from "../../../api";
 
 const DraftPage: React.FC = () => {
     const navigate = useNavigate();

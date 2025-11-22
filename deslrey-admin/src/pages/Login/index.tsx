@@ -13,7 +13,7 @@ import { Message } from "../../utils/message";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../../store";
 import type { User } from "../../interfaces";
-import { loginApi } from "../../api/publicApi";
+import { loginApi } from "../../api";
 
 interface LoginForm {
     userName: string;

@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 import { Copy, Eye, ImageUp, ScanSearch } from 'lucide-react';
 import { Message } from '../../../utils/message';
 import { formatFileSize } from '../../../utils/format';
-import { imageApi } from '../../../api/adminApi';
+import { imageApi } from '../../../api';
 
 
 const ImageTable: React.FC = () => {

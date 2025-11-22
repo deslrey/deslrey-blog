@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import * as echarts from 'echarts'
 import styles from './index.module.scss'
 import request from '../../../utils/request'
-import { articleApi } from '../../../api/adminApi'
+import { articleApi } from '../../../api'
 
 const Home: React.FC = () => {
     const chartRef = useRef<HTMLDivElement>(null)

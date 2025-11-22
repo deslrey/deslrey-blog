@@ -17,7 +17,7 @@ import { OperateType, type ArticleDraft, type Category, type Draft, type Tag } f
 import request from '../../../utils/request';
 import { Message } from '../../../utils/message';
 import { useSearchParams } from 'react-router-dom';
-import { editArticleApi } from '../../../api/adminApi';
+import { editArticleApi } from '../../../api';
 
 const CustomPopper = styled(Popper)({
     '& .MuiAutocomplete-listbox': {

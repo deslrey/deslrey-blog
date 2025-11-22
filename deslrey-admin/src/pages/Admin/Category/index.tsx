@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 import request from '../../../utils/request';
 import { Message } from '../../../utils/message';
 import { FolderPlus, SquarePen } from 'lucide-react';
-import { categoryApi } from '../../../api/adminApi';
+import { categoryApi } from '../../../api';
 
 const CategoryPage: React.FC = () => {
     const [categorys, setCategorys] = useState<Category[]>([]);

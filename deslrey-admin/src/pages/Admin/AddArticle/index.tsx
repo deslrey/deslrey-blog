@@ -16,7 +16,7 @@ import styles from './index.module.scss';
 import type { Category, Tag } from '../../../interfaces';
 import request from '../../../utils/request';
 import { Message } from '../../../utils/message';
-import { addArticleApi } from '../../../api/adminApi';
+import { addArticleApi } from '../../../api';
 
 const CustomPopper = styled(Popper)({
     '& .MuiAutocomplete-listbox': {
