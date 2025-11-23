@@ -12,6 +12,20 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
+    <insert id="insertFolder">
+        insert into folder
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="folderName != null and folderName != ''">folder_name,</if>
+            <if test="path != null and path != ''">path,</if>
+            create_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="folderName != null and folderName != ''">#{folderName},</if>
+            <if test="path != null and path != ''">#{path},</if>
+            NOW(),
+        </trim>
+    </insert>
+
     <!-- 获取全部文件夹名称列表(最新的10条) -->
     <select id="selectFolderNameList" resultMap="BaseResultMap">
         select id, folder_name
@@ -34,6 +48,18 @@
         <where>
             <if test="id != null">id = #{id}</if>
         </where>
+    </select>
+
+    <select id="selectExistsFolderByName" resultType="java.lang.Boolean" parameterType="java.lang.String">
+        select exists(
+        select 1
+        from folder
+        <where>
+            <if test="folderName != null and folderName != ''">
+                folder_name = #{folderName}
+            </if>
+        </where>
+        )
     </select>
 
 

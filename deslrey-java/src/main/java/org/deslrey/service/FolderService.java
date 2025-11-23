@@ -19,4 +19,6 @@ public interface FolderService {
     Results<List<Folder>> folderNameList();
 
     Results<PageInfo<Folder>> folderList( int page, int pageSize);
+
+    Results<Void> addFolder(Folder folder);
 }

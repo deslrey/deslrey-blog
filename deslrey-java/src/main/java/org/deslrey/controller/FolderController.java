@@ -1,14 +1,12 @@
 package org.deslrey.controller;
 
 import com.github.pagehelper.PageInfo;
+import org.deslrey.annotation.RequireLogin;
 import org.deslrey.entity.po.Folder;
 import org.deslrey.result.Results;
 import org.deslrey.service.FolderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,6 +34,12 @@ public class FolderController {
     @GetMapping("folderNameList")
     public Results<List<Folder>> folderNameList() {
         return folderService.folderNameList();
+    }
+
+    @RequireLogin
+    @PostMapping("addFolder")
+    public Results<Void> addFolder(@RequestBody Folder folder) {
+        return folderService.addFolder(folder);
     }
 
 }

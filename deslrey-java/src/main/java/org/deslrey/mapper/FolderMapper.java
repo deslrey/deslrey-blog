@@ -20,4 +20,8 @@ public interface FolderMapper {
     List<Folder> selectFolderList();
 
     Folder selectFolderById(@Param("id") Integer folderId);
+
+    boolean selectExistsFolderByName(@Param("folderName") String folderName);
+
+    int insertFolder(@Param("folderName") String folderName, @Param("path") String path);
 }
