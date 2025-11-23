@@ -20,5 +20,11 @@
         order by total desc
     </select>
 
+    <select id="selectCategoryList" resultMap="BaseResultMap">
+        select id, category_title, create_time
+        from category
+        order by create_time desc
+    </select>
+
 
 </mapper>

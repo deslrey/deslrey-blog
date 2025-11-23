@@ -1,7 +1,10 @@
 package org.deslrey.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.deslrey.entity.po.Article;
+import org.deslrey.entity.po.Category;
 import org.deslrey.entity.vo.CountVO;
 import org.deslrey.mapper.ArticleMapper;
 import org.deslrey.mapper.CategoryMapper;
@@ -32,6 +35,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private ArticleMapper articleMapper;
+
+    @Override
+    public Results<PageInfo<Category>> categoryList(int page, int pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<Category> categoryList = categoryMapper.selectCategoryList();
+        if (categoryList == null || categoryList.isEmpty()) {
+            return Results.ok(new PageInfo<>(new ArrayList<>()));
+        }
+        PageInfo<Category> categoryPageInfo = new PageInfo<>(categoryList);
+        return Results.ok(categoryPageInfo);
+    }
 
     @Override
     public Results<List<CountVO>> categoryCount() {
