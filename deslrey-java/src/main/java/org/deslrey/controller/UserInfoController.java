@@ -43,4 +43,9 @@ public class UserInfoController {
         return userInfoService.updateUserName(oldName, newName);
     }
 
+    @RequireLogin
+    @PostMapping("updatePassword")
+    public Results<Void> updatePassword(String olbPassWord, String newPassWord) {
+        return userInfoService.updatePassword(olbPassWord, newPassWord);
+    }
 }

@@ -21,4 +21,5 @@ public interface UserInfoMapper {
 
     int updateUserNameByName(@Param("oldUserName") String currentUsername, @Param("newUserName") String newName);
 
+    int updatePassWord(@Param("passWord") String hashedPassword, Integer id);
 }

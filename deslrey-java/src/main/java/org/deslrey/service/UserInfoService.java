@@ -19,4 +19,6 @@ public interface UserInfoService {
     Results<Void> register(UserInfo userInfo);
 
     Results<Void> updateUserName(String oldName, String newName);
+
+    Results<Void> updatePassword(String olbPassWord, String newPassWord);
 }

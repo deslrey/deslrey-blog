@@ -55,6 +55,18 @@
         </where>
     </update>
 
+    <!-- 修改密码 -->
+    <update id="updatePassWord">
+        update user_info
+        <set>
+            <if test="passWord != null and passWord != ''">pass_word = #{passWord},</if>
+            update_time = NOW()
+        </set>
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
+    </update>
+
     <select id="selectUserByName" resultMap="BaseResultMap" parameterType="java.lang.String">
         select id,user_name,pass_word,email,salt,avatar,exist
         from user_info
