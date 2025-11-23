@@ -1,6 +1,9 @@
 package org.deslrey.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Article;
+import org.deslrey.entity.po.Tag;
 import org.deslrey.entity.vo.CountVO;
 import org.deslrey.mapper.ArticleMapper;
 import org.deslrey.mapper.ArticleTagMapper;
@@ -31,6 +34,17 @@ public class TagServiceImpl implements TagService {
 
     @Autowired
     private ArticleTagMapper articleTagMapper;
+
+    @Override
+    public Results<PageInfo<Tag>> tagList(int page, int pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<Tag> tagList = tagMapper.selectTagList();
+        if (tagList == null || tagList.isEmpty()) {
+            return Results.ok(new PageInfo<>(new ArrayList<>()));
+        }
+        PageInfo<Tag> tagPageInfo = new PageInfo<>(tagList);
+        return Results.ok(tagPageInfo);
+    }
 
     @Override
     public Results<List<CountVO>> tagCount() {

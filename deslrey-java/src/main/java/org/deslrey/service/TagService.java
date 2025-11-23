@@ -1,6 +1,8 @@
 package org.deslrey.service;
 
+import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Article;
+import org.deslrey.entity.po.Tag;
 import org.deslrey.entity.vo.CountVO;
 import org.deslrey.result.Results;
 
@@ -19,4 +21,7 @@ public interface TagService {
     Results<List<CountVO>> tagCount();
 
     Results<List<Article>> tagArticle(String title);
+
+    Results<PageInfo<Tag>> tagList(int page, int pageSize);
+
 }

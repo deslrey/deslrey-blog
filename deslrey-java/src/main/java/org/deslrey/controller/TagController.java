@@ -1,7 +1,9 @@
 package org.deslrey.controller;
 
 
+import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Article;
+import org.deslrey.entity.po.Tag;
 import org.deslrey.entity.vo.CountVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.TagService;
@@ -25,6 +27,11 @@ public class TagController {
 
     @Autowired
     private TagService tagService;
+
+    @GetMapping("tagList")
+    public Results<PageInfo<Tag>> tagList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
+        return tagService.tagList(page, pageSize);
+    }
 
     @GetMapping("tagCount")
     public Results<List<CountVO>> tagCount() {

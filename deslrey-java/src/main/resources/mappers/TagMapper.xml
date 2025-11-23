@@ -22,8 +22,8 @@
         group by t.id, t.tag_title
         having count(at.article_id) > 0
         order by total desc
-
     </select>
+
     <select id="selectIdByTitle" resultType="java.lang.Integer" parameterType="java.lang.String">
         select id
         from tag
@@ -34,6 +34,12 @@
         </where>
         order by create_time desc
         limit 1
+    </select>
+
+    <select id="selectTagList" resultMap="BaseResultMap">
+        select id, tag_title, create_time
+        from tag
+        order by create_time desc
     </select>
 
 

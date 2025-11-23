@@ -1,5 +1,6 @@
 package org.deslrey.mapper;
 
+import org.deslrey.entity.po.Tag;
 import org.deslrey.entity.vo.CountVO;
 
 import java.util.List;
@@ -17,4 +18,7 @@ public interface TagMapper {
     List<CountVO> selectTagCount();
 
     Integer selectIdByTitle(String title);
+
+    List<Tag> selectTagList();
+
 }
