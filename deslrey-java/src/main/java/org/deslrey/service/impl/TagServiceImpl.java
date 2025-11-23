@@ -8,8 +8,10 @@ import org.deslrey.entity.vo.CountVO;
 import org.deslrey.mapper.ArticleMapper;
 import org.deslrey.mapper.ArticleTagMapper;
 import org.deslrey.mapper.TagMapper;
+import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.TagService;
+import org.deslrey.util.NumberUtils;
 import org.deslrey.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,5 +74,31 @@ public class TagServiceImpl implements TagService {
             return Results.ok(new ArrayList<>(0));
         }
         return Results.ok(articleList);
+    }
+
+    @Override
+    public Results<Void> addTag(Tag tag) {
+        if (tag == null || StringUtils.isBlank(tag.getTagTitle())) {
+            return Results.fail(ResultCodeEnum.EMPTY_VALUE);
+        }
+
+        int result = tagMapper.insertTag(tag.getTagTitle());
+        if (result > 0) {
+            return Results.ok("新增成功");
+        }
+        return Results.fail("新增失败");
+    }
+
+    @Override
+    public Results<Void> updateTagTitle(Tag tag) {
+        if (tag == null || NumberUtils.isLessZero(tag.getId()) || StringUtils.isBlank(tag.getTagTitle())) {
+            return Results.fail(ResultCodeEnum.EMPTY_VALUE);
+        }
+
+        int result = tagMapper.updateTagTitle(tag);
+        if (result > 0) {
+            return Results.ok("修改成功");
+        }
+        return Results.fail("更新失败");
     }
 }

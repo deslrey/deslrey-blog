@@ -11,6 +11,28 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
+    <!-- 插入标签 -->
+    <insert id="insertTag" parameterType="java.lang.String">
+        insert into tag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tagTitle != null and tagTitle != ''">tag_title,</if>
+            create_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tagTitle != null and tagTitle != ''">#{tagTitle},</if>
+            NOW(),
+        </trim>
+    </insert>
+
+    <!-- 修改标签标题 -->
+    <update id="updateTagTitle" parameterType="org.deslrey.entity.po.Tag">
+        update tag
+        <set>
+            <if test="tagTitle != null and tagTitle != ''">tag_title = #{tagTitle},</if>
+        </set>
+        where id = #{id}
+    </update>
+
     <select id="selectTagCount" resultType="org.deslrey.entity.vo.CountVO">
         select t.id,
                t.tag_title          as title,

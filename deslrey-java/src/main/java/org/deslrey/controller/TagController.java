@@ -2,6 +2,7 @@ package org.deslrey.controller;
 
 
 import com.github.pagehelper.PageInfo;
+import org.deslrey.annotation.RequireLogin;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.po.Tag;
 import org.deslrey.entity.vo.CountVO;
@@ -41,6 +42,18 @@ public class TagController {
     @GetMapping("{title}")
     public Results<List<Article>> tagArticle(@PathVariable String title) {
         return tagService.tagArticle(title);
+    }
+
+    @RequireLogin
+    @PostMapping("addTag")
+    public Results<Void> addTag(@RequestBody Tag tag) {
+        return tagService.addTag(tag);
+    }
+
+    @RequireLogin
+    @PostMapping("updateTagTitle")
+    public Results<Void> updateTagTitle(@RequestBody Tag tag) {
+        return tagService.updateTagTitle(tag);
     }
 
 }

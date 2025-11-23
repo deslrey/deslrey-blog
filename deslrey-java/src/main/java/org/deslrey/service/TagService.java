@@ -24,4 +24,7 @@ public interface TagService {
 
     Results<PageInfo<Tag>> tagList(int page, int pageSize);
 
+    Results<Void> addTag(Tag tag);
+
+    Results<Void> updateTagTitle(Tag tag);
 }
