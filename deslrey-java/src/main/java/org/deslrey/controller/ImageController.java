@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * <br>
  * 图片控制器
@@ -34,6 +36,12 @@ public class ImageController {
     @PostMapping("uploadImage")
     public Results<Void> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("folderId") Integer folderId) {
         return imageService.uploadImage(file, folderId);
+    }
+
+    @RequireLogin
+    @GetMapping("obscure")
+    public Results<List<ImageVO>> obscureFolderName(String folderName) {
+        return imageService.obscureFolderName(folderName);
     }
 
 }

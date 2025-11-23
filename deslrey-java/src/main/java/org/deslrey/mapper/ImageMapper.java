@@ -18,4 +18,6 @@ public interface ImageMapper {
     List<ImageVO> selectList();
 
     int insertImage(Image image);
+
+    List<ImageVO> selectObscureFolderName(String folderName);
 }

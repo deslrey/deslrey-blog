@@ -51,4 +51,26 @@
         order by i.create_time
     </select>
 
+    <!-- 模糊查询：根据文件夹名匹配图片 -->
+    <select id="selectObscureFolderName"
+            resultType="org.deslrey.entity.vo.ImageVO"
+            parameterType="java.lang.String">
+        select i.id,
+        i.folder_id as folderId,
+        f.folder_name as folderName,
+        i.image_name as imageName,
+        i.path,
+        i.url,
+        i.size,
+        i.create_time as createTime
+        from image i
+        left join folder f on i.folder_id = f.id
+        <where>
+            <if test="folderName != null and folderName != ''">
+                f.folder_name like concat('%', #{folderName}, '%')
+            </if>
+        </where>
+        order by i.create_time desc
+    </select>
+
 </mapper>

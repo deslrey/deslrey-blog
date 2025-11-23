@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -98,5 +99,15 @@ public class ImageServiceImpl implements ImageService {
             return Results.fail("上传失败");
         }
 
+    }
+
+
+    @Override
+    public Results<List<ImageVO>> obscureFolderName(String folderName) {
+        if (StringUtils.isEmpty(folderName)) {
+            return Results.ok(new ArrayList<>(0));
+        }
+        List<ImageVO> imageList = imageMapper.selectObscureFolderName(folderName);
+        return Results.ok(imageList);
     }
 }
