@@ -3,6 +3,7 @@ package org.deslrey.service;
 import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.vo.ImageVO;
 import org.deslrey.result.Results;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <br>
@@ -15,4 +16,6 @@ import org.deslrey.result.Results;
  */
 public interface ImageService {
     Results<PageInfo<ImageVO>> imageList(int page, int pageSize);
+
+    Results<Void> uploadImage(MultipartFile file, Integer folderId);
 }

@@ -27,5 +27,14 @@
         order by create_time desc
     </select>
 
+    <!-- 根据ID查询文件夹 -->
+    <select id="selectFolderById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select id, folder_name, path
+        from folder
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
+    </select>
+
 
 </mapper>

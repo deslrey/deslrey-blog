@@ -15,12 +15,33 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
+    <!-- 插入图片 -->
+    <insert id="insertImage" parameterType="org.deslrey.entity.po.Image">
+        insert into image
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="folderId != null">folder_id,</if>
+            <if test="imageName != null and imageName != ''">image_name,</if>
+            <if test="path != null and path != ''">path,</if>
+            <if test="url != null and url != ''">url,</if>
+            <if test="size != null">size,</if>
+            create_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="folderId != null">#{folderId},</if>
+            <if test="imageName != null and imageName != ''">#{imageName},</if>
+            <if test="path != null and path != ''">#{path},</if>
+            <if test="url != null and url != ''">#{url},</if>
+            <if test="size != null">#{size},</if>
+            NOW(),
+        </trim>
+    </insert>
+
     <!-- 查询全部图片 -->
     <select id="selectList" resultType="org.deslrey.entity.vo.ImageVO">
         select i.id,
                i.folder_id   as folderId,
                f.folder_name as folderName,
-               i.image_name  as imagePath,
+               i.image_name  as imageName,
                i.path,
                i.url,
                i.size,

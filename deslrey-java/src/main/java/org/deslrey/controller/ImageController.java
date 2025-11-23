@@ -1,14 +1,13 @@
 package org.deslrey.controller;
 
 import com.github.pagehelper.PageInfo;
+import org.deslrey.annotation.RequireLogin;
 import org.deslrey.entity.vo.ImageVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <br>
@@ -29,6 +28,12 @@ public class ImageController {
     @GetMapping("list")
     public Results<PageInfo<ImageVO>> imageList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize) {
         return imageService.imageList(page, pageSize);
+    }
+
+    @RequireLogin
+    @PostMapping("uploadImage")
+    public Results<Void> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("folderId") Integer folderId) {
+        return imageService.uploadImage(file, folderId);
     }
 
 }

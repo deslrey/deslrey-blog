@@ -34,8 +34,8 @@ const ImageTable: React.FC = () => {
     const [searchFolderName, setSearchFolderName] = useState<string>('')
 
     // 点击 Eye 打开预览
-    const handlePreview = (url: string) => {
-        setPreviewUrl(url);
+    const handlePreview = (url: string, path: string) => {
+        setPreviewUrl(import.meta.env.VITE_IMAGE_API + path + url);
         setOpenPreview(true);
     };
 
@@ -236,7 +236,7 @@ const ImageTable: React.FC = () => {
                                     <TableCell>{image.path}</TableCell>
                                     <TableCell>{dayjs(image.createTime).format("YYYY-MM-DD HH:mm")}</TableCell>
                                     <TableCell>
-                                        <Button onClick={() => handlePreview(image.url)}>
+                                        <Button onClick={() => handlePreview(image.url, image.path)}>
                                             <Eye color="#000" />
                                         </Button>
                                     </TableCell>

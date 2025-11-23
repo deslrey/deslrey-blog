@@ -1,5 +1,6 @@
 package org.deslrey.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.deslrey.entity.po.Folder;
 
 import java.util.List;
@@ -18,4 +19,5 @@ public interface FolderMapper {
 
     List<Folder> selectFolderList();
 
+    Folder selectFolderById(@Param("id") Integer folderId);
 }
