@@ -43,13 +43,13 @@ export const folderApi = {
     list: '/folder/list',
     addFolder: '/folder/addFolder',
     updateFolder: '/folder/updateFolder',
+    folderNameList: '/folder/folderNameList'
 }
 
 export const imageApi = {
     list: '/image/list',
     obscureFolderName: '/image/obscure',
     uploadImage: '/image/uploadImage',
-    folderNameList: '/folder/folderNameList'
 }
 
 export const tagApi = {

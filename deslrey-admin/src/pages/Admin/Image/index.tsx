@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 import { Copy, Eye, ImageUp, ScanSearch } from 'lucide-react';
 import { Message } from '../../../utils/message';
 import { formatFileSize } from '../../../utils/format';
-import { imageApi } from '../../../api';
+import { folderApi, imageApi } from '../../../api';
 
 
 const ImageTable: React.FC = () => {
@@ -41,7 +41,7 @@ const ImageTable: React.FC = () => {
 
     // 拉取文件夹列表并去重
     const fetchFolders = async () => {
-        const res = await request.get<Folder[]>(imageApi.folderNameList);
+        const res = await request.get<Folder[]>(folderApi.folderNameList);
         const uniqueFolders = Array.from(
             new Map(res.data.map((f: Folder) => [f.id, f])).values()
         );
