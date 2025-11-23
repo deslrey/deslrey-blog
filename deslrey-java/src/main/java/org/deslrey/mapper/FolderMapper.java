@@ -15,4 +15,7 @@ import java.util.List;
  */
 public interface FolderMapper {
     List<Folder> selectFolderNameList();
+
+    List<Folder> selectFolderList();
+
 }

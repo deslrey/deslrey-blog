@@ -1,5 +1,6 @@
 package org.deslrey.service;
 
+import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Folder;
 import org.deslrey.result.Results;
 
@@ -17,4 +18,5 @@ import java.util.List;
 public interface FolderService {
     Results<List<Folder>> folderNameList();
 
+    Results<PageInfo<Folder>> folderList( int page, int pageSize);
 }

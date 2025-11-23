@@ -12,11 +12,19 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
+    <!-- 获取全部文件夹名称列表(最新的10条) -->
     <select id="selectFolderNameList" resultMap="BaseResultMap">
         select id, folder_name
         from folder
         order by create_time desc
         limit 10
+    </select>
+
+    <!-- 查询所有文件夹 -->
+    <select id="selectFolderList" resultMap="BaseResultMap">
+        select id, folder_name, path, create_time
+        from folder
+        order by create_time desc
     </select>
 
 

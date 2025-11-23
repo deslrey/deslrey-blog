@@ -1,5 +1,7 @@
 package org.deslrey.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.deslrey.entity.po.Folder;
 import org.deslrey.mapper.FolderMapper;
@@ -26,6 +28,14 @@ public class FolderServiceImpl implements FolderService {
 
     @Autowired
     private FolderMapper folderMapper;
+
+    @Override
+    public Results<PageInfo<Folder>> folderList(int page, int pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<Folder> folderList = folderMapper.selectFolderList();
+        PageInfo<Folder> pageInfo = new PageInfo<>(folderList);
+        return Results.ok(pageInfo);
+    }
 
     @Override
     public Results<List<Folder>> folderNameList() {
