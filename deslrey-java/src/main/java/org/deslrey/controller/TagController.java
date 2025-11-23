@@ -56,4 +56,10 @@ public class TagController {
         return tagService.updateTagTitle(tag);
     }
 
+    @RequireLogin
+    @GetMapping("tagNameList")
+    public Results<List<Tag>> tagNameList() {
+        return tagService.tagNameList();
+    }
+
 }

@@ -64,5 +64,11 @@
         order by create_time desc
     </select>
 
+    <select id="selectTagNameList" resultMap="BaseResultMap">
+        select id, tag_title
+        from tag
+        order by create_time desc
+    </select>
+
 
 </mapper>

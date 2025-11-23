@@ -1,5 +1,6 @@
 package org.deslrey.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.deslrey.entity.po.Article;
 
 import java.util.List;
@@ -25,5 +26,7 @@ public interface ArticleMapper {
     List<Article> selectViewHot();
 
     List<Article> selectAdminArticleList();
+
+    Article selectEditArticleById(@Param("articleId") Integer articleId);
 
 }

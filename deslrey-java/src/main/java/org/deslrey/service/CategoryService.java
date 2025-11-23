@@ -27,4 +27,7 @@ public interface CategoryService {
     Results<Void> addCategory(Category category);
 
     Results<Void> updateCategoryTitle(Category category);
+
+    Results<List<Category>> categoryArticleList();
+
 }

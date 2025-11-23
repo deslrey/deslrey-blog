@@ -19,4 +19,14 @@
         </where>
     </select>
 
+    <!-- 根据文章ID查询标签ID列表 -->
+    <select id="selectArticleTagListById" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select tag_id
+        from article_tag
+        <where>
+            <if test="articleId != null">article_id = #{articleId}</if>
+        </where>
+    </select>
+
+
 </mapper>

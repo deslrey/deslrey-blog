@@ -3,6 +3,7 @@ package org.deslrey.controller;
 import com.github.pagehelper.PageInfo;
 import org.deslrey.annotation.RequireLogin;
 import org.deslrey.entity.po.Article;
+import org.deslrey.entity.vo.ArticleDraftVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +52,11 @@ public class ArticleController {
         return articleService.viewHot();
     }
 
+
+//    @RequireLogin
+    @GetMapping("editArticle/{articleId}")
+    public Results<ArticleDraftVO> editArticle(@PathVariable Integer articleId) {
+        return articleService.editArticle(articleId);
+    }
 
 }

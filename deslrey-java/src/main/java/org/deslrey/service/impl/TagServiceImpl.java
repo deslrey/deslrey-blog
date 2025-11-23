@@ -101,4 +101,13 @@ public class TagServiceImpl implements TagService {
         }
         return Results.fail("更新失败");
     }
+
+    @Override
+    public Results<List<Tag>> tagNameList() {
+        List<Tag> tagList = tagMapper.selectTagNameList();
+        if (tagList == null || tagList.isEmpty()) {
+            return Results.ok(new ArrayList<>(0));
+        }
+        return Results.ok(tagList);
+    }
 }

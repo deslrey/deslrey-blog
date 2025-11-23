@@ -55,4 +55,10 @@ public class CategoryController {
     public Results<Void> updateCategoryTitle(@RequestBody Category category) {
         return categoryService.updateCategoryTitle(category);
     }
+
+    @RequireLogin
+    @GetMapping("categoryArticleList")
+    public Results<List<Category>> categoryArticleList() {
+        return categoryService.categoryArticleList();
+    }
 }

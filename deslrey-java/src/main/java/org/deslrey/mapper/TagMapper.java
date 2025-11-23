@@ -25,4 +25,7 @@ public interface TagMapper {
     int insertTag(@Param("tagTitle") String tagTitle);
 
     int updateTagTitle(Tag tag);
+
+    List<Tag> selectTagNameList();
+
 }

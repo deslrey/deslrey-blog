@@ -27,4 +27,7 @@ public interface TagService {
     Results<Void> addTag(Tag tag);
 
     Results<Void> updateTagTitle(Tag tag);
+
+    Results<List<Tag>> tagNameList();
+
 }

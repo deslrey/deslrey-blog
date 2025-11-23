@@ -95,4 +95,14 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return Results.fail("更新失败");
     }
+
+    @Override
+    public Results<List<Category>> categoryArticleList() {
+        List<Category> categoryList = categoryMapper.selectCategoryArticleList();
+        if (categoryList == null || categoryList.isEmpty()) {
+            return Results.ok(new ArrayList<>(0));
+        }
+
+        return Results.ok(categoryList);
+    }
 }

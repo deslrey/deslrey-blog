@@ -85,6 +85,14 @@
         limit 5
     </select>
 
+    <select id="selectEditArticleById" resultMap="BaseResultMap"
+            parameterType="java.lang.Integer">
+        select id, title, content, des, category
+        from article
+        <where>
+            <if test="articleId != null">id = #{articleId}</if>
+        </where>
+    </select>
 
 
 </mapper>

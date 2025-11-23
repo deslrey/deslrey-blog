@@ -1,5 +1,6 @@
 package org.deslrey.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.deslrey.entity.po.Article;
 
 import java.util.List;
@@ -16,4 +17,6 @@ import java.util.List;
 public interface ArticleTagMapper {
 
     List<Article> selectArticleTag(Integer tagId);
+
+    List<Integer> selectArticleTagListById(@Param("articleId") Integer articleId);
 }
