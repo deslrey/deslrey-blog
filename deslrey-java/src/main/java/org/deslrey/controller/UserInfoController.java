@@ -37,4 +37,10 @@ public class UserInfoController {
         return userInfoService.register(userInfo);
     }
 
+    @RequireLogin
+    @PostMapping("updateUserName")
+    public Results<Void> updateUserName(String oldName, String newName) {
+        return userInfoService.updateUserName(oldName, newName);
+    }
+
 }

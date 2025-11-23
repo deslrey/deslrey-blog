@@ -40,6 +40,21 @@
         </trim>
     </insert>
 
+    <!-- 修改用户名 -->
+    <update id="updateUserNameByName">
+        update user_info
+        <set>
+            <if test="newUserName != null and newUserName != ''">
+                user_name = #{newUserName}
+            </if>
+        </set>
+        <where>
+            <if test="oldUserName != null and oldUserName != ''">
+                user_name = #{oldUserName}
+            </if>
+        </where>
+    </update>
+
     <select id="selectUserByName" resultMap="BaseResultMap" parameterType="java.lang.String">
         select id,user_name,pass_word,email,salt,avatar,exist
         from user_info

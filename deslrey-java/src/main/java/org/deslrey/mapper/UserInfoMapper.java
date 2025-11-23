@@ -1,5 +1,6 @@
 package org.deslrey.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.deslrey.entity.po.UserInfo;
 
 /**
@@ -17,4 +18,7 @@ public interface UserInfoMapper {
     int selectUserNameOrEmailExist(String userName, String email);
 
     int insertUser(UserInfo user);
+
+    int updateUserNameByName(@Param("oldUserName") String currentUsername, @Param("newUserName") String newName);
+
 }
