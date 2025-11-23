@@ -42,4 +42,10 @@ public class FolderController {
         return folderService.addFolder(folder);
     }
 
+    @RequireLogin
+    @PostMapping("updateFolder")
+    public Results<Void> updateFolder(@RequestBody Folder folder) {
+        return folderService.updateFolder(folder);
+    }
+
 }

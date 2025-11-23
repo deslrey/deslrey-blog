@@ -26,6 +26,18 @@
         </trim>
     </insert>
 
+    <!-- 更新文件夹 -->
+    <update id="updateFolderById" parameterType="org.deslrey.entity.po.Folder">
+        update folder
+        <set>
+            <if test="folderName != null and folderName != ''">folder_name = #{folderName},</if>
+            <if test="path != null and path != ''">path = #{path},</if>
+        </set>
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
+    </update>
+
     <!-- 获取全部文件夹名称列表(最新的10条) -->
     <select id="selectFolderNameList" resultMap="BaseResultMap">
         select id, folder_name
@@ -58,6 +70,16 @@
             <if test="folderName != null and folderName != ''">
                 folder_name = #{folderName}
             </if>
+        </where>
+        )
+    </select>
+
+    <select id="selectExistById" resultType="java.lang.Boolean" parameterType="java.lang.Integer">
+        select exists(
+        select 1
+        from folder
+        <where>
+            <if test="id != null">id = #{id}</if>
         </where>
         )
     </select>

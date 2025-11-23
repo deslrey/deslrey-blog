@@ -24,4 +24,8 @@ public interface FolderMapper {
     boolean selectExistsFolderByName(@Param("folderName") String folderName);
 
     int insertFolder(@Param("folderName") String folderName, @Param("path") String path);
+
+    boolean selectExistById(@Param("id") Integer id);
+
+    int updateFolderById(Folder folder);
 }
