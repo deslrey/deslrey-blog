@@ -56,11 +56,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
             writeUnauthorized(response);
             return false;
         }
-
-        // 设置认证信息
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        request.setAttribute("jwt-username", username);
 
         // 自动续期
         if (JwtUtils.isTokenExpiringSoon(token, 5 * 60 * 1000)) {
