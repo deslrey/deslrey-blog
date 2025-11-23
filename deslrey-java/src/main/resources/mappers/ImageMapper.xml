@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.deslrey.mapper.ImageMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.deslrey.entity.po.Image">
+        <id column="id" property="id"/>
+        <result column="folder_id" property="folderId"/>
+        <result column="image_name" property="imageName"/>
+        <result column="path" property="path"/>
+        <result column="url" property="url"/>
+        <result column="size" property="size"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
+    </resultMap>
+
+    <!-- 查询全部图片 -->
+    <select id="selectList" resultType="org.deslrey.entity.vo.ImageVO">
+        select i.id,
+               i.folder_id   as folderId,
+               f.folder_name as folderName,
+               i.image_name  as imagePath,
+               i.path,
+               i.url,
+               i.size,
+               i.create_time as createTime
+        from image i
+                 left join folder f on i.folder_id = f.id
+        order by i.create_time
+    </select>
+
+</mapper>
