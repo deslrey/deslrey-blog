@@ -11,6 +11,32 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
+    <!-- 插入分类 -->
+    <insert id="insertCategory" parameterType="org.deslrey.entity.po.Category">
+        insert into category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="categoryTitle != null and categoryTitle != ''">category_title,</if>
+            create_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="categoryTitle != null and categoryTitle != ''">#{categoryTitle},</if>
+            NOW(),
+        </trim>
+    </insert>
+
+    <!-- 更新分类标题 -->
+    <update id="updateCategoryTitle" parameterType="org.deslrey.entity.po.Category">
+        update category
+        <set>
+            <if test="categoryTitle != null and categoryTitle != ''">
+                category_title = #{categoryTitle},
+            </if>
+        </set>
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
+    </update>
+
     <select id="selectCategoryCount" resultType="org.deslrey.entity.vo.CountVO">
         select c.id, c.category_title as title, COUNT(a.id) as total
         from category c

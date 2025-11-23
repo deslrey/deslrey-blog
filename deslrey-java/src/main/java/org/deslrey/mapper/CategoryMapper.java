@@ -1,5 +1,6 @@
 package org.deslrey.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.deslrey.entity.po.Category;
 import org.deslrey.entity.vo.CountVO;
 
@@ -19,4 +20,7 @@ public interface CategoryMapper {
 
     List<Category> selectCategoryList();
 
+    int insertCategory(@Param("categoryTitle") String categoryTitle);
+
+    int updateCategoryTitle(Category category);
 }

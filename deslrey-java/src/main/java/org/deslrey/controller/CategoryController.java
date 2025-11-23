@@ -2,6 +2,7 @@ package org.deslrey.controller;
 
 
 import com.github.pagehelper.PageInfo;
+import org.deslrey.annotation.RequireLogin;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.po.Category;
 import org.deslrey.entity.vo.CountVO;
@@ -43,4 +44,15 @@ public class CategoryController {
         return categoryService.categoryArticle(title);
     }
 
+    @RequireLogin
+    @PostMapping("addCategory")
+    public Results<Void> addCategory(@RequestBody Category category) {
+        return categoryService.addCategory(category);
+    }
+
+    @RequireLogin
+    @PostMapping("updateCategoryTitle")
+    public Results<Void> updateCategoryTitle(@RequestBody Category category) {
+        return categoryService.updateCategoryTitle(category);
+    }
 }
