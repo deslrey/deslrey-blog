@@ -88,6 +88,7 @@ const EditArticle: React.FC = () => {
     const handleConfirmSave = async () => {
         setOpenConfirmSave(false);
         const payload = {
+            id: operateId,
             title,
             content,
             category: category?.categoryTitle || null,
@@ -182,7 +183,7 @@ const EditArticle: React.FC = () => {
             setTitle(data.title)
             setContent(data.content)
             setDescription(data.des)
-            setCategory(data.categoryPO)
+            setCategory(data.category)
             setSelectedTagIds(data.tagIdList)
         } catch (error) {
             Message.error('获取数据失败')

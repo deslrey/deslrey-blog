@@ -3,6 +3,7 @@ package org.deslrey.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Article;
+import org.deslrey.entity.po.ArticleDraft;
 import org.deslrey.entity.po.Category;
 import org.deslrey.entity.vo.ArticleDraftVO;
 import org.deslrey.mapper.ArticleMapper;
@@ -15,6 +16,7 @@ import org.deslrey.util.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,4 +121,55 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return Results.ok(articleDraftVO);
     }
+
+    @Override
+    public Results<Void> addArticle(ArticleDraft articleDraft) {
+        if (articleDraft == null) {
+            return Results.fail(ResultCodeEnum.CODE_501);
+        }
+
+        // 构建 Article
+        Article article = new Article();
+        article.setId(articleDraft.getId());
+        article.setTitle(articleDraft.getTitle());
+        article.setContent(articleDraft.getContent());
+        String content = articleDraft.getContent() == null ? "" : articleDraft.getContent();
+        article.setWordCount(content.length());
+        int readTime = Math.max(1, content.length() / 200);
+        article.setReadTime(readTime);
+        article.setCategory(articleDraft.getCategory());
+        article.setDes(articleDraft.getDes());
+        article.setExist(true);
+
+        LocalDateTime now = LocalDateTime.now();
+
+        int result;
+
+        if (articleDraft.getId() == null) {
+            article.setViews(0);
+            article.setCreateTime(now);
+            article.setUpdateTime(now);
+            article.setEdit(false);
+            result = articleMapper.insertArticle(article);
+        } else {
+            article.setUpdateTime(now);
+            article.setEdit(true);
+            result = articleMapper.updateArticle(article);
+
+            articleTagMapper.deleteTagByArticleId(articleDraft.getId());
+
+            if (articleDraft.getTagIdList() != null) {
+                for (Integer tagId : articleDraft.getTagIdList()) {
+                    articleTagMapper.insertArticleTag(article.getId(), tagId);
+                }
+            }
+        }
+
+        if (result <= 0) {
+            return Results.fail("保存失败");
+        }
+
+        return Results.ok("保存成功");
+    }
+
 }

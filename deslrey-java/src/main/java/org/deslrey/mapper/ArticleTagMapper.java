@@ -19,4 +19,8 @@ public interface ArticleTagMapper {
     List<Article> selectArticleTag(Integer tagId);
 
     List<Integer> selectArticleTagListById(@Param("articleId") Integer articleId);
+
+    void deleteTagByArticleId(@Param("articleId") Integer id);
+
+    void insertArticleTag(@Param("articleId") Integer id,@Param("tagId") Integer tagId);
 }

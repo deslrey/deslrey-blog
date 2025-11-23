@@ -29,4 +29,7 @@ public interface ArticleMapper {
 
     Article selectEditArticleById(@Param("articleId") Integer articleId);
 
+    int insertArticle(Article article);
+
+    int updateArticle(Article article);
 }

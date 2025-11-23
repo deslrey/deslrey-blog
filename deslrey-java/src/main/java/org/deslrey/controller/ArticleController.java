@@ -3,6 +3,7 @@ package org.deslrey.controller;
 import com.github.pagehelper.PageInfo;
 import org.deslrey.annotation.RequireLogin;
 import org.deslrey.entity.po.Article;
+import org.deslrey.entity.po.ArticleDraft;
 import org.deslrey.entity.vo.ArticleDraftVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.ArticleService;
@@ -53,10 +54,16 @@ public class ArticleController {
     }
 
 
-//    @RequireLogin
+    @RequireLogin
     @GetMapping("editArticle/{articleId}")
     public Results<ArticleDraftVO> editArticle(@PathVariable Integer articleId) {
         return articleService.editArticle(articleId);
+    }
+
+    @RequireLogin
+    @PostMapping("addArticle")
+    public Results<Void> addArticle(@RequestBody ArticleDraft articleDraft) {
+        return articleService.addArticle(articleDraft);
     }
 
 }

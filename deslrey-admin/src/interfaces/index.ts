@@ -26,7 +26,7 @@ export interface ArticleDraft {
     id: number;
     title: string;
     content: string;
-    categoryPO: Category;
+    category: Category;
     tagIdList: number[];
     des: string;
 }

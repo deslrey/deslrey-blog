@@ -9,6 +9,25 @@
         <result column="tag_id" property="tagId"/>
     </resultMap>
 
+    <!-- 插入文章-标签关系 -->
+    <insert id="insertArticleTag" parameterType="org.deslrey.entity.po.ArticleTag">
+        insert into article_tag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">article_id,</if>
+            <if test="tagId != null">tag_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">#{articleId},</if>
+            <if test="tagId != null">#{tagId},</if>
+        </trim>
+    </insert>
+
+    <delete id="deleteTagByArticleId" parameterType="java.lang.Integer">
+        delete
+        from article_tag
+        where article_id = #{articleId}
+    </delete>
+
     <select id="selectArticleTag" resultType="org.deslrey.entity.po.Article" parameterType="java.lang.Integer">
         select a.id, a.title
         from article_tag t

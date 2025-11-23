@@ -20,6 +20,56 @@
         <result column="exist" property="exist"/>
     </resultMap>
 
+    <!-- 插入文章 -->
+    <insert id="insertArticle" parameterType="org.deslrey.entity.po.Article" keyProperty="id" useGeneratedKeys="true">
+        insert into article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="wordCount != null">word_count,</if>
+            <if test="views != null">views,</if>
+            <if test="readTime != null">read_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="category != null">category,</if>
+            <if test="des != null">des,</if>
+            <if test="sticky != null">sticky,</if>
+            <if test="edit != null">edit,</if>
+            <if test="exist != null">exist,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="wordCount != null">#{wordCount},</if>
+            <if test="views != null">#{views},</if>
+            <if test="readTime != null">#{readTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="category != null">#{category},</if>
+            <if test="des != null">#{des},</if>
+            <if test="sticky != null">#{sticky},</if>
+            <if test="edit != null">#{edit},</if>
+            <if test="exist != null">#{exist},</if>
+        </trim>
+    </insert>
+
+    <!--  更新文章  -->
+    <update id="updateArticle" parameterType="org.deslrey.entity.po.Article">
+        update article
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="wordCount != null">word_count = #{wordCount},</if>
+            <if test="readTime != null">read_time = #{readTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="category != null">category = #{category},</if>
+            <if test="edit != null">edit = #{edit},</if>
+            <if test="des != null">des = #{des},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+
     <select id="selectLatestReleases" resultMap="BaseResultMap">
         select id, title, create_time
         from article
