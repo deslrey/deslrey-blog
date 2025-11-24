@@ -139,4 +139,20 @@ public class RedisUtils {
         redisTemplate.opsForSet().remove(key, value);
     }
 
+    // ======================= Keys 操作 =======================
+    public java.util.Set<String> keys(String pattern) {
+        return redisTemplate.keys(pattern);
+    }
+
+    // 原子读取并重置
+    public String getAndSet(String key, String value) {
+        return redisTemplate.opsForValue().getAndSet(key, value);
+    }
+
+    // Hash 原子自增
+    public Long hincrBy(String key, String field, long delta) {
+        return redisTemplate.opsForHash().increment(key, field, delta);
+    }
+
+
 }

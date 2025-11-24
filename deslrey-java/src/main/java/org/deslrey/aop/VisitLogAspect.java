@@ -8,6 +8,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.deslrey.entity.po.ArticleVisitLog;
 import org.deslrey.mapper.ArticleVisitLogMapper;
 import org.deslrey.util.IPUtils;
+import org.deslrey.util.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,23 +35,32 @@ public class VisitLogAspect {
     @Autowired
     private ArticleVisitLogMapper logMapper;
 
+    @Autowired
+    private RedisUtils redisUtils;
+
     @After("@annotation(org.deslrey.annotation.VisitLog)")
     public void recordVisitLog(JoinPoint joinPoint) {
 
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-
         Map<String, Object> paramMap = getMethodParams(joinPoint.getArgs(), signature.getMethod().getParameters());
         Integer articleId = (Integer) paramMap.get("id");
 
         String ip = IPUtils.getClientIP(request);
 
-        // 如果是本机访问，直接 location 写 “本机访问”
-        String location;
-        if (IPUtils.isLocalAccess(ip)) {
-            location = "本机访问";
-        } else {
-            location = IPUtils.queryIPLocation(ip);
+        // 1. Redis 去重：30 秒内同 IP 同文章不记录日志
+        String visitKey = "article:visit:" + articleId + ":" + ip;
+        if (redisUtils.hasKey(visitKey)) {
+            return;
         }
+        redisUtils.set(visitKey, "1", 30);
+
+        // 2. Redis 统计访问量（PV）
+        String pvKey = "article:pv";
+        redisUtils.hincrBy(pvKey, articleId.toString(), 1);
+
+
+        // 3. 记录访问日志
+        String location = IPUtils.isLocalAccess(ip) ? "本机访问" : IPUtils.queryIPLocation(ip);
         String ua = request.getHeader("User-Agent");
         String device = IPUtils.getDeviceType(ua);
         String referer = request.getHeader("Referer");

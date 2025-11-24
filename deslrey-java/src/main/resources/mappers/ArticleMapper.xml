@@ -69,6 +69,12 @@
         where id = #{id}
     </update>
 
+    <update id="updateViewCount">
+        UPDATE article
+        SET views = IFNULL(views, 0) + #{pv}
+        WHERE id = #{articleId}
+    </update>
+
 
     <select id="selectLatestReleases" resultMap="BaseResultMap">
         select id, title, create_time

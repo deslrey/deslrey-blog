@@ -32,4 +32,7 @@ public interface ArticleMapper {
     int insertArticle(Article article);
 
     int updateArticle(Article article);
+
+    void updateViewCount(@Param("articleId") Integer articleId, @Param("pv") Integer pv);
+
 }
