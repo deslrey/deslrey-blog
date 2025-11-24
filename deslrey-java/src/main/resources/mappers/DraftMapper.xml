@@ -47,9 +47,25 @@
         </where>
     </update>
 
+    <!-- 删除草稿 -->
+    <delete id="deleteDraftById" parameterType="java.lang.Integer">
+        delete from draft
+        <where>
+            <choose>
+                <when test="id != null">
+                    id = #{id}
+                </when>
+                <otherwise>
+                    1 = 2
+                </otherwise>
+            </choose>
+        </where>
+    </delete>
+
+
     <!-- 查询草稿列表 -->
     <select id="selectDraftList" resultMap="BaseResultMap">
-        select id, title, content, des, create_time, update_time
+        select id, title, create_time, update_time
         from draft
         order by update_time desc
     </select>

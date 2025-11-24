@@ -93,4 +93,16 @@ public class DraftServiceImpl implements DraftService {
         }
         return Results.fail("草稿更新失败");
     }
+
+    @Override
+    public Results<Void> deleteDraft(Integer id) {
+        if (NumberUtils.isLessZero(id)) {
+            return Results.fail(ResultCodeEnum.CODE_501);
+        }
+        int result = draftMapper.deleteDraftById(id);
+        if (result > 0) {
+            return Results.ok("草稿删除成功");
+        }
+        return Results.fail("草稿删除失败");
+    }
 }

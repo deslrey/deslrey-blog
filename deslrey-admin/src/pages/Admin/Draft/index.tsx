@@ -133,6 +133,7 @@ const DraftPage: React.FC = () => {
                                 <TableCell sx={{ width: 60 }}>ID</TableCell>
                                 <TableCell sx={{ width: 240 }}>标题</TableCell>
                                 <TableCell sx={{ width: 160 }}>创建时间</TableCell>
+                                <TableCell sx={{ width: 160 }}>最近更新</TableCell>
                                 <TableCell sx={{ width: 100 }}>操作</TableCell>
                             </TableRow>
                         </TableHead>
@@ -146,6 +147,11 @@ const DraftPage: React.FC = () => {
                                         <TableCell>
                                             {draft.createTime
                                                 ? dayjs(draft.createTime).format("YYYY-MM-DD HH:mm")
+                                                : "—"}
+                                        </TableCell>
+                                        <TableCell>
+                                            {draft.createTime
+                                                ? dayjs(draft.updateTime).format("YYYY-MM-DD HH:mm")
                                                 : "—"}
                                         </TableCell>
                                         <TableCell sx={{ display: "flex", gap: "16px" }}>

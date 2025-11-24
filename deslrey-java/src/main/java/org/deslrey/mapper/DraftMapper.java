@@ -23,4 +23,6 @@ public interface DraftMapper {
 
     int updateDraftById(Draft draft);
 
+    int deleteDraftById(@Param("id") Integer id);
+
 }
