@@ -17,4 +17,8 @@ public interface DraftService {
     Results<PageInfo<Draft>> draftList(int page, int pageSize);
 
     Results<Draft> DraftDetail(Integer id);
+
+    Results<Void> addDraft(Draft draft);
+
+    Results<Void> updateDraft(Draft draft);
 }

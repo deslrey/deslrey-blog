@@ -9,6 +9,7 @@ import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.DraftService;
 import org.deslrey.util.NumberUtils;
+import org.deslrey.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,5 +55,42 @@ public class DraftServiceImpl implements DraftService {
             return Results.fail("获取草稿失败,暂无数据");
         }
         return Results.ok(draft);
+    }
+
+    @Override
+    public Results<Void> addDraft(Draft draft) {
+        if (draft == null) {
+            return Results.fail(ResultCodeEnum.EMPTY_VALUE);
+        }
+
+        if (StringUtils.isBlank(draft.getTitle()) || StringUtils.isEmpty(draft.getContent()) || StringUtils.isEmpty(draft.getDes())) {
+            return Results.fail(ResultCodeEnum.EMPTY_VALUE);
+        }
+
+        int result = draftMapper.insertDraft(draft);
+        if (result > 0) {
+            return Results.ok("草稿保存成功");
+        }
+        return Results.fail("草稿保存失败");
+    }
+
+
+    @Override
+    public Results<Void> updateDraft(Draft draft) {
+        if (draft == null) {
+            return Results.fail(ResultCodeEnum.EMPTY_VALUE);
+        }
+        if (NumberUtils.isLessZero(draft.getId())) {
+            return Results.fail(ResultCodeEnum.CODE_501);
+        }
+        if (StringUtils.isBlank(draft.getTitle()) || StringUtils.isEmpty(draft.getContent()) || StringUtils.isEmpty(draft.getDes())) {
+            return Results.fail(ResultCodeEnum.EMPTY_VALUE);
+        }
+
+        int result = draftMapper.updateDraftById(draft);
+        if (result > 0) {
+            return Results.ok("草稿更新成功");
+        }
+        return Results.fail("草稿更新失败");
     }
 }

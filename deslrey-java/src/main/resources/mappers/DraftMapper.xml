@@ -14,6 +14,39 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
+    <!-- 插入草稿 -->
+    <insert id="insertDraft" parameterType="org.deslrey.entity.po.Draft">
+        insert into draft
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="des != null and des != ''">des,</if>
+            create_time,
+            update_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="des != null and des != ''">#{des},</if>
+            NOW(),
+            NOW(),
+        </trim>
+    </insert>
+
+    <!-- 更新草稿 -->
+    <update id="updateDraftById" parameterType="org.deslrey.entity.po.Draft">
+        update draft
+        <set>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="des != null and des != ''">des = #{des},</if>
+            update_time = NOW(),
+        </set>
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
+    </update>
+
     <!-- 查询草稿列表 -->
     <select id="selectDraftList" resultMap="BaseResultMap">
         select id, title, content, des, create_time, update_time

@@ -18,4 +18,9 @@ public interface DraftMapper {
     List<Draft> selectDraftList();
 
     Draft selectDraftById(@Param("id") Integer id);
+
+    int insertDraft(Draft draft);
+
+    int updateDraftById(Draft draft);
+
 }
