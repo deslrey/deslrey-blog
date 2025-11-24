@@ -155,13 +155,15 @@ public class ArticleServiceImpl implements ArticleService {
             article.setUpdateTime(now);
             article.setEdit(true);
             result = articleMapper.updateArticle(article);
+        }
 
+        if (articleDraft.getId() != null) {
             articleTagMapper.deleteTagByArticleId(articleDraft.getId());
+        }
 
-            if (articleDraft.getTagIdList() != null) {
-                for (Integer tagId : articleDraft.getTagIdList()) {
-                    articleTagMapper.insertArticleTag(article.getId(), tagId);
-                }
+        if (articleDraft.getTagIdList() != null) {
+            for (Integer tagId : articleDraft.getTagIdList()) {
+                articleTagMapper.insertArticleTag(article.getId(), tagId);
             }
         }
 
