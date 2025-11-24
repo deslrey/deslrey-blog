@@ -146,12 +146,12 @@ const DraftPage: React.FC = () => {
                                         <TableCell>{draft.title}</TableCell>
                                         <TableCell>
                                             {draft.createTime
-                                                ? dayjs(draft.createTime).format("YYYY-MM-DD HH:mm")
+                                                ? dayjs(draft.createTime).format("YYYY-MM-DD HH:mm:ss")
                                                 : "—"}
                                         </TableCell>
                                         <TableCell>
                                             {draft.createTime
-                                                ? dayjs(draft.updateTime).format("YYYY-MM-DD HH:mm")
+                                                ? dayjs(draft.updateTime).format("YYYY-MM-DD HH:mm:ss")
                                                 : "—"}
                                         </TableCell>
                                         <TableCell sx={{ display: "flex", gap: "16px" }}>
