@@ -27,6 +27,7 @@ public class ImageController {
     @Autowired
     private ImageService imageService;
 
+    @RequireLogin
     @GetMapping("list")
     public Results<PageInfo<ImageVO>> imageList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize) {
         return imageService.imageList(page, pageSize);

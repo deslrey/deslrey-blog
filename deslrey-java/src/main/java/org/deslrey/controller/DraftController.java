@@ -24,6 +24,7 @@ public class DraftController {
     @Autowired
     private DraftService draftService;
 
+    @RequireLogin
     @GetMapping("draftList")
     public Results<PageInfo<Draft>> draftList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize) {
         return draftService.draftList(page, pageSize);

@@ -26,11 +26,13 @@ public class FolderController {
     @Autowired
     private FolderService folderService;
 
+    @RequireLogin
     @GetMapping("list")
     public Results<PageInfo<Folder>> folderList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize) {
         return folderService.folderList(page, pageSize);
     }
 
+    @RequireLogin
     @GetMapping("folderNameList")
     public Results<List<Folder>> folderNameList() {
         return folderService.folderNameList();

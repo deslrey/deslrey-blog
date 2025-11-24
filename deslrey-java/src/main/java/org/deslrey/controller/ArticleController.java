@@ -39,22 +39,23 @@ public class ArticleController {
         return articleService.articleList(page, pageSize);
     }
 
-    @GetMapping("admin-list")
-    public Results<PageInfo<Article>> adminArticleList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
-        return articleService.adminArticleList(page, pageSize);
-    }
-
     @VisitLog
     @GetMapping("articleDetail/{id}")
     public Results<Article> articleDetail(@PathVariable Integer id) {
         return articleService.articleDetail(id);
     }
 
+    @RequireLogin
+    @GetMapping("admin-list")
+    public Results<PageInfo<Article>> adminArticleList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
+        return articleService.adminArticleList(page, pageSize);
+    }
+
+    @RequireLogin
     @GetMapping("viewHot")
     public Results<List<Article>> viewHot() {
         return articleService.viewHot();
     }
-
 
     @RequireLogin
     @GetMapping("editArticle/{articleId}")
