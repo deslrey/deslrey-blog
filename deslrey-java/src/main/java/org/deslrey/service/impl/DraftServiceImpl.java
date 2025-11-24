@@ -5,8 +5,10 @@ import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.deslrey.entity.po.Draft;
 import org.deslrey.mapper.DraftMapper;
+import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.DraftService;
+import org.deslrey.util.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,5 +41,18 @@ public class DraftServiceImpl implements DraftService {
         }
         PageInfo<Draft> draftPageInfo = new PageInfo<>(draftList);
         return Results.ok(draftPageInfo);
+    }
+
+    @Override
+    public Results<Draft> DraftDetail(Integer id) {
+        if (NumberUtils.isLessZero(id)) {
+            return Results.fail(ResultCodeEnum.CODE_501);
+        }
+
+        Draft draft = draftMapper.selectDraftById(id);
+        if (draft == null) {
+            return Results.fail("获取草稿失败,暂无数据");
+        }
+        return Results.ok(draft);
     }
 }

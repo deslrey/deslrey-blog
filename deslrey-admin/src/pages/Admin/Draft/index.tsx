@@ -206,7 +206,7 @@ const DraftPage: React.FC = () => {
             <Dialog open={openConfirmEdit} onClose={() => setOpenConfirmEdit(false)}>
                 <DialogTitle sx={{ textAlign: 'center' }}>确认操作</DialogTitle>
                 <DialogContent sx={{ textAlign: 'center', mt: 1 }}>
-                    确定要进入编辑页面吗？未保存的更改可能会丢失。
+                    确定要进入编辑草稿页面吗？未保存的更改可能会丢失。
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'center', gap: 2, pb: 2 }}>
                     <Button variant="outlined" onClick={() => setOpenConfirmEdit(false)}>取消</Button>

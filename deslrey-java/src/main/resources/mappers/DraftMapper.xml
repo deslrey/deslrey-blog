@@ -21,5 +21,14 @@
         order by update_time desc
     </select>
 
+    <!-- 根据ID查询草稿 -->
+    <select id="selectDraftById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select id, title, content, des, create_time, update_time
+        from draft
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
+    </select>
+
 
 </mapper>
