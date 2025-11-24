@@ -2,6 +2,7 @@ package org.deslrey.controller;
 
 import com.github.pagehelper.PageInfo;
 import org.deslrey.annotation.RequireLogin;
+import org.deslrey.annotation.VisitLog;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.po.ArticleDraft;
 import org.deslrey.entity.vo.ArticleDraftVO;
@@ -43,6 +44,7 @@ public class ArticleController {
         return articleService.adminArticleList(page, pageSize);
     }
 
+    @VisitLog
     @GetMapping("articleDetail/{id}")
     public Results<Article> articleDetail(@PathVariable Integer id) {
         return articleService.articleDetail(id);

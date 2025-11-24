@@ -1,6 +1,7 @@
 package org.deslrey.mapper;
 
 
+import org.deslrey.entity.po.ArticleVisitLog;
 
 /**
  * <p>
@@ -12,4 +13,5 @@ package org.deslrey.mapper;
  */
 public interface ArticleVisitLogMapper {
 
+    void insertVisitLog(ArticleVisitLog log);
 }

@@ -14,4 +14,12 @@
         <result column="device" property="device"/>
     </resultMap>
 
+    <!-- 插入访问日志 -->
+    <insert id="insertVisitLog" parameterType="org.deslrey.entity.po.ArticleVisitLog" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO article_visit_log
+            (article_id, ip, location, user_agent, referer, visit_time, device)
+        VALUES (#{articleId}, #{ip}, #{location}, #{userAgent}, #{referer}, NOW(), #{device})
+    </insert>
+
 </mapper>
