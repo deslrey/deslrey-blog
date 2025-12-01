@@ -1,4 +1,5 @@
-import * as simpleIcons from 'simple-icons';
+// import * as simpleIcons from 'simple-icons';
+
 import {
     siJavascript,
     siTypescript,
@@ -82,7 +83,10 @@ export class CodeBlockEnhancer {
         const badge = document.createElement('span');
         badge.className = 'code-lang-badge';
 
-        const icon = this.langMap[lang] || (simpleIcons as any)[lang];
+
+        // const icon = this.langMap[lang] || (simpleIcons as any)[lang];
+
+        const icon = this.langMap[lang];
 
         if (icon) {
             badge.innerHTML = icon.svg;
@@ -158,6 +162,4 @@ export class CodeBlockEnhancer {
 
         pre.appendChild(btn);
     }
-
-
 }
