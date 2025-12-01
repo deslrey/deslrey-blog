@@ -1,0 +1,96 @@
+import React, { useEffect, useState } from "react";
+import styles from "./index.module.scss";
+import type { Article } from "../../../interfaces";
+import { Link, useParams } from "react-router";
+import { api } from "../../api";
+import request from "../../../utils/reques";
+
+const CategoryTitlePage: React.FC = () => {
+    const { category } = useParams<{ category: string }>();
+    const [articles, setArticles] = useState<Article[]>([]);
+    const [title, setTitle] = useState<string>("");
+
+    const fetchData = async (decodedCategory: string) => {
+        if (!decodedCategory) return;
+
+        try {
+            const res = await request.get(api.category.categoryArticle + `${decodedCategory}`);
+            if (res && res.code === 200) {
+                setArticles(res.data);
+            } else {
+                setArticles([]);
+            }
+        } catch (error) {
+            setArticles([]);
+        }
+    };
+
+    useEffect(() => {
+        if (!category) return;
+        const decoded = decodeURIComponent(category);
+        setTitle(decoded);
+        fetchData(decoded);
+    }, [category]);
+
+    useEffect(() => {
+        if (!title) return;
+
+        // 页面标题
+        document.title = `分类: ${title} - deslrey博客`;
+
+        // description
+        const description = document.querySelector('meta[name="description"]');
+        const descContent = `分类「${title}」下共有 ${articles.length} 篇文章。`;
+
+        if (description) {
+            description.setAttribute("content", descContent);
+        } else {
+            const meta = document.createElement("meta");
+            meta.name = "description";
+            meta.content = descContent;
+            document.head.appendChild(meta);
+        }
+
+        // keywords
+        const keywords = document.querySelector('meta[name="keywords"]');
+        const keywordsContent = `${title}, 分类, 博客文章`;
+
+        if (keywords) {
+            keywords.setAttribute("content", keywordsContent);
+        } else {
+            const meta = document.createElement("meta");
+            meta.name = "keywords";
+            meta.content = keywordsContent;
+            document.head.appendChild(meta);
+        }
+
+    }, [title, articles.length]);
+
+    return (
+        <div className={styles.category}>
+            <div className={styles.header}>
+                <h1 className={styles.headerTitle}>#{title}</h1>
+                <p className={styles.headerDesc}>共 {articles.length} 篇文章</p>
+            </div>
+
+            <div className={styles.content}>
+                {articles.length > 0 ? (
+                    <ul className={styles.articleList}>
+                        {articles.map((article) => (
+                            <li key={article.id} className={`${styles.articleItem} card-div`}>
+                                <Link to={`/detail/${article.id}`} className={styles.articleLink}>
+                                    <span className={styles.dot}>•</span>
+                                    <span className={styles.articleTitle}>{article.title}</span>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p className={styles.empty}>暂无相关文章</p>
+                )}
+            </div>
+        </div>
+    );
+};
+
+export default CategoryTitlePage;

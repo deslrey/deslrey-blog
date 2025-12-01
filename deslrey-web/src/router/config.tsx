@@ -1,5 +1,5 @@
 import type { RouteType } from "../interfaces/router";
-import { Archive, House, Newspaper, User } from "lucide-react";
+import { Archive, House, Newspaper, Tag, User } from "lucide-react";
 
 
 export const useWebRoutes = (): RouteType[] => [
@@ -18,11 +18,18 @@ export const useWebRoutes = (): RouteType[] => [
         icon: <Newspaper />
     },
     {
-        path: '/note',
-        disPlayName: '摘记',
-        title: '摘记',
+        path: '/category',
+        disPlayName: '分类',
+        title: '分类',
         element: null,
         icon: <Archive />
+    },
+    {
+        path: '/tag',
+        disPlayName: '标签',
+        title: '标签',
+        element: null,
+        icon: <Tag />
     },
     {
         path: '/about',
