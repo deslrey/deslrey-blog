@@ -1,0 +1,81 @@
+.tagPage {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.title {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: var(--color-text);
+}
+
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 10px 16px;
+    border-radius: 10px;
+    gap: 10px;
+
+    min-width: 120px;
+    height: 44px;
+
+    backdrop-filter: blur(6px);
+    cursor: pointer;
+    transition: 0.2s;
+
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.75);
+    }
+}
+
+[data-theme="dark"] .card {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.12);
+    }
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.icon svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+}
+
+.tagName {
+    font-size: 15px;
+    color: var(--color-text);
+}
+
+.count {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 13px;
+}
