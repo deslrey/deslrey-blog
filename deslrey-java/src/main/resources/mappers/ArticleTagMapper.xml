@@ -29,13 +29,20 @@
     </delete>
 
     <select id="selectArticleTag" resultType="org.deslrey.entity.po.Article" parameterType="java.lang.Integer">
-        select a.id, a.title
+        select a.id,
+        a.title,
+        a.des,
+        a.create_time,
+        a.update_time,
+        a.category,
+        a.edit
         from article_tag t
         left join article a on t.article_id = a.id
         <where>
             <if test="tagId != null">t.tag_id = #{tagId}</if>
             <if test="tagId == null">a.exist = 1</if>
         </where>
+        order by a.create_time desc
     </select>
 
     <!-- 根据文章ID查询标签ID列表 -->

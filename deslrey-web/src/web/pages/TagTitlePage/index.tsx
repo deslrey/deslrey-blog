@@ -1,37 +1,42 @@
 import React, { useEffect, useState } from "react";
 import styles from "./index.module.scss";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/zh-cn";
+dayjs.extend(relativeTime);
+dayjs.locale("zh-cn");
 import { Link, useParams } from "react-router";
 import type { Article } from "../../../interfaces";
-import request from "../../../utils/reques";
 import { api } from "../../api";
+import request from "../../../utils/reques";
 
 const TagTitlePage: React.FC = () => {
 
     const { tag } = useParams<{ tag: string }>();
-    const [articles, setArticles] = useState<Article[]>([]);
     const [title, setTitle] = useState<string>("");
+    const [articles, setArticles] = useState<Article[]>([]);
 
-    const fetchData = async (decodeTag: string) => {
-        if (!decodeTag) return;
+
+    const fetchArticles = async (decodedTag: string) => {
+        console.log(decodedTag)
         try {
-            const res = await request.get(api.tag.tagArticle + `${decodeTag}`);
+            const res = await request.get(api.tag.tagArticle + `${decodedTag}`);
             if (res && res.code === 200) {
                 setArticles(res.data);
-            } else {
-                setArticles([]);
             }
-        } catch (error) {
-            setArticles([]);
+
+        } catch (err) {
+            console.log(err);
         }
     };
 
     useEffect(() => {
         if (!tag) return;
-
-        const decode = decodeURIComponent(tag);
-        setTitle(decode);
-        fetchData(decode);
+        const decoded = decodeURIComponent(tag);
+        setTitle(decoded);
+        fetchArticles(decoded);
     }, [tag]);
+
 
     useEffect(() => {
         if (!title) return;
@@ -67,29 +72,35 @@ const TagTitlePage: React.FC = () => {
     }, [title, articles.length]);
 
     return (
-        <div className={styles.tagPage}>
-            <div className={styles.header}>
-                <h1 className={styles.headerTitle}>#{title}</h1>
-                <p className={styles.headerDesc}>
-                    共 {articles.length} 篇文章
-                </p>
-            </div>
+        <div className={styles.tagTitlePage}>
+            <div className={styles.container}>
+                <h3 className={styles.tagTitle}>{title}</h3>
+                <ul className={styles.list}>
+                    {articles.map((item) => (
+                        <Link
+                            key={item.id}
+                            to={`/detail/${item.id}`}
+                            className={`${styles.item} card-div`}
+                        >
+                            <div>
+                                <span className={styles.title}>
+                                    {item.title}
+                                    {item.sticky && <span className={styles.sticky}>置顶</span>}
+                                </span>
 
-            <div className={styles.content}>
-                {articles.length > 0 ? (
-                    <ul className={styles.articleList}>
-                        {articles.map((article) => (
-                            <li key={article.id} className={`${styles.articleItem} card-div`}>
-                                <Link to={`/detail/${article.id}`} className={styles.articleLink}>
-                                    <span className={styles.dot}>•</span>
-                                    <span className={styles.articleTitle}>{article.title}</span>
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p className={styles.empty}>暂无相关文章</p>
-                )}
+                                <p className={styles.des}>{item.des}</p>
+
+                                <div className={styles.meta}>
+                                    <span>
+                                        {dayjs(item.createTime).fromNow()}
+                                    </span>
+                                    {item.edit && <span className={styles.edit}>已编辑</span>}
+                                    <span>#{item.category}</span>
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+                </ul>
             </div>
         </div>
     );
