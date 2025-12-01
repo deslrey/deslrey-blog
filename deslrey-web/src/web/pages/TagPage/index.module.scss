@@ -7,14 +7,23 @@
 
 .container {
     width: 100%;
+    margin-top: 10%;
     max-width: 1200px;
+    min-height: 600px; /* 固定最小高度 */
+    display: flex; /* 让容器成为 flex */
+    flex-direction: column; /* 垂直布局 */
 }
 
 .title {
-    font-size: 48px;
+    font-size: 50px;
     font-weight: 700;
-    margin-bottom: 25px;
     color: var(--color-text);
+    margin-bottom: 25px;
+    position: relative;
+    padding-left: 14px;
+
+    /* 动画淡入 */
+    animation: fadeIn 1.4s ease;
 }
 
 .list {
