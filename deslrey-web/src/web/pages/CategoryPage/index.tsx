@@ -3,16 +3,18 @@ import styles from './index.module.scss';
 import request from '../../../utils/reques';
 import { api } from '../../api';
 import type { CountType } from '../../../interfaces';
+import { useNavigate } from "react-router";
 
 const CategoryPage: React.FC = () => {
 
     const [category, setCategory] = useState<CountType[]>([]);
+    const navigate = useNavigate();
 
     const fetchCatagorys = async () => {
         try {
             const res = await request.get(api.category.categoryCount);
             if (res.code === 200) {
-                setCategory(res.data); // 直接设置分类数组
+                setCategory(res.data);
             }
         } catch (error) {
             console.log(error);
@@ -30,7 +32,13 @@ const CategoryPage: React.FC = () => {
 
                 <div className={styles.list}>
                     {category.map(item => (
-                        <div key={item.id} className={`${styles.card} card-div`}>
+                        <div
+                            key={item.id}
+                            className={`${styles.card} card-div`}
+                            onClick={() =>
+                                navigate(`/category/${encodeURIComponent(item.title)}`)
+                            }
+                        >
                             <span className={styles.catName}>{item.title}</span>
                             <span className={styles.count}>共 {item.total} 篇博客</span>
                         </div>
