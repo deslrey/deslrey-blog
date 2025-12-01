@@ -15,26 +15,33 @@
 .container {
     width: 100%;
     margin-top: 10%;
-    max-width: 800px;
+    max-width: 1200px;
     min-height: 600px; /* 固定最小高度 */
     display: flex; /* 让容器成为 flex */
     flex-direction: column; /* 垂直布局 */
 }
 
 .list {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* PC 两列 */
+    gap: 12px;
     padding: 0;
+}
+
+@media (max-width: 768px) {
+    .list {
+        grid-template-columns: 1fr; /* 移动端单列 */
+        gap: 8px;
+    }
 }
 
 .item {
     padding: 15px;
     border-radius: 8px;
-    min-height: 100px;
+    min-height: 120px; // 或降低高度
     transition: all 0.3s ease;
     cursor: pointer;
+
     &:hover {
         background: rgba(42, 42, 42, 0.2);
         transform: translateY(-1px);
@@ -47,6 +54,15 @@
     font-weight: 600;
     color: var(--color-text);
     text-decoration: none;
+}
+
+.des {
+    font-size: 14px;
+    color: var(--color-text);
+    margin-top: 6px;
+    line-height: 1.4;
+    opacity: 0.85;
+    display: block;
 }
 
 .sticky {

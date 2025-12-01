@@ -87,7 +87,7 @@
     <select id="selectArticleList" resultMap="BaseResultMap">
         select id,
                title,
-               views,
+               des,
                create_time,
                update_time,
                category,
