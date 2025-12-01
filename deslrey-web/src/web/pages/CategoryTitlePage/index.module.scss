@@ -1,77 +1,166 @@
-.category {
+.categoryTitlePage {
     width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 100px 0;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    // margin-top: 9.9%;
+    min-height: 70%;
+
+    @media (max-width: 768px) {
+        padding: 100px 10px 50px;
+        // padding-top: 100px;
+    }
+}
+
+.container {
+    width: 100%;
+    margin-top: 10%;
+    max-width: 1200px;
+    min-height: 600px; /* 固定最小高度 */
+    display: flex; /* 让容器成为 flex */
+    flex-direction: column; /* 垂直布局 */
+}
+
+.categoryTitle {
+    font-size: 50px;
+    font-weight: 700;
     color: var(--color-text);
+    margin-bottom: 25px;
+    position: relative;
+    padding-left: 14px;
+
+    /* 动画淡入 */
+    animation: fadeIn 1.4s ease;
 }
 
-.header {
-    color: var(--color-text);
-    padding: 50px 30px;
-    border-radius: 16px;
-    text-align: center;
-    margin-bottom: 50px;
+@media (max-width: 768px) {
+    .categoryTitle {
+        font-size: 36px;
+        margin-bottom: 18px;
+    }
 }
 
-.headerTitle {
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 10px;
+/* 动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.headerDesc {
-    font-size: 16px;
-    opacity: 0.9;
-}
-
-.content {
-    border-radius: 16px;
-    padding: 30px;
-}
-
-.articleList {
-    list-style: none;
-    margin: 0;
+.list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* PC 两列 */
+    gap: 12px;
     padding: 0;
 }
 
-.articleItem {
-    padding: 15px 0;
-    // border-bottom: 1px solid #eee;
-
-    &:last-child {
-        border-bottom: none;
+@media (max-width: 768px) {
+    .list {
+        grid-template-columns: 1fr; /* 移动端单列 */
+        gap: 8px;
     }
 }
 
-.articleLink {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: var(--color-text);
-    transition: all 0.2s ease;
+.item {
+    padding: 15px;
+    border-radius: 8px;
+    min-height: 120px; // 或降低高度
+    transition: all 0.3s ease;
+    cursor: pointer;
 
     &:hover {
-        color: var(--activeColor);
-        transform: translateX(5px);
+        background: rgba(42, 42, 42, 0.2);
+        transform: translateY(-1px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
 }
 
-.dot {
-    color: var(--activeColor);
-    font-size: 18px;
-    line-height: 1;
-}
-
-.articleTitle {
-    font-size: 18px;
-}
-
-.empty {
-    text-align: center;
-    padding: 40px 0;
+.title {
+    font-size: 24px;
+    font-weight: 600;
     color: var(--color-text);
-    font-size: 16px;
+    text-decoration: none;
+}
+
+.des {
+    font-size: 14px;
+    color: var(--color-text);
+    margin-top: 6px;
+    line-height: 1.4;
+    opacity: 0.85;
+    display: block;
+}
+
+.sticky {
+    margin-left: 8px;
+    font-size: 12px;
+    color: var(--activeColor);
+    border: 1px solid rgba(var(--activeColor-rgb), 0.4);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.meta {
+    font-size: 12px;
+    color: var(--color-text);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.edit {
+    color: #ff4d4f;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    gap: 8px;
+
+    .pageBtn {
+        padding: 6px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 6px;
+        color: var(--color-text);
+        background: rgba(255, 255, 255, 0.05);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 14px;
+
+        &:hover {
+            background: var(--activeColor);
+            border-color: var(--activeColor);
+            color: var(--color-text);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(var(--activeColor-rgb), 0.3);
+        }
+    }
+
+    .pageBtn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .activePage {
+        background: var(--activeColor);
+        border-color: var(--activeColor);
+        color: var(--color-text);
+        pointer-events: none;
+    }
+
+    .ellipsis {
+        padding: 6px 10px;
+        color: var(--color-text);
+        font-size: 14px;
+    }
 }

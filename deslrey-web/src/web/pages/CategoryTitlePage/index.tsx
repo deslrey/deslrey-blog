@@ -1,27 +1,32 @@
 import React, { useEffect, useState } from "react";
 import styles from "./index.module.scss";
-import type { Article } from "../../../interfaces";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/zh-cn";
+dayjs.extend(relativeTime);
+dayjs.locale("zh-cn");
 import { Link, useParams } from "react-router";
+import type { Article } from "../../../interfaces";
 import { api } from "../../api";
 import request from "../../../utils/reques";
 
 const CategoryTitlePage: React.FC = () => {
+
     const { category } = useParams<{ category: string }>();
-    const [articles, setArticles] = useState<Article[]>([]);
     const [title, setTitle] = useState<string>("");
+    const [articles, setArticles] = useState<Article[]>([]);
 
-    const fetchData = async (decodedCategory: string) => {
-        if (!decodedCategory) return;
 
+    const fetchArticles = async (decodedCategory: string) => {
+        console.log(decodedCategory)
         try {
             const res = await request.get(api.category.categoryArticle + `${decodedCategory}`);
             if (res && res.code === 200) {
                 setArticles(res.data);
-            } else {
-                setArticles([]);
             }
-        } catch (error) {
-            setArticles([]);
+
+        } catch (err) {
+            console.log(err);
         }
     };
 
@@ -29,8 +34,9 @@ const CategoryTitlePage: React.FC = () => {
         if (!category) return;
         const decoded = decodeURIComponent(category);
         setTitle(decoded);
-        fetchData(decoded);
+        fetchArticles(decoded);
     }, [category]);
+
 
     useEffect(() => {
         if (!title) return;
@@ -67,27 +73,35 @@ const CategoryTitlePage: React.FC = () => {
     }, [title, articles.length]);
 
     return (
-        <div className={styles.category}>
-            <div className={styles.header}>
-                <h1 className={styles.headerTitle}>#{title}</h1>
-                <p className={styles.headerDesc}>共 {articles.length} 篇文章</p>
-            </div>
+        <div className={styles.categoryTitlePage}>
+            <div className={styles.container}>
+                <h3 className={styles.categoryTitle}>{title}</h3>
+                <ul className={styles.list}>
+                    {articles.map((item) => (
+                        <Link
+                            key={item.id}
+                            to={`/detail/${item.id}`}
+                            className={`${styles.item} card-div`}
+                        >
+                            <div>
+                                <span className={styles.title}>
+                                    {item.title}
+                                    {item.sticky && <span className={styles.sticky}>置顶</span>}
+                                </span>
 
-            <div className={styles.content}>
-                {articles.length > 0 ? (
-                    <ul className={styles.articleList}>
-                        {articles.map((article) => (
-                            <li key={article.id} className={`${styles.articleItem} card-div`}>
-                                <Link to={`/detail/${article.id}`} className={styles.articleLink}>
-                                    <span className={styles.dot}>•</span>
-                                    <span className={styles.articleTitle}>{article.title}</span>
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p className={styles.empty}>暂无相关文章</p>
-                )}
+                                <p className={styles.des}>{item.des}</p>
+
+                                <div className={styles.meta}>
+                                    <span>
+                                        {dayjs(item.createTime).fromNow()}
+                                    </span>
+                                    {item.edit && <span className={styles.edit}>已编辑</span>}
+                                    <span>#{item.category}</span>
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+                </ul>
             </div>
         </div>
     );

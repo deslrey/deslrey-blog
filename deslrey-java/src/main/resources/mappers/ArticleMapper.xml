@@ -126,12 +126,19 @@
 
     <select id="selectArticleByCategory" resultMap="BaseResultMap"
             parameterType="java.lang.String">
-        select id, title
+        select id,
+        title,
+        des,
+        create_time,
+        update_time,
+        category,
+        edit
         from article
         <where>
             <if test="title != null and title != ''">category = #{title}</if>
             <if test="title != null and title != ''">and exist = 1</if>
         </where>
+        order by create_time desc
     </select>
 
     <select id="selectViewHot" resultMap="BaseResultMap">
