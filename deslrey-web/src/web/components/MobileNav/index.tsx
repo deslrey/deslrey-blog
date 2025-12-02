@@ -16,15 +16,22 @@ const MobileNav: React.FC = () => {
 
     // 禁止滚动背景
     useEffect(() => {
+        const html = document.documentElement;
+
         if (open) {
             document.body.style.overflow = "hidden";
+            html.style.overflow = "hidden";
         } else {
             document.body.style.overflow = "";
+            html.style.overflow = "";
         }
+
         return () => {
             document.body.style.overflow = "";
+            html.style.overflow = "";
         };
     }, [open]);
+
 
     return (
         <>
