@@ -12,15 +12,15 @@ const HomePage: React.FC = () => {
         <div className={styles.homePage}>
             <div className={styles.latestReleases}>
                 {/* <Suspense fallback={<LoaderComponent />}> */}
-                <LatestReleases />
+                {/* <LatestReleases /> */}
                 {/* </Suspense> */}
             </div>
             <div className={styles.classTags}>
                 {/* <Suspense fallback={<LoaderComponent />}> */}
-                <Classify />
+                {/* <Classify /> */}
                 {/* </Suspense> */}
                 {/* <Suspense fallback={<LoaderComponent />}> */}
-                <PopularTags />
+                {/* <PopularTags /> */}
                 {/* </Suspense> */}
             </div>
         </div>

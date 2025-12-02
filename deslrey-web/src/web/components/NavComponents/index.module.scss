@@ -34,6 +34,10 @@
         opacity: 1;
         pointer-events: auto;
     }
+
+    @media (max-width: 768px) {
+        display: none;
+    }
 }
 
 /* ========= 桌面端导航 ========= */
