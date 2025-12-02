@@ -2,30 +2,29 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
     padding: 20px;
     min-height: 70%;
 
     @media (max-width: 768px) {
-        padding: 0 10px;
-        padding-top: 100px;
+        padding: 100px 10px 50px;
     }
-
 }
 
 .container {
-    text-align: center;
+    width: 100%;
     margin-top: 10%;
-    max-width: 600px;
+    max-width: 1200px;
+    min-height: 600px; /* 固定最小高度 */
+    display: flex; /* 让容器成为 flex */
+    flex-direction: column; /* 垂直布局 */
     padding: 20px;
-    border-radius: 16px;
 }
 
 .cardDiv {
-    background: rgba(255, 255, 255, 0.65);
+    background: rgba(255, 255, 255, 0.7);
     color: #222;
     border-radius: 16px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -33,28 +32,61 @@
 }
 
 [data-theme="dark"] .cardDiv {
-    background: rgba(0, 0, 0, 0.55);
+    background: rgba(0, 0, 0, 0.65);
     color: #f0f0f0;
     border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(14px);
-}
-
-.avatar {
-    border-radius: 50%;
-    border: 3px solid var(--activeColor);
-    object-fit: cover;
-    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
 .name {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 8px;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 12px;
 }
 
 .bio {
-    font-size: 15px;
+    font-size: 16px;
     color: var(--color-text);
+    line-height: 1.7;
+    margin-bottom: 24px;
+}
+
+.section {
+    margin-top: 20px;
+}
+
+.sectionTitle {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.skills > div {
+    margin-bottom: 8px;
     line-height: 1.6;
+}
+
+.iconText {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    padding-left: 2ch; /* 缩进两个字符宽 */
+}
+
+.icon {
+    margin-right: 6px;
+    vertical-align: middle;
+    display: inline-block;
+    width: 1.2em;
+    height: 1.2em;
+}
+
+.section {
+    margin-top: 20px;
+}
+
+.sectionTitle {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
 }
