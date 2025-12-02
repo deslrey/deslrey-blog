@@ -48,16 +48,23 @@
 }
 
 .item {
-    padding: 15px;
-    border-radius: 8px;
-    min-height: 120px; // 或降低高度
-    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 12px;
     cursor: pointer;
+    transition: 0.3s;
+    min-height: 120px;
+
+    display: flex;
+    justify-content: space-between; /* 左右分布 */
+    align-items: center; /* 垂直居中 */
+    flex-direction: row; /* 横向排列 */
 
     &:hover {
-        background: rgba(42, 42, 42, 0.2);
-        transform: translateY(-1px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        transform: translateY(-3px);
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 }
 
