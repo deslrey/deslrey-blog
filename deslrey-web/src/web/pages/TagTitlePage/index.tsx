@@ -18,7 +18,6 @@ const TagTitlePage: React.FC = () => {
 
 
     const fetchArticles = async (decodedTag: string) => {
-        console.log(decodedTag)
         try {
             const res = await request.get(api.tag.tagArticle + `${decodedTag}`);
             if (res && res.code === 200) {
@@ -83,19 +82,22 @@ const TagTitlePage: React.FC = () => {
                             className={`${styles.item} card-div`}
                         >
                             <div>
-                                <span className={styles.title}>
+                                <span className={styles.articleTitle}>
                                     {item.title}
-                                    {item.sticky && <span className={styles.sticky}>置顶</span>}
                                 </span>
 
                                 <p className={styles.des}>{item.des}</p>
-
                                 <div className={styles.meta}>
-                                    <span>
-                                        {dayjs(item.createTime).fromNow()}
-                                    </span>
-                                    {item.edit && <span className={styles.edit}>已编辑</span>}
                                     <span>#{item.category}</span>
+
+                                    <div className={styles.timeGroup}>
+                                        <span>{dayjs(item.createTime).fromNow()}</span>
+                                        {item.edit && item.updateTime && (
+                                            <span className={styles.updated}>
+                                                （更新于 {dayjs(item.updateTime).fromNow()}）
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </Link>

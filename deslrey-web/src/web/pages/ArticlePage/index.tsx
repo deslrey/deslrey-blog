@@ -86,13 +86,17 @@ const ArticlePage: React.FC = () => {
                                 </span>
 
                                 <p className={styles.des}>{item.des}</p>
-
                                 <div className={styles.meta}>
-                                    <span>
-                                        {dayjs(item.createTime).fromNow()}
-                                    </span>
-                                    {item.edit && <span className={styles.edit}>已编辑</span>}
                                     <span>#{item.category}</span>
+
+                                    <div className={styles.timeGroup}>
+                                        <span>{dayjs(item.createTime).fromNow()}</span>
+                                        {item.edit && item.updateTime && (
+                                            <span className={styles.updated}>
+                                                （更新于 {dayjs(item.updateTime).fromNow()}）
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </Link>

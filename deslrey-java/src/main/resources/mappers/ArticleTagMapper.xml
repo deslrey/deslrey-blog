@@ -32,8 +32,8 @@
         select a.id,
         a.title,
         a.des,
-        a.create_time,
-        a.update_time,
+        a.create_time as createTime,
+        a.update_time as updateTime,
         a.category,
         a.edit
         from article_tag t
