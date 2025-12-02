@@ -72,6 +72,7 @@ const ArticlePage: React.FC = () => {
     return (
         <div className={styles.article}>
             <div className={styles.container}>
+                <h2 className={styles.title}>文章</h2>
                 <ul className={styles.list}>
                     {articles.map((item) => (
                         <Link
@@ -80,9 +81,8 @@ const ArticlePage: React.FC = () => {
                             className={`${styles.item} card-div`}
                         >
                             <div>
-                                <span className={styles.title}>
+                                <span className={styles.articleTitle}>
                                     {item.title}
-                                    {item.sticky && <span className={styles.sticky}>置顶</span>}
                                 </span>
 
                                 <p className={styles.des}>{item.des}</p>

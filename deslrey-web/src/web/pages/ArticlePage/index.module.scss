@@ -21,6 +21,18 @@
     flex-direction: column; /* 垂直布局 */
 }
 
+.title {
+    font-size: 50px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 25px;
+    position: relative;
+    padding-left: 14px;
+
+    /* 动画淡入 */
+    animation: fadeIn 1.4s ease;
+}
+
 .list {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* PC 两列 */
@@ -49,7 +61,7 @@
     }
 }
 
-.title {
+.articleTitle {
     font-size: 24px;
     font-weight: 600;
     color: var(--color-text);
