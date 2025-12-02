@@ -266,6 +266,14 @@
 .markdown-toc li {
     margin: 0.25rem 0;
 }
+
+.markdown-toc ul {
+    list-style-type: none !important;
+    margin: 0;
+    padding: 0;
+}
+
+
 .markdown-toc li.lv-2 {
     padding-left: 0.5rem;
     font-weight: 600;
