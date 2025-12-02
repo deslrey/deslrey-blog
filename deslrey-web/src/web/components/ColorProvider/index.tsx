@@ -4,7 +4,6 @@ import { useLocation } from "react-router";
 const ColorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const colors = [
         "#4d96ff", // 蓝
-        "#9f968e", // 橙
         "#ffd93d", // 黄
         "#6bcB77", // 绿
         "#ff6b6b", // 红
@@ -17,7 +16,6 @@ const ColorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
     const colorsRGB = [
         "77,150,255",
-        "255,146,43",
         "255,217,61",
         "107,203,119",
         "255,107,107",

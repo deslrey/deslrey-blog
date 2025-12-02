@@ -22,7 +22,7 @@ const NavItem: React.FC<{ item: RouteType }> = ({ item }) => {
 };
 
 const Nav: React.FC = () => {
-    const [scrollY, _setScrollY] = useState(0);
+    const [scrollY, setScrollY] = useState(0);
     const [visible, setVisible] = useState(true);
     const lastScrollY = useRef(0);
     const ticking = useRef(false);
@@ -32,30 +32,31 @@ const Nav: React.FC = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            const currentScrollY = window.scrollY;
+            const current = window.scrollY;
+            setScrollY(current);
+
             if (!ticking.current) {
                 window.requestAnimationFrame(() => {
-                    const diff = currentScrollY - lastScrollY.current;
+                    const diff = current - lastScrollY.current;
 
-                    // 向下滚动且超过200px时隐藏
-                    if (diff > 0 && currentScrollY > hideThreshold) {
+                    if (diff > 0 && current > hideThreshold) {
                         if (visible) {
                             if (hideTimeout.current) clearTimeout(hideTimeout.current);
                             hideTimeout.current = setTimeout(() => {
                                 setVisible(false);
-                            }, 50); // 延迟一点再隐藏
+                            }, 50);
                         }
-                    }
-                    // 向上滚动超过100px则显示
-                    else if (diff < 0 && lastScrollY.current - currentScrollY > showThreshold) {
-                        if (!visible) {
-                            setVisible(true);
-                        }
+                    } else if (
+                        diff < 0 &&
+                        lastScrollY.current - current > showThreshold
+                    ) {
+                        if (!visible) setVisible(true);
                     }
 
-                    lastScrollY.current = currentScrollY;
+                    lastScrollY.current = current;
                     ticking.current = false;
                 });
+
                 ticking.current = true;
             }
         };
@@ -79,6 +80,7 @@ const Nav: React.FC = () => {
                 {useWebRoutes().map((item) => (
                     <NavItem key={item.path} item={item} />
                 ))}
+
                 <ThemeToggle />
                 <BgSeriesToggle />
             </div>

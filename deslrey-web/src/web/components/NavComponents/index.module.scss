@@ -8,31 +8,24 @@
     top: 0;
     left: 0;
     width: 100%;
-    margin-top: 10px;
     z-index: 2000;
+
+    margin-top: 10px;
     opacity: 1;
-    transform: translateY(0);
-    transition:
-        transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.6s ease,
-        margin-top 0.3s ease,
-        background 0.3s ease;
-    will-change: transform, opacity;
+
+    transition: margin-top 0.3s ease;
 
     &.scrolled {
         margin-top: 0;
     }
 
     &.hidden {
-        transform: translateY(-120%);
-        opacity: 0;
         pointer-events: none;
     }
 
     &.visible {
-        transform: translateY(0);
-        opacity: 1;
         pointer-events: auto;
+        margin-top: 10px;
     }
 
     @media (max-width: 768px) {
@@ -46,48 +39,42 @@
     align-items: center;
     justify-content: center;
     gap: 20px;
+
     width: 60%;
     margin: 0 auto;
     padding: 15px 20px;
+
     min-width: 600px;
     max-width: 900px;
+
     border-radius: 20px;
     position: relative;
-    backdrop-filter: blur(12px);
-    transform: perspective(1000px) rotateX(2deg);
-    transform-origin: center;
-    transition:
-        transform 0.6s ease-in-out,
-        border-radius 0.4s ease,
-        box-shadow 0.4s ease,
-        padding 0.4s ease,
-        background-color var(--transition-speed) ease;
 
-    /* ===== Light 模式 ===== */
-    background: rgba(255, 255, 255, 1);
-    box-shadow:
-        0 5px 15px rgba(0, 0, 0, 0.2),
-        inset 0 0 10px rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 
-    /* ===== Dark 模式 ===== */
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+
+    transform: translateY(0);
+
     [data-theme="dark"] & {
-        background: rgba(30, 30, 30, 1);
+        background: rgba(23, 25, 35, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+
         box-shadow:
-            0 5px 15px rgba(0, 0, 0, 0.6),
-            inset 0 0 10px rgba(255, 255, 255, 0.05);
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            inset 0 0 10px rgba(255, 255, 255, 0.08);
     }
+}
 
-    &.scrolled {
-        width: 100%;
-        margin: 0;
-        border-radius: 0;
-        transform: none;
-        padding: 10px 20px;
-    }
-
-    @media (max-width: 1380px) {
-        max-width: 700px;
-    }
+/* 当 NavWrapper.hidden 时，整块导航往上滑走 */
+.NavWrapper.hidden .NavMain {
+    transform: translateY(-120%);
 }
 
 /* ========= 导航项 ========= */
@@ -101,6 +88,7 @@
     text-decoration: none;
     color: var(--color-text);
     position: relative;
+
     transition: color 0.3s ease;
 
     &:hover {
