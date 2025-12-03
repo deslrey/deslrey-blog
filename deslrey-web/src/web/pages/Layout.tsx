@@ -23,16 +23,23 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             try {
                 let res;
 
-                if (series === 'scenery') {
+                if (series === "sex") {
+                    const loliRes = await fetch("https://www.loliapi.com/acg/");
+                    if (loliRes.ok && loliRes.url) {
+                        setBgUrl(loliRes.url);
+                        return;
+                    }
+                } else if (series === 'scenery') {
                     res = await request.get(api.carouselPage.scenery);
-                } else if (series === 'sex') {
-                    res = await request.get(api.carouselPage.sex);
                 }
+
+                // else if (series === 'sex') {
+                //     res = await request.get(api.carouselPage.sex);
+                // }
 
                 if (res && res.code === 200) {
                     setBgUrl(res.data);
                 } else {
-                    // 如果是纯色模式，不加载图像
                     if (series === 'pure') {
                         setBgUrl('');
                     } else {
@@ -49,7 +56,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         };
 
         getBg();
-    }, [series]);
+    }, [series, isMobile]);
 
     useEffect(() => {
         if (!bgUrl) {
