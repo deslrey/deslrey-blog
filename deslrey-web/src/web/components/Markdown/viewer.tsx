@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Viewer } from "@bytemd/react";
+import { Viewer as MdViewer } from "@bytemd/react";
 import { plugins } from "./config";
 import type { Article } from "../../../interfaces";
 import { CodeBlockEnhancer } from "../../../utils/codeBlockEnhancer";
@@ -18,7 +18,7 @@ interface BytemdViewerProps {
 export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
     const containerRef = React.useRef<HTMLDivElement | null>(null);
     const contentRef = React.useRef<HTMLDivElement | null>(null);
-
+    const [previewSrc, setPreviewSrc] = React.useState<string | null>(null);
     const [headings, setHeadings] = React.useState<
         Array<{ id: string; text: string; level: number }>
     >([]);
@@ -40,10 +40,33 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         sticky: article.sticky,
     };
 
+    // 图片点击预览
+    React.useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        const handleClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (target.tagName.toLowerCase() === "img") {
+                setPreviewSrc((target as HTMLImageElement).src);
+            }
+        };
+
+        container.addEventListener("click", handleClick);
+
+        return () => {
+            container.removeEventListener("click", handleClick);
+        };
+    }, [content]);
+
+
+
     const handleScrollToTop = (e?: React.MouseEvent) => {
         e?.preventDefault();
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
+
+
 
     React.useEffect(() => {
         const container = containerRef.current;
@@ -165,7 +188,7 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
             <div className="markdown-content" ref={contentRef}>
                 <DetailHead data={headData} carouseUrl={carouseUrl} />
                 <div ref={containerRef} className="card-div">
-                    <Viewer value={content} plugins={plugins} />
+                    <MdViewer value={content} plugins={plugins} />
                 </div>
             </div>
 
@@ -197,6 +220,19 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
                     回到顶部
                 </a>
             </aside>
+            {previewSrc && (
+                <div
+                    className="image-preview-mask"
+                    onClick={() => setPreviewSrc(null)}
+                >
+                    <img
+                        src={previewSrc}
+                        alt=""
+                        onClick={(e) => e.stopPropagation()} // 阻止点击图片自身关闭
+                    />
+                </div>
+            )}
+
         </div>
     );
 };
