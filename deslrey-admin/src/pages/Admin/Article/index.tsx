@@ -12,7 +12,8 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
-    Button
+    Button,
+    Switch
 } from "@mui/material";
 
 import { SquarePen, PenLine } from 'lucide-react';
@@ -23,6 +24,7 @@ import styles from "./index.module.scss";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { articleApi } from "../../../api";
+import { Message } from "../../../utils/message";
 
 const Article: React.FC = () => {
     const navigate = useNavigate();
@@ -88,6 +90,24 @@ const Article: React.FC = () => {
         setOpenDialog(false);
     };
 
+    // 切换文章可见状态
+    const toggleVisible = async (id: number, current: boolean) => {
+        try {
+            const res = await request.post(articleApi.editExist, {
+                id,
+                exist: !current
+            });
+
+            Message.success(res.message)
+
+            fetchData(page + 1, rowsPerPage);
+
+        } catch (error) {
+            console.error("更新可见状态失败", error);
+        }
+    };
+
+
     return (
         <div className={styles.articleBox}>
             <div className={styles.header}>
@@ -130,7 +150,13 @@ const Article: React.FC = () => {
                                     <TableCell>{article.views}</TableCell>
                                     <TableCell>{article.sticky ? "✅" : "❌"}</TableCell>
                                     <TableCell>{article.edit ? "✅" : "❌"}</TableCell>
-                                    <TableCell>{article.exist ? "✅" : "❌"}</TableCell>
+                                    <TableCell>
+                                        <Switch
+                                            checked={article.exist}
+                                            onChange={() => toggleVisible(article.id, article.exist)}
+                                            color="primary"
+                                        />
+                                    </TableCell>
                                     <TableCell>
                                         <SquarePen color="#000" onClick={() => handlerEdit(article.id)} />
                                     </TableCell>

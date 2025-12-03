@@ -31,4 +31,6 @@ public interface ArticleService {
     Results<ArticleDraftVO> editArticle(Integer articleId);
 
     Results<Void> addArticle(ArticleDraft articleDraft);
+
+    Results<Void> editExist(Article article);
 }

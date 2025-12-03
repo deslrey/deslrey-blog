@@ -75,6 +75,12 @@
         WHERE id = #{articleId}
     </update>
 
+    <update id="updateExist">
+        update article
+        set exist = #{exist}
+        where id = #{id}
+    </update>
+
 
     <select id="selectLatestReleases" resultMap="BaseResultMap">
         select id, title, create_time

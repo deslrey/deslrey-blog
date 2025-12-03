@@ -35,4 +35,5 @@ public interface ArticleMapper {
 
     void updateViewCount(@Param("articleId") Integer articleId, @Param("pv") Integer pv);
 
+    int updateExist(Integer id, Boolean exist);
 }

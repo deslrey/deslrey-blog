@@ -174,4 +174,19 @@ public class ArticleServiceImpl implements ArticleService {
         return Results.ok("保存成功");
     }
 
+    @Override
+    public Results<Void> editExist(Article article) {
+        if (article == null) {
+            return Results.fail("编辑失败");
+        }
+        if (NumberUtils.isLessZero(article.getId()) || article.getExist() == null) {
+            return Results.fail("编辑失败");
+        }
+
+        int result = articleMapper.updateExist(article.getId(), article.getExist());
+        if (result > 0) {
+            return Results.ok("操作成功");
+        }
+        return Results.fail("操作失败");
+    }
 }
