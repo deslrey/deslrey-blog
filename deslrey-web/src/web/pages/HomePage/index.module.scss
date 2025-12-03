@@ -51,14 +51,11 @@
 }
 
 .subTitle {
-    font-size: 2rem;
-    font-weight: 400;
-    color: var(--color-text);
-    margin: 0;
-
-    @media (max-width: 768px) {
-        font-size: 1.5rem;
-    }
+    display: inline-block;
+    white-space: nowrap;
+    font-size: clamp(1.2rem, 5vw, 2rem);
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .desc {
