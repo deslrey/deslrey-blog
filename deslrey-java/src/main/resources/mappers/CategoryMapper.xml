@@ -38,13 +38,17 @@
     </update>
 
     <select id="selectCategoryCount" resultType="org.deslrey.entity.vo.CountVO">
-        select c.id, c.category_title as title, COUNT(a.id) as total
-        from category c
-                 left join article a on a.category = c.category_title
-        where a.exist = 1
-        group by c.id, c.category_title
-        order by total desc
+        SELECT c.id,
+               c.category_title AS title,
+               COUNT(a.id)      AS total
+        FROM category c
+                 LEFT JOIN article a
+                           ON a.category = c.category_title
+                               AND a.exist = 1
+        GROUP BY c.id, c.category_title
+        ORDER BY total DESC
     </select>
+
 
     <select id="selectCategoryList" resultMap="BaseResultMap">
         select id, category_title, create_time
