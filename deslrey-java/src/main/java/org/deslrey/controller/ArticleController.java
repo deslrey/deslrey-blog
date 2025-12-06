@@ -69,6 +69,7 @@ public class ArticleController {
         return articleService.addArticle(articleDraft);
     }
 
+    @RequireLogin
     @PostMapping("editExist")
     public Results<Void> editExist(@RequestBody Article article) {
         return articleService.editExist(article);
