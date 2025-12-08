@@ -6,7 +6,7 @@ const HomePage: React.FC = () => {
     const onlineAvatar = "https://gcore.jsdelivr.net/gh/deslrey/deslrey-blog/deslrey-web/public/images/avatar.jpg";
     const localAvatar = "/images/avatar.jpg";
 
-    const [avatarSrc, setAvatarSrc] = useState(onlineAvatar);
+    const [_avatarSrc, setAvatarSrc] = useState(onlineAvatar);
 
     return (
         <div className={styles.homePage}>
@@ -43,7 +43,7 @@ const HomePage: React.FC = () => {
             </div>
 
             <img
-                src={avatarSrc}
+                src={localAvatar}
                 alt="avatar"
                 className={styles.avatar}
                 onError={() => setAvatarSrc(localAvatar)}

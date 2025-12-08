@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 type BgSeriesType = 'sex' | 'pure' | 'scenery';
 
@@ -9,7 +9,7 @@ interface BgSeriesContextValue {
 
 const BgSeriesContext = createContext<BgSeriesContextValue>({
     series: 'scenery',
-    setSeries: () => { },
+    setSeries: () => { }
 });
 
 export function useBgSeries() {
@@ -17,12 +17,10 @@ export function useBgSeries() {
 }
 
 export default function BgSeriesProvider({ children }: { children: React.ReactNode }) {
-    const [series, setSeries] = useState<BgSeriesType>('scenery');
 
-    useEffect(() => {
-        const saved = (localStorage.getItem('bgSeries') as BgSeriesType) || 'scenery';
-        setSeries(saved);
-    }, []);
+    const [series, setSeries] = useState<BgSeriesType>(() => {
+        return (localStorage.getItem('bgSeries') as BgSeriesType) || 'scenery';
+    });
 
     const handleSetSeries = (value: BgSeriesType) => {
         setSeries(value);

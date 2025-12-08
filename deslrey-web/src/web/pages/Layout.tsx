@@ -27,8 +27,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     const loliRes = await fetch("https://www.loliapi.com/acg/");
                     if (loliRes.ok && loliRes.url) {
                         setBgUrl(loliRes.url);
-                        return;
+                    } else {
+                        setBgUrl(theme === 'dark' ? '/images/bg0.webp' : '/images/bg1.webp');
                     }
+
+                    return;
                 } else if (series === 'scenery') {
                     res = await request.get(api.carouselPage.scenery);
                 }
