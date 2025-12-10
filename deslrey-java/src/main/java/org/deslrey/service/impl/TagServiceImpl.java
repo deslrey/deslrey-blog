@@ -1,5 +1,6 @@
 package org.deslrey.service.impl;
 
+import com.alibaba.fastjson2.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Article;
@@ -12,6 +13,8 @@ import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.TagService;
 import org.deslrey.util.NumberUtils;
+import org.deslrey.util.RedisUtils;
+import org.deslrey.util.StaticUtils;
 import org.deslrey.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +40,9 @@ public class TagServiceImpl implements TagService {
     @Autowired
     private ArticleTagMapper articleTagMapper;
 
+    @Autowired
+    private RedisUtils redisUtils;
+
     @Override
     public Results<PageInfo<Tag>> tagList(int page, int pageSize) {
         PageHelper.startPage(page, pageSize);
@@ -50,11 +56,21 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Results<List<CountVO>> tagCount() {
-        List<CountVO> tagCountVOList = tagMapper.selectTagCount();
-        if (tagCountVOList == null || tagCountVOList.isEmpty()) {
-            return Results.ok(new ArrayList<>());
+        String tagJson = redisUtils.get(StaticUtils.TAG_COUNT);
+        if (StringUtils.isEmpty(tagJson)) {
+            List<CountVO> tagCountVOList = tagMapper.selectTagCount();
+            if (tagCountVOList == null || tagCountVOList.isEmpty()) {
+                return Results.ok(new ArrayList<>(0));
+            }
+            redisUtils.set(StaticUtils.TAG_COUNT, JSON.toJSONString(tagCountVOList));
+            return Results.ok(tagCountVOList);
+        } else {
+            List<CountVO> list = JSON.parseArray(tagJson, CountVO.class);
+            if (list == null || list.isEmpty()) {
+                return Results.ok(new ArrayList<>(0));
+            }
+            return Results.ok(list);
         }
-        return Results.ok(tagCountVOList);
     }
 
     @Override

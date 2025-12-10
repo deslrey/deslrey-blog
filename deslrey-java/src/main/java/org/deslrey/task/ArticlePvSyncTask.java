@@ -2,6 +2,7 @@ package org.deslrey.task;
 
 import lombok.extern.slf4j.Slf4j;
 import org.deslrey.mapper.ArticleMapper;
+import org.deslrey.util.DataInitUtils;
 import org.deslrey.util.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -28,6 +29,9 @@ public class ArticlePvSyncTask {
     @Autowired
     private ArticleMapper articleMapper;
 
+    @Autowired
+    private DataInitUtils dataInitUtils;
+
     /**
      * 每 5 分钟同步 Redis PV 到 MySQL
      */
@@ -38,7 +42,7 @@ public class ArticlePvSyncTask {
         if (pvMap == null || pvMap.isEmpty()) return;
 
         for (Map.Entry<Object, Object> entry : pvMap.entrySet()) {
-            Integer pv = Integer.valueOf(entry.getValue().toString());
+            int pv = Integer.parseInt(entry.getValue().toString());
             if (pv == 0) {
                 // PV 为 0，跳过
                 continue;
@@ -51,7 +55,13 @@ public class ArticlePvSyncTask {
             redisUtils.hset("article:pv", articleId.toString(), "0");
         }
         log.info("======      访问量同步完成      ======");
-
     }
 
+    @Scheduled(cron = "0 0 */3 * * ?") // 每 3 小时执行一次
+    public void syncCount() {
+        log.info("======      开始同步标签和分类统计      ======");
+        dataInitUtils.CategoryInit();
+        dataInitUtils.TagInit();
+        log.info("======      标签和分类统计同步完成      ======");
+    }
 }

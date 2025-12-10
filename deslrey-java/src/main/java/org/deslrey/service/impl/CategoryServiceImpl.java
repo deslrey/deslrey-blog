@@ -1,5 +1,6 @@
 package org.deslrey.service.impl;
 
+import com.alibaba.fastjson2.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,8 @@ import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.CategoryService;
 import org.deslrey.util.NumberUtils;
+import org.deslrey.util.RedisUtils;
+import org.deslrey.util.StaticUtils;
 import org.deslrey.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +41,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private ArticleMapper articleMapper;
 
+    @Autowired
+    private RedisUtils redisUtils;
+
     @Override
     public Results<PageInfo<Category>> categoryList(int page, int pageSize) {
         PageHelper.startPage(page, pageSize);
@@ -51,11 +57,21 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Results<List<CountVO>> categoryCount() {
-        List<CountVO> categoryCountVOList = categoryMapper.selectCategoryCount();
-        if (categoryCountVOList == null || categoryCountVOList.isEmpty()) {
-            return Results.ok(new ArrayList<>());
+        String categoryJson = redisUtils.get(StaticUtils.CATEGORY_COUNT);
+        if (StringUtils.isEmpty(categoryJson)) {
+            List<CountVO> categoryCountVOList = categoryMapper.selectCategoryCount();
+            if (categoryCountVOList == null || categoryCountVOList.isEmpty()) {
+                return Results.ok(new ArrayList<>(0));
+            }
+            redisUtils.set(StaticUtils.CATEGORY_COUNT, JSON.toJSONString(categoryCountVOList));
+            return Results.ok(categoryCountVOList);
+        } else {
+            List<CountVO> list = JSON.parseArray(categoryJson, CountVO.class);
+            if (list == null || list.isEmpty()) {
+                return Results.ok(new ArrayList<>(0));
+            }
+            return Results.ok(list);
         }
-        return Results.ok(categoryCountVOList);
     }
 
     @Override
