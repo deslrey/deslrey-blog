@@ -12,10 +12,7 @@ import org.deslrey.mapper.TagMapper;
 import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.TagService;
-import org.deslrey.util.NumberUtils;
-import org.deslrey.util.RedisUtils;
-import org.deslrey.util.StaticUtils;
-import org.deslrey.util.StringUtils;
+import org.deslrey.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +39,9 @@ public class TagServiceImpl implements TagService {
 
     @Autowired
     private RedisUtils redisUtils;
+
+    @Autowired
+    private DataInitUtils dataInitUtils;
 
     @Override
     public Results<PageInfo<Tag>> tagList(int page, int pageSize) {
@@ -103,6 +103,7 @@ public class TagServiceImpl implements TagService {
 
         int result = tagMapper.insertTag(tag.getTagTitle());
         if (result > 0) {
+            dataInitUtils.TagInit();
             return Results.ok("新增成功");
         }
         return Results.fail("新增失败");
@@ -116,6 +117,7 @@ public class TagServiceImpl implements TagService {
 
         int result = tagMapper.updateTagTitle(tag);
         if (result > 0) {
+            dataInitUtils.TagInit();
             return Results.ok("修改成功");
         }
         return Results.fail("更新失败");

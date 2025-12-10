@@ -12,10 +12,7 @@ import org.deslrey.mapper.CategoryMapper;
 import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.CategoryService;
-import org.deslrey.util.NumberUtils;
-import org.deslrey.util.RedisUtils;
-import org.deslrey.util.StaticUtils;
-import org.deslrey.util.StringUtils;
+import org.deslrey.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +40,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private RedisUtils redisUtils;
+
+    @Autowired
+    private DataInitUtils dataInitUtils;
 
     @Override
     public Results<PageInfo<Category>> categoryList(int page, int pageSize) {
@@ -95,6 +95,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         int result = categoryMapper.insertCategory(category.getCategoryTitle());
         if (result > 0) {
+            dataInitUtils.CategoryInit();
             return Results.ok("添加成功");
         }
         return Results.fail("添加失败");
@@ -108,6 +109,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         int result = categoryMapper.updateCategoryTitle(category);
         if (result > 0) {
+            dataInitUtils.CategoryInit();
             return Results.ok("更新成功");
         }
         return Results.fail("更新失败");

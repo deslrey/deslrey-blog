@@ -12,6 +12,7 @@ import org.deslrey.mapper.CategoryMapper;
 import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.ArticleService;
+import org.deslrey.util.DataInitUtils;
 import org.deslrey.util.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleTagMapper articleTagMapper;
+
+    @Autowired
+    private DataInitUtils dataInitUtils;
 
     @Override
     public Results<List<Article>> LatestReleases() {
@@ -170,6 +174,9 @@ public class ArticleServiceImpl implements ArticleService {
         if (result <= 0) {
             return Results.fail("保存失败");
         }
+
+        dataInitUtils.TagInit();
+        dataInitUtils.CategoryInit();
 
         return Results.ok("保存成功");
     }
