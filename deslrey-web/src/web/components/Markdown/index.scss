@@ -10,10 +10,14 @@
     }
 }
 
+:root {
+    --content-width: clamp(600px, 60vw, 1200px);
+}
+
 /* 正文容器 */
 .markdown-content {
-    flex: 1;
-    max-width: 900px;
+    width: var(--content-width);
+    margin: 0 auto;
 }
 
 .markdown-body {
@@ -258,7 +262,7 @@
     position: fixed;
     padding: 20px;
     top: 200px;
-    left: calc(50% + 900px / 2 + 1rem);
+    left: calc(50% + var(--content-width) / 2 + 1.5rem);
     width: 260px;
     max-height: calc(100vh - 150px);
     overflow-y: auto;
@@ -283,7 +287,29 @@
 }
 
 .markdown-toc li {
-    margin: 0.25rem 0;
+    display: block;
+    padding-left: 6px;
+    border-left: 2px solid transparent;
+    line-height: 1.4;
+}
+
+.markdown-toc li {
+    transition:
+        border-left-color 0.25s ease,
+        background-color 0.25s ease;
+}
+
+.markdown-toc li a {
+    transition: color 0.25s ease;
+    color: var(--color-text);
+    text-decoration: none;
+    display: inline-block; /* 避免内部对齐问题 */
+    word-break: break-word; /* 自动换行 */
+}
+
+.markdown-toc li.active a {
+    color: var(--activeColor);
+    font-weight: 600;
 }
 
 .markdown-toc ul {
@@ -313,12 +339,8 @@
     color: var(--activeColor);
 }
 
-.markdown-toc li.active a {
-    color: var(--activeColor);
-    font-weight: 600;
-    border-left: 2px solid var(--activeColor);
-    padding-left: 6px;
-    transition: all 0.2s;
+.markdown-toc li.active {
+    border-left-color: var(--activeColor);
 }
 
 /* === Skeleton 加载动画 === */
