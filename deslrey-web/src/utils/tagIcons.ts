@@ -1,4 +1,4 @@
-import { siOpenjdk, siJavascript, siGin } from 'simple-icons';
+import { siOpenjdk, siJavascript, siGin, siGo } from 'simple-icons';
 
 type IconInfo = {
     svg: string;
@@ -9,6 +9,7 @@ const tagIcons: Record<string, IconInfo> = {
     Java: { svg: siOpenjdk.svg, color: `#${siOpenjdk.hex}` },
     JavaScript: { svg: siJavascript.svg, color: `#${siJavascript.hex}` },
     Gin: { svg: siGin.svg, color: `#${siGin.hex}` },
+    Go: { svg: siGo.svg, color: `#${siGo.hex}` }
 };
 
 export const getTagIcon = (title: string): IconInfo | null => {

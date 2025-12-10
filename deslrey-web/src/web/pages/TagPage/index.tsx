@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Tag as DefaultTagIcon } from "lucide-react";
 import styles from "./index.module.scss";
 import request from "../../../utils/reques";
 import { api } from "../../api";
@@ -31,17 +32,17 @@ const TagPage: React.FC = () => {
                                 onClick={() => navigate(`/tag/${item.title}`)}
                             >
                                 <div className={styles.left}>
-                                    {icon && (
+                                    {icon ? (
                                         <span
                                             className={styles.icon}
                                             style={{ color: icon.color }}
                                             dangerouslySetInnerHTML={{ __html: icon.svg }}
                                         />
+                                    ) : (
+                                        <DefaultTagIcon className={styles.icon} />
                                     )}
 
-                                    <span className={styles.tagName}>
-                                        {item.title}
-                                    </span>
+                                    <span className={styles.tagName}>{item.title}</span>
                                 </div>
 
                                 <span className={styles.count}>{item.total}</span>
