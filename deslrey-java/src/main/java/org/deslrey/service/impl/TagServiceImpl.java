@@ -58,22 +58,25 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Results<List<Article>> tagArticle(String title) {
+    public Results<PageInfo<Article>> tagArticle(String title, int page, int pageSize) {
+        PageInfo<Article> articlePageInfo = new PageInfo<>(new ArrayList<>(0));
         if (StringUtils.isEmpty(title)) {
-            return Results.ok(new ArrayList<>(0));
+            return Results.ok(articlePageInfo);
         }
 
         Integer tagId = tagMapper.selectIdByTitle(title);
 
         if (tagId == null) {
-            return Results.ok(new ArrayList<>(0));
+            return Results.ok(articlePageInfo);
         }
 
+        PageHelper.startPage(page, pageSize);
         List<Article> articleList = articleTagMapper.selectArticleTag(tagId);
         if (articleList == null || articleList.isEmpty()) {
-            return Results.ok(new ArrayList<>(0));
+            return Results.ok(articlePageInfo);
         }
-        return Results.ok(articleList);
+        articlePageInfo.setList(articleList);
+        return Results.ok(articlePageInfo);
     }
 
     @Override

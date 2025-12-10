@@ -20,7 +20,7 @@ import java.util.List;
 public interface TagService {
     Results<List<CountVO>> tagCount();
 
-    Results<List<Article>> tagArticle(String title);
+    Results<PageInfo<Article>> tagArticle(String title, int page, int pageSize);
 
     Results<PageInfo<Tag>> tagList(int page, int pageSize);
 

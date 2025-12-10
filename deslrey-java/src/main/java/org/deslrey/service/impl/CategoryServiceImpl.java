@@ -59,15 +59,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Results<List<Article>> categoryArticle(String title) {
+    public Results<PageInfo<Article>> categoryArticle(String title, int page, int pageSize) {
         if (StringUtils.isEmpty(title)) {
-            return Results.ok(new ArrayList<>(0));
+            return Results.ok(new PageInfo<>(new ArrayList<>(0)));
         }
+        PageHelper.startPage(page, pageSize);
         List<Article> articleList = articleMapper.selectArticleByCategory(title);
         if (articleList == null || articleList.isEmpty()) {
-            return Results.ok(new ArrayList<>(0));
+            return Results.ok(new PageInfo<>(new ArrayList<>(0)));
         }
-        return Results.ok(articleList);
+        return Results.ok(new PageInfo<>(articleList));
     }
 
     @Override

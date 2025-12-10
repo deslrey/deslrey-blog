@@ -40,8 +40,8 @@ public class TagController {
     }
 
     @GetMapping("{title}")
-    public Results<List<Article>> tagArticle(@PathVariable String title) {
-        return tagService.tagArticle(title);
+    public Results<PageInfo<Article>> tagArticle(@PathVariable String title, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
+        return tagService.tagArticle(title, page, pageSize);
     }
 
     @RequireLogin

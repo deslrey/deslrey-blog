@@ -40,8 +40,8 @@ public class CategoryController {
     }
 
     @GetMapping("{title}")
-    public Results<List<Article>> categoryArticle(@PathVariable String title) {
-        return categoryService.categoryArticle(title);
+    public Results<PageInfo<Article>> categoryArticle(@PathVariable String title, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
+        return categoryService.categoryArticle(title,page,pageSize);
     }
 
     @RequireLogin

@@ -20,7 +20,7 @@ import java.util.List;
 public interface CategoryService {
     Results<List<CountVO>> categoryCount();
 
-    Results<List<Article>> categoryArticle(String title);
+    Results<PageInfo<Article>> categoryArticle(String title, int page, int pageSize);
 
     Results<PageInfo<Category>> categoryList(int page, int pageSize);
 
