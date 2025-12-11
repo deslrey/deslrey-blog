@@ -9,6 +9,7 @@
         <id column="id" property="id"/>
         <result column="folder_id" property="folderId"/>
         <result column="image_name" property="imageName"/>
+        <result column="original_name" property="originalName"/>
         <result column="path" property="path"/>
         <result column="url" property="url"/>
         <result column="size" property="size"/>
@@ -21,6 +22,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="folderId != null">folder_id,</if>
             <if test="imageName != null and imageName != ''">image_name,</if>
+            <if test="originalName != null and originalName != ''">original_name,</if>
             <if test="path != null and path != ''">path,</if>
             <if test="url != null and url != ''">url,</if>
             <if test="size != null">size,</if>
@@ -29,6 +31,7 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="folderId != null">#{folderId},</if>
             <if test="imageName != null and imageName != ''">#{imageName},</if>
+            <if test="originalName != null and originalName != ''">#{originalName},</if>
             <if test="path != null and path != ''">#{path},</if>
             <if test="url != null and url != ''">#{url},</if>
             <if test="size != null">#{size},</if>
@@ -39,13 +42,13 @@
     <!-- 查询全部图片 -->
     <select id="selectList" resultType="org.deslrey.entity.vo.ImageVO">
         select i.id,
-               i.folder_id   as folderId,
-               f.folder_name as folderName,
-               i.image_name  as imageName,
+               i.folder_id     as folderId,
+               f.folder_name   as folderName,
+               i.original_name as originalName,
                i.path,
                i.url,
                i.size,
-               i.create_time as createTime
+               i.create_time   as createTime
         from image i
                  left join folder f on i.folder_id = f.id
         order by i.create_time
@@ -58,7 +61,7 @@
         select i.id,
         i.folder_id as folderId,
         f.folder_name as folderName,
-        i.image_name as imageName,
+        i.original_name as originalName,
         i.path,
         i.url,
         i.size,

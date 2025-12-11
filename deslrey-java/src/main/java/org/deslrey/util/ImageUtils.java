@@ -128,24 +128,23 @@ public class ImageUtils {
      * @return 保存后的文件对象
      * @throws IOException 保存失败时抛出异常
      */
-    public static File saveMultipartFile(MultipartFile multipartFile, String folderPath) throws IOException {
+    public static File saveMultipartFile(MultipartFile multipartFile,
+                                         String folderPath,
+                                         String newFileName) throws IOException {
+
         if (multipartFile == null || multipartFile.isEmpty()) {
             throw new IllegalArgumentException("文件为空，无法保存！");
         }
 
-        // 创建文件夹
+        // 创建目录
         File folder = new File(folderPath);
-        if (!folder.exists()) {
-            boolean created = folder.mkdirs(); // 创建多层目录
-            if (!created) {
-                throw new IOException("文件夹创建失败: " + folderPath);
-            }
+        if (!folder.exists() && !folder.mkdirs()) {
+            throw new IOException("文件夹创建失败: " + folderPath);
         }
 
-        // 目标文件（保持原文件名）
-        File destFile = new File(folder, Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        // 使用新文件名存储
+        File destFile = new File(folder, newFileName);
 
-        // 保存文件
         multipartFile.transferTo(destFile);
 
         return destFile;
@@ -171,6 +170,30 @@ public class ImageUtils {
             return absolutePath.substring(normalizedFolderPath.length() + 1);
         }
         return file.getName();
+    }
+
+    /**
+     * 根据上传文件名生成新的文件名（保留原始后缀）
+     *
+     * @param originalName 上传时的原始文件名，例如 "abc.png"
+     * @return 新文件名，如 "d13f2b0e8b2a4abfa3d7c12345678901.png"
+     */
+    public static String generateNewImageName(String originalName) {
+        if (originalName == null || originalName.isEmpty()) {
+            throw new IllegalArgumentException("originalName cannot be null");
+        }
+
+        // 文件后缀（包含点）
+        String suffix = "";
+        int index = originalName.lastIndexOf(".");
+        if (index != -1) {
+            suffix = originalName.substring(index);
+        }
+
+        // 生成 UUID
+        String uuid = java.util.UUID.randomUUID().toString().replace("-", "");
+
+        return uuid + suffix;
     }
 
 

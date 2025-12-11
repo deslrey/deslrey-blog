@@ -28,7 +28,7 @@ public class ImageVO {
     /**
      * 图片名称
      */
-    private String imageName;
+    private String originalName;
 
     /**
      * 存储路径

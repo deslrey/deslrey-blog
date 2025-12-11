@@ -62,7 +62,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Results<Void> uploadImage(MultipartFile file, Integer folderId) {
+    public Results<String> uploadImage(MultipartFile file, Integer folderId) {
         if (file == null || file.isEmpty()) {
             log.error("上传图片为空");
             return Results.fail(ResultCodeEnum.EMPTY_VALUE);
@@ -80,25 +80,30 @@ public class ImageServiceImpl implements ImageService {
         }
 
         try {
-            File saveMultipartFile = ImageUtils.saveMultipartFile(file, folderPath + File.separator + folder.getPath());
+            String originalFileName = file.getOriginalFilename();
+            String generatedNewImageName = ImageUtils.generateNewImageName(originalFileName);
+            // 保存文件
+            File savedFile = ImageUtils.saveMultipartFile(file,
+                    folderPath + File.separator + folder.getPath(),
+                    generatedNewImageName);
 
             Image image = new Image();
             image.setFolderId(folderId);
-            image.setImageName(saveMultipartFile.getName());
+            image.setImageName(generatedNewImageName);
+            image.setOriginalName(originalFileName);
             image.setPath(folder.getPath());
-            image.setUrl("/" + saveMultipartFile.getName());
-            image.setSize(saveMultipartFile.length());
+            image.setUrl("/" + generatedNewImageName);
+            image.setSize(savedFile.length());
 
             int result = imageMapper.insertImage(image);
             if (result > 0) {
-                return Results.ok("上传成功");
+                return Results.ok(image.getPath() + image.getUrl(), "上传成功");
             }
             return Results.fail("上传失败");
         } catch (IOException e) {
             log.error("保存图片上传出现异常 ======> {}", e.getMessage());
             return Results.fail("上传失败");
         }
-
     }
 
 

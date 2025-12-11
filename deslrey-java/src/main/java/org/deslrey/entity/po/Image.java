@@ -41,6 +41,11 @@ public class Image implements Serializable {
     private String imageName;
 
     /**
+     * 上传时的原始文件名
+     */
+    private String originalName;
+
+    /**
      * 存储路径
      */
     private String path;

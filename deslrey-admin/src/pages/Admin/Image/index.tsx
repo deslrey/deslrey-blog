@@ -230,7 +230,7 @@ const ImageTable: React.FC = () => {
                             {sortedImages.map((image, index) => (
                                 <TableRow key={`${image.id}-${index}`} hover>
                                     <TableCell sx={{ paddingLeft: 10 }}>{image.id}</TableCell>
-                                    <TableCell>{image.imageName}</TableCell>
+                                    <TableCell>{image.originalName}</TableCell>
                                     <TableCell>{image.folderName}</TableCell>
                                     <TableCell>{formatFileSize(image.size)}</TableCell>
                                     <TableCell>{image.path}</TableCell>

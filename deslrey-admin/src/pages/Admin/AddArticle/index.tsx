@@ -13,10 +13,10 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import styles from './index.module.scss';
-import type { Category, Tag } from '../../../interfaces';
+import type { Category, Folder, Tag } from '../../../interfaces';
 import request from '../../../utils/request';
 import { Message } from '../../../utils/message';
-import { addArticleApi } from '../../../api';
+import { addArticleApi, folderApi, imageApi } from '../../../api';
 
 const CustomPopper = styled(Popper)({
     '& .MuiAutocomplete-listbox': {
@@ -37,16 +37,21 @@ const CustomPopper = styled(Popper)({
 const AddArticle: React.FC = () => {
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState<Category | null>(null);
+    const [folder, setFolder] = useState<Folder | null>(null)
     const [description, setDescription] = useState('');
     const [content, setContent] = useState('');
 
     const [categories, setCategories] = useState<Category[]>([]);
     const [tags, setTags] = useState<Tag[]>([]);
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
+    const [folders, setFolders] = useState<Folder[]>([])
 
     // 弹窗控制
     const [openDialog, setOpenDialog] = useState(false);
     const [dialogType, setDialogType] = useState<'save' | 'draft' | null>(null);
+
+    const editorRef = React.useRef<HTMLDivElement>(null);
+
 
     // 保存文章逻辑
     const handleSave = async () => {
@@ -117,9 +122,22 @@ const AddArticle: React.FC = () => {
         }
     };
 
+    const fetchFolders = async () => {
+        try {
+            const res = await request.get(folderApi.folderNameList);
+            if (res.code == 200) {
+                console.log(res.data)
+                setFolders(res.data)
+            }
+        } catch (error) {
+            setFolders([])
+        }
+    }
+
     useEffect(() => {
         fetchCategories();
         fetchTags();
+        fetchFolders();
     }, []);
 
     // 校验函数
@@ -174,6 +192,87 @@ const AddArticle: React.FC = () => {
         setOpenDialog(false);
     };
 
+    const handlePaste = async (event: React.ClipboardEvent<HTMLDivElement>) => {
+        if (!folder || !folder.id) {
+            Message.warning("请先选择文件夹再粘贴上传图片");
+            return;
+        }
+
+        const items = event.clipboardData.items;
+        for (const item of items) {
+            if (item.type.indexOf("image") !== -1) {
+                event.preventDefault();
+                const file = item.getAsFile();
+                if (file) {
+                    uploadImage(file);
+                }
+            }
+        }
+    };
+
+    const uploadImage = async (file: File) => {
+        if (!folder || !folder.id) {
+            Message.warning("请先选择文件夹再上传图片");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("folderId", folder.id.toString());
+
+        try {
+            const res = await request.post(imageApi.uploadImage, formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+
+            if (res.code === 200) {
+                const url = import.meta.env.VITE_IMAGE_API + res.data;
+                insertToEditor(url);
+            } else {
+                Message.error(res.message);
+            }
+        } catch (error) {
+            Message.error("上传失败");
+        }
+    };
+
+const insertToEditor = (url: string) => {
+    if (!url) return;
+
+    const editor = editorRef.current;
+    if (!editor) {
+        setContent((prev) => prev + `\n\n![image](${url})\n`);
+        return;
+    }
+
+    // 找到内部 textarea
+    const textarea = editor.querySelector("textarea");
+    if (!textarea) {
+        setContent((prev) => prev + `\n\n![image](${url})\n`);
+        return;
+    }
+
+    const insertText = `\n\n![image](${url})\n`;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+
+    const before = content.substring(0, start);
+    const after = content.substring(end);
+
+    const newValue = before + insertText + after;
+
+    setContent(newValue);
+
+    // 插入后让光标移动到插入内容后
+    setTimeout(() => {
+        textarea.selectionStart = textarea.selectionEnd = start + insertText.length;
+        textarea.focus();
+    }, 0);
+};
+
+
+
     return (
         <div className={styles.addArticleBox}>
             {/* 顶部输入区 */}
@@ -226,6 +325,26 @@ const AddArticle: React.FC = () => {
                     )}
                 />
 
+                {/* 文件夹选择 */}
+                <Autocomplete
+                    options={folders}
+                    getOptionLabel={(option) => option.folderName}
+                    value={folder}
+                    onChange={(_, newValue) => setFolder(newValue)}
+                    renderInput={(params) => (
+                        <TextField {...params} label="文件夹" variant="outlined" fullWidth />
+                    )}
+                    noOptionsText="暂无选择"
+                    fullWidth
+                    clearOnBlur
+                    PopperComponent={CustomPopper}
+                    renderOption={(props, option) => (
+                        <li {...props} key={option.id}>
+                            <Chip label={option.folderName} />
+                        </li>
+                    )}
+                />
+
                 <TextField
                     label="文章描述"
                     variant="outlined"
@@ -256,11 +375,16 @@ const AddArticle: React.FC = () => {
             {/* Markdown 编辑器 */}
             <div className={styles.mdBox}>
                 <MDEditor
+                    ref={editorRef}
                     value={content}
                     onChange={(value = '') => setContent(value)}
                     height="100%"
                     data-color-mode="light"
+                    onPaste={(e) => {
+                        handlePaste(e);
+                    }}
                 />
+
             </div>
 
             {/* 确认弹窗 */}

@@ -35,7 +35,7 @@ public class ImageController {
 
     @RequireLogin
     @PostMapping("uploadImage")
-    public Results<Void> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("folderId") Integer folderId) {
+    public Results<String> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("folderId") Integer folderId) {
         return imageService.uploadImage(file, folderId);
     }
 

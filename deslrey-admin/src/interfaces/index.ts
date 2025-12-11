@@ -50,6 +50,7 @@ export interface Image {
     folderId: number;
     folderName: string;
     imageName: string;
+    originalName: string;
     path: string;
     url: string;
     size: number;

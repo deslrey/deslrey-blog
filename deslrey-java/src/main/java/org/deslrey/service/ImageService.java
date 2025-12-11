@@ -19,7 +19,7 @@ import java.util.List;
 public interface ImageService {
     Results<PageInfo<ImageVO>> imageList(int page, int pageSize);
 
-    Results<Void> uploadImage(MultipartFile file, Integer folderId);
+    Results<String> uploadImage(MultipartFile file, Integer folderId);
 
     Results<List<ImageVO>> obscureFolderName(String folderName);
 }
