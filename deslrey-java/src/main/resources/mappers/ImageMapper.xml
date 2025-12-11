@@ -39,6 +39,20 @@
         </trim>
     </insert>
 
+    <delete id="deleteImageById" parameterType="java.lang.Integer">
+        delete from image
+        <where>
+            <choose>
+                <when test="imageId != null">
+                    id = #{imageId}
+                </when>
+                <otherwise>
+                    1 = 2
+                </otherwise>
+            </choose>
+        </where>
+    </delete>
+
     <!-- 查询全部图片 -->
     <select id="selectList" resultType="org.deslrey.entity.vo.ImageVO">
         select i.id,
@@ -74,6 +88,12 @@
             </if>
         </where>
         order by i.create_time desc
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select path, url
+        from image
+        where id = #{imageId}
     </select>
 
 </mapper>

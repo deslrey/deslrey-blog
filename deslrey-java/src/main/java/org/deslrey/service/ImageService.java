@@ -22,4 +22,6 @@ public interface ImageService {
     Results<String> uploadImage(MultipartFile file, Integer folderId);
 
     Results<List<ImageVO>> obscureFolderName(String folderName);
+
+    Results<Void> deleteImage(Integer imageId);
 }

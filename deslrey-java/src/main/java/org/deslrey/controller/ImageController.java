@@ -45,4 +45,10 @@ public class ImageController {
         return imageService.obscureFolderName(folderName);
     }
 
+    @RequireLogin
+    @DeleteMapping("/deleteImage/{imageId}")
+    public Results<Void> deleteImage(@PathVariable Integer imageId) {
+        return imageService.deleteImage(imageId);
+    }
+
 }

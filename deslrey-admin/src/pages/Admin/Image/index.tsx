@@ -8,7 +8,7 @@ import styles from './index.module.scss';
 import { type Folder, type Image, type Order } from '../../../interfaces';
 import request from '../../../utils/request';
 import dayjs from 'dayjs';
-import { Copy, Eye, ImageUp, ScanSearch } from 'lucide-react';
+import { Copy, Eye, ImageUp, ScanSearch, Trash2 } from 'lucide-react';
 import { Message } from '../../../utils/message';
 import { formatFileSize } from '../../../utils/format';
 import { folderApi, imageApi } from '../../../api';
@@ -32,6 +32,10 @@ const ImageTable: React.FC = () => {
     const [openPreview, setOpenPreview] = useState(false);
 
     const [searchFolderName, setSearchFolderName] = useState<string>('')
+
+    const [openDelete, setOpenDelete] = useState(false);
+    const [deleteId, setDeleteId] = useState<number | null>(null);
+
 
     // 点击 Eye 打开预览
     const handlePreview = (url: string, path: string) => {
@@ -155,6 +159,27 @@ const ImageTable: React.FC = () => {
         }
     };
 
+    const handleDelete = async () => {
+        if (!deleteId) return;
+
+        try {
+            const res = await request.delete(`${imageApi.deleteImage}/${deleteId}`);
+
+            if (res.code === 200) {
+                Message.success("删除成功");
+                fetchData(page + 1, rowsPerPage);
+            } else {
+                Message.error(res.message || "删除失败");
+            }
+        } catch (error) {
+            Message.error("删除失败");
+        }
+
+        setOpenDelete(false);
+        setDeleteId(null);
+    };
+
+
     return (
         <div className={styles.imageBox}>
             <div className={styles.header}>
@@ -235,11 +260,22 @@ const ImageTable: React.FC = () => {
                                     <TableCell>{formatFileSize(image.size)}</TableCell>
                                     <TableCell>{image.path}</TableCell>
                                     <TableCell>{dayjs(image.createTime).format("YYYY-MM-DD HH:mm")}</TableCell>
-                                    <TableCell>
+                                    <TableCell sx={{ display: "flex", gap: 1 }}>
                                         <Button onClick={() => handlePreview(image.url, image.path)}>
                                             <Eye color="#000" />
                                         </Button>
+
+                                        {/* 删除按钮 */}
+                                        <Button
+                                            onClick={() => {
+                                                setDeleteId(image.id);
+                                                setOpenDelete(true);
+                                            }}
+                                        >
+                                            <Trash2 color='#d32f2f' />
+                                        </Button>
                                     </TableCell>
+
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -332,6 +368,26 @@ const ImageTable: React.FC = () => {
                     <Button onClick={() => setOpenPreview(false)}>关闭</Button>
                 </DialogActions>
             </Dialog>
+
+            {/* 删除确认弹窗 */}
+            <Dialog
+                open={openDelete}
+                onClose={() => setOpenDelete(false)}
+            >
+                <DialogTitle>确认删除</DialogTitle>
+                <DialogContent>确定要删除这张图片吗？该操作不可恢复。</DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenDelete(false)}>取消</Button>
+                    <Button
+                        variant="contained"
+                        color="error"
+                        onClick={handleDelete}
+                    >
+                        删除
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
         </div>
     );
 };

@@ -196,5 +196,38 @@ public class ImageUtils {
         return uuid + suffix;
     }
 
+    /**
+     * 删除文件或目录
+     *
+     * @param path 路径
+     * @return true=删除成功
+     */
+    public static boolean delete(String path) {
+        if (path == null || path.isEmpty()) {
+            return false;
+        }
+        return delete(new File(path));
+    }
+
+    /**
+     * 删除文件或目录（递归删除）
+     */
+    public static boolean delete(File file) {
+        if (file == null || !file.exists()) {
+            return false;
+        }
+
+        if (file.isDirectory()) {
+            File[] children = file.listFiles();
+            if (children != null) {
+                for (File child : children) {
+                    delete(child);
+                }
+            }
+        }
+
+        return file.delete();
+    }
+
 
 }

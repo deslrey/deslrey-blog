@@ -106,7 +106,6 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-
     @Override
     public Results<List<ImageVO>> obscureFolderName(String folderName) {
         if (StringUtils.isEmpty(folderName)) {
@@ -114,5 +113,28 @@ public class ImageServiceImpl implements ImageService {
         }
         List<ImageVO> imageList = imageMapper.selectObscureFolderName(folderName);
         return Results.ok(imageList);
+    }
+
+    @Override
+    public Results<Void> deleteImage(Integer imageId) {
+        if (NumberUtils.isLessZero(imageId)) {
+            return Results.fail("删除失败");
+        }
+
+        Image image = imageMapper.selectById(imageId);
+        if (image == null) {
+            return Results.fail("删除失败,图片不存在");
+        }
+
+        if (StringUtils.isEmpty(image.getPath()) || StringUtils.isEmpty(image.getUrl())) {
+            return Results.fail("删除失败,图片不存在");
+        }
+
+        int result = imageMapper.deleteImageById(imageId);
+        boolean delete = ImageUtils.delete(folderPath + image.getPath() + image.getUrl());
+        if (result > 0 && delete) {
+            return Results.ok("删除成功");
+        }
+        return Results.fail("删除失败");
     }
 }
