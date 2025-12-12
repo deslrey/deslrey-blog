@@ -39,7 +39,7 @@ hljs.configure({ ignoreUnescapedHTML: true });
 export const plugins: BytemdPlugin[] = [
   breaks(),
   frontmatter(),
-  mediumZoom(),
+  // mediumZoom(),
   gfm({ locale: gfm_zhHans }),
   highlight({ hljs } as any),
   {
