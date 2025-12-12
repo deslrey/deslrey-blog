@@ -5,10 +5,9 @@ import type { Article } from "../../../interfaces";
 import { CodeBlockEnhancer } from "../../../utils/codeBlockEnhancer";
 import DetailHead from "../DetailHead";
 
-import hljs from "highlight.js";
+import { hljs } from "./config";
 import "./index.scss";
 
-hljs.configure({ ignoreUnescapedHTML: true });
 
 interface BytemdViewerProps {
     article: Article;
@@ -65,8 +64,6 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         e?.preventDefault();
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
-
-
 
     React.useEffect(() => {
         const container = containerRef.current;
