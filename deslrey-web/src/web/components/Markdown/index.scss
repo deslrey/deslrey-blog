@@ -446,19 +446,6 @@
     padding: 8px 0;
 }
 
-/* === 编辑器外观 === */
-.bytemd {
-    border: 1px solid #d1d5db;
-    background-color: var(--background);
-    color: var(--foreground);
-    border-radius: 0.5rem;
-}
-.bytemd-toolbar {
-    border: 1px solid #d1d5db;
-    background-color: var(--background);
-    border-radius: 0.5rem;
-}
-
 /* === 响应式优化 === */
 // @media (max-width: 1280px) {
 //     .markdown-toc {

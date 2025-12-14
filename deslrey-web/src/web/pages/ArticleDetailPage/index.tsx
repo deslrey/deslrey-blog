@@ -1,33 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { useParams } from 'react-router';
-import styles from './index.module.scss'
-import { BytemdViewer } from '../../components/Markdown/viewer';
+import styles from './index.module.scss';
 import type { Article } from '../../../interfaces';
 import request from '../../../utils/reques';
 import { api } from '../../api';
 import BanterComponent from '../../../loader/BanterComponent';
 
+// 异步加载 BytemdViewer
+const LazyBytemdViewer = lazy(() => import('../../components/Markdown/viewer'));
+
 const ArticleDetailPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
 
-    const [post, setPost] = useState<Article>();
+    const [post, setPost] = useState<Article | null>(null);
     const [carouseUrl, _setCarouseUrl] = useState("");
-    const [showLoading, setShowLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
 
+    // 请求文章数据
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
             try {
-                const res = await request.get(`${api.article.articleDetail + id}`);
+                const res = await request.get(`${api.article.articleDetail}${id}`);
                 if (res && res.code === 200) {
                     setPost(res.data);
                 }
-                setShowLoading(false)
             } catch (error) {
-                setShowLoading(false)
+                console.error(error);
+            } finally {
+                setLoading(false);
             }
         };
 
-        setShowLoading(true);
         fetchData();
     }, [id]);
 
@@ -60,16 +64,18 @@ const ArticleDetailPage: React.FC = () => {
 
     return (
         <div className={styles.blogBox}>
-            {showLoading ? (
-                <BanterComponent />
-            ) : post ? (
-                <BytemdViewer article={post} carouseUrl={carouseUrl} />
-            ) : (
-                <div className={styles.empty}>暂无数据</div>
-            )}
+            {/* 显示加载动画或文章 */}
+            <Suspense fallback={<BanterComponent />}>
+                {loading ? (
+                    <BanterComponent />
+                ) : post ? (
+                    <LazyBytemdViewer article={post} carouseUrl={carouseUrl} />
+                ) : (
+                    <div className={styles.empty}>暂无数据</div>
+                )}
+            </Suspense>
         </div>
     );
-
 };
 
 export default ArticleDetailPage;

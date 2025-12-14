@@ -16,7 +16,7 @@ const MemoMdViewer = memo(({ content }: { content: string }) => {
     return <MdViewer value={content} plugins={plugins} />;
 });
 
-export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
+const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
     console.log("start");
 
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -233,3 +233,5 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         </div>
     );
 };
+
+export default BytemdViewer;
