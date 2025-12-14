@@ -97,13 +97,51 @@
     text-decoration: none;
 }
 
-/* 图片样式 */
 .markdown-body img {
     display: block;
     margin: 5px auto;
-    max-width: 60%;
-    max-height: 40vh;
+    max-width: 100%;
+    height: auto;
     border-radius: 0.5rem;
+    object-fit: contain;
+}
+
+/* 加载中 */
+.markdown-body img.img-loading {
+    position: relative;
+    filter: blur(2px);
+    opacity: 0.6;
+}
+
+/* 中央 loading 圆圈 */
+.markdown-body img.img-loading::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 3px solid rgba(0, 0, 0, 0.15);
+    border-top-color: rgba(0, 0, 0, 0.5);
+    animation: img-spin 0.8s linear infinite;
+}
+
+/* 加载完成 */
+.markdown-body img.img-loaded {
+    filter: none;
+    opacity: 1;
+}
+
+@keyframes img-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 只有加载完成后才加边框 */
+.markdown-body img:not([loading]),
+.markdown-body img.complete {
     border: 1px solid #e5e7eb;
     padding: 5px;
 }

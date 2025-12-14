@@ -2,9 +2,12 @@ package org.deslrey.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * <br>
@@ -30,7 +33,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtAuthInterceptor)
-                .addPathPatterns("/**");
+                .addPathPatterns("/**")
+                .excludePathPatterns("/staticSource/**");
     }
 
     @Override
@@ -39,7 +43,14 @@ public class WebConfig implements WebMvcConfigurer {
         if (!location.endsWith("/")) {
             location += "/";
         }
+
         registry.addResourceHandler("/staticSource/**")
-                .addResourceLocations(location);
+                .addResourceLocations(location)
+                .setCacheControl(
+                        CacheControl.maxAge(365, TimeUnit.DAYS)
+                                .cachePublic()
+                                .immutable()
+                );
     }
+
 }

@@ -3,10 +3,11 @@ import styles from "./index.module.scss";
 import { Github, Mail, Twitter } from "lucide-react";
 
 const HomePage: React.FC = () => {
-    const onlineAvatar = "https://gcore.jsdelivr.net/gh/deslrey/deslrey-blog/deslrey-web/public/images/avatar.jpg";
+    // const onlineAvatar = "https://gcore.jsdelivr.net/gh/deslrey/deslrey-blog/deslrey-web/public/images/avatar.jpg";
+    const onlineAvatar = "https://i-blog.csdnimg.cn/direct/0fb3d4a54f1544d7b82d786fb88a7b8e.jpeg";
     const localAvatar = "/images/avatar.jpg";
 
-    const [_avatarSrc, setAvatarSrc] = useState(onlineAvatar);
+    const [avatarSrc, setAvatarSrc] = useState(onlineAvatar);
 
     return (
         <div className={styles.homePage}>
@@ -43,11 +44,13 @@ const HomePage: React.FC = () => {
             </div>
 
             <img
-                src={localAvatar}
+                src={avatarSrc}
                 alt="avatar"
                 className={styles.avatar}
+                referrerPolicy="no-referrer"
                 onError={() => setAvatarSrc(localAvatar)}
             />
+
         </div>
     );
 };

@@ -2,8 +2,8 @@ import breaks from "@bytemd/plugin-breaks";
 import frontmatter from "@bytemd/plugin-frontmatter";
 import gfm from "@bytemd/plugin-gfm";
 import gfm_zhHans from "@bytemd/plugin-gfm/lib/locales/zh_Hans.json";
-import highlight from "@bytemd/plugin-highlight";
-import mediumZoom from "@bytemd/plugin-medium-zoom";
+// import highlight from "@bytemd/plugin-highlight";
+import _mediumZoom from "@bytemd/plugin-medium-zoom";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import type { BytemdPlugin } from "bytemd";
@@ -21,6 +21,7 @@ import scss from "highlight.js/lib/languages/scss";
 import shell from "highlight.js/lib/languages/shell";
 import json from "highlight.js/lib/languages/json";
 import sql from "highlight.js/lib/languages/sql";
+import { rehypeImgLazy } from "./rehype-img-lazy";
 
 // --- 注册语言 ---
 hljs.registerLanguage("javascript", javascript);
@@ -41,10 +42,10 @@ export const plugins: BytemdPlugin[] = [
   frontmatter(),
   // mediumZoom(),
   gfm({ locale: gfm_zhHans }),
-  highlight({ hljs } as any),
+  // highlight({ hljs } as any),
   {
     rehype: ((processor: any) =>
-      processor.use(rehypeSlug).use(rehypeAutolinkHeadings, { behavior: "append" })
+      processor.use(rehypeSlug).use(rehypeAutolinkHeadings, { behavior: "append" }).use(rehypeImgLazy)
     ) as BytemdPlugin["rehype"],
   },
 ];

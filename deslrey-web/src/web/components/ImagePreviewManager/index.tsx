@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 
 export const useImagePreview = () => {
-    const [src, setSrc] = useState<string | null>(null);
+    const [image, setImage] = useState<HTMLImageElement | null>(null);
 
     // 页面滚动锁定
     useEffect(() => {
-        if (!src) return;
+        if (!image) return;
+
         const scrollY = window.scrollY;
         document.body.style.position = "fixed";
         document.body.style.top = `-${scrollY}px`;
@@ -20,17 +21,25 @@ export const useImagePreview = () => {
             document.body.style.right = "";
             window.scrollTo(0, scrollY);
         };
-    }, [src]);
+    }, [image]);
 
     const ImagePreview = () =>
-        src
+        image
             ? createPortal(
-                <div className="image-preview-mask" onClick={() => setSrc(null)}>
-                    <img src={src} onClick={(e) => e.stopPropagation()} />
+                <div className="image-preview-mask" onClick={() => setImage(null)}>
+                    <div
+                        className="image-preview-content"
+                        ref={(el) => {
+                            if (!el) return;
+                            el.innerHTML = "";
+                            el.appendChild(image.cloneNode(true));
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    />
                 </div>,
                 document.body
             )
             : null;
 
-    return { setSrc, ImagePreview };
+    return { setImage, ImagePreview };
 };

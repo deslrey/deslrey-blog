@@ -14,7 +14,6 @@ interface BytemdViewerProps {
     carouseUrl: string;
 }
 
-// Memo MdViewer 避免无关 state 导致重新渲染
 const MemoMdViewer = memo(({ content }: { content: string }) => {
     return <MdViewer value={content} plugins={plugins} />;
 });
@@ -24,10 +23,8 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
 
     const containerRef = useRef<HTMLDivElement | null>(null);
 
-    // 使用 useImagePreview 管理图片预览
-    const { setSrc: setPreviewSrc, ImagePreview } = useImagePreview();
+    const { setImage, ImagePreview } = useImagePreview();
 
-    // 保证 content 引用稳定
     const content = useMemo(() => article.content as string, [article.content]);
 
     const headData: Article = {
@@ -44,6 +41,34 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         sticky: article.sticky,
     };
 
+
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        const imgs = container.querySelectorAll("img");
+
+        imgs.forEach((img) => {
+            // 标记为 loading
+            img.classList.add("img-loading");
+
+            if (img.complete) {
+                img.classList.remove("img-loading");
+                img.classList.add("img-loaded");
+            } else {
+                img.addEventListener(
+                    "load",
+                    () => {
+                        img.classList.remove("img-loading");
+                        img.classList.add("img-loaded");
+                    },
+                    { once: true }
+                );
+            }
+        });
+    }, [content]);
+
+
     // 图片点击事件
     useEffect(() => {
         const container = containerRef.current;
@@ -51,14 +76,14 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
 
         const handleClick = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            if (target.tagName.toLowerCase() === "img") {
-                setPreviewSrc((target as HTMLImageElement).src);
-            }
+            if (target.tagName.toLowerCase() !== "img") return;
+
+            setImage(target as HTMLImageElement);
         };
 
         container.addEventListener("click", handleClick);
         return () => container.removeEventListener("click", handleClick);
-    }, [setPreviewSrc]);
+    }, [setImage]);
 
     // 代码块增强 & 高亮
     useEffect(() => {
