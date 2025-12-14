@@ -62,7 +62,7 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
             if (!existingDark) {
                 const link = document.createElement('link');
                 link.rel = 'stylesheet';
-                link.href = '/highlight/vs2015.css';
+                link.href = '/highlight/github-dark.min.css';
                 link.setAttribute('data-hljs', 'dark');
                 document.head.appendChild(link);
             }
