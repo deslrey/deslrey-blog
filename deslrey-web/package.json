@@ -32,6 +32,7 @@
     "sass": "^1.93.2",
     "simple-icons": "^15.19.0",
     "styled-components": "^6.1.19",
+    "unist-util-visit": "^5.0.0",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
