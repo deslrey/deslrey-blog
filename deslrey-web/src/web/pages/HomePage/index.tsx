@@ -4,7 +4,8 @@ import { Github, Mail, Twitter } from "lucide-react";
 
 const HomePage: React.FC = () => {
     // const onlineAvatar = "https://gcore.jsdelivr.net/gh/deslrey/deslrey-blog/deslrey-web/public/images/avatar.jpg";
-    const onlineAvatar = "https://i-blog.csdnimg.cn/direct/0fb3d4a54f1544d7b82d786fb88a7b8e.jpeg";
+    const onlineAvatar =
+        "https://i-blog.csdnimg.cn/direct/0fb3d4a54f1544d7b82d786fb88a7b8e.jpeg";
     const localAvatar = "/images/avatar.jpg";
 
     const [avatarSrc, setAvatarSrc] = useState(onlineAvatar);
@@ -12,13 +13,16 @@ const HomePage: React.FC = () => {
     return (
         <div className={styles.homePage}>
             <div className={styles.left}>
-                <p className={styles.hello}>Hi, I'm Deslrey 👋</p>
-
-                <p className={styles.subTitle}>
-                    A Full Stack <span className={styles.Developer}>{`<Developer />`}</span>
+                <p className={`${styles.hello} ${styles.fadeUp} ${styles.delay1}`}>
+                    Hi, I'm Deslrey 👋
                 </p>
 
-                <div className={styles.iconRow}>
+                <p className={`${styles.subTitle} ${styles.fadeUp} ${styles.delay2}`}>
+                    A Full Stack{" "}
+                    <span className={styles.Developer}>{`<Developer />`}</span>
+                </p>
+
+                <div className={`${styles.iconRow} ${styles.fadeUp} ${styles.delay3}`}>
                     <a
                         href="https://github.com/deslrey"
                         target="_blank"
@@ -28,7 +32,10 @@ const HomePage: React.FC = () => {
                         <Github size={22} />
                     </a>
 
-                    <a href="mailto:deslre0381@gmail.com" style={{ backgroundColor: "#d44638" }}>
+                    <a
+                        href="mailto:deslre0381@gmail.com"
+                        style={{ backgroundColor: "#d44638" }}
+                    >
                         <Mail size={22} />
                     </a>
 
@@ -46,11 +53,10 @@ const HomePage: React.FC = () => {
             <img
                 src={avatarSrc}
                 alt="avatar"
-                className={styles.avatar}
+                className={`${styles.avatar} ${styles.fadeUp} ${styles.delay2}`}
                 referrerPolicy="no-referrer"
                 onError={() => setAvatarSrc(localAvatar)}
             />
-
         </div>
     );
 };

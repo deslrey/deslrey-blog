@@ -105,3 +105,27 @@
 .iconRow a:hover {
     transform: translateY(-2px);
 }
+
+/* === 入场动画 === */
+.fadeUp {
+    opacity: 0;
+    transform: translateY(-16px);
+    animation: fadeUp 0.6s ease forwards;
+}
+
+.delay1 {
+    animation-delay: 0.1s;
+}
+.delay2 {
+    animation-delay: 0.3s;
+}
+.delay3 {
+    animation-delay: 0.5s;
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
