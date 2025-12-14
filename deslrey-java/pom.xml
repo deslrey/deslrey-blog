@@ -55,6 +55,19 @@
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
 
+        <!-- Micrometer Prometheus 依赖 -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+
+        <!-- Spring Boot Actuator -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+
         <!--    redis    -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
