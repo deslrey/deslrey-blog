@@ -1,18 +1,16 @@
 import { Viewer as MdViewer } from "@bytemd/react";
 import { plugins } from "./config";
-import type { Article } from "../../../interfaces";
+import type { Article, BytemdViewerProps, TocItem } from "../../../interfaces";
 import { CodeBlockEnhancer } from "../../../utils/codeBlockEnhancer";
 import DetailHead from "../DetailHead";
 
 import { hljs } from "./config";
 import "./index.scss";
-import { useEffect, useRef, useMemo, memo } from "react";
+import { useEffect, useRef, useMemo, memo, useState } from "react";
 import { useImagePreview } from "../ImagePreviewManager";
+import { MarkdownToc } from "../MarkdownToc/MarkdownToc";
+import { TableOfContents } from "lucide-react";
 
-interface BytemdViewerProps {
-    article: Article;
-    carouseUrl: string;
-}
 
 const MemoMdViewer = memo(({ content }: { content: string }) => {
     return <MdViewer value={content} plugins={plugins} />;
@@ -22,6 +20,10 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
     console.log("start");
 
     const containerRef = useRef<HTMLDivElement | null>(null);
+
+    const [toc, setToc] = useState<TocItem[]>([]);
+    const [activeId, setActiveId] = useState<string | null>(null);
+    const [tocOpen, setTocOpen] = useState(false);
 
     const { setImage, ImagePreview } = useImagePreview();
 
@@ -41,6 +43,74 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         sticky: article.sticky,
     };
 
+
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        const headings = Array.from(
+            container.querySelectorAll("h1, h2, h3, h4")
+        );
+
+        const tocItems: TocItem[] = headings.map((el) => {
+            const level = Number(el.tagName[1]);
+            let id = el.id;
+
+            // 兜底：如果没有 id，自己生成一个
+            if (!id) {
+                id =
+                    el.textContent
+                        ?.trim()
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")
+                        .replace(/[^\w\-]/g, "") ?? "";
+                el.id = id;
+            }
+
+            return {
+                id,
+                text: el.textContent ?? "",
+                level,
+            };
+        });
+
+        console.log('toc======> ', tocItems)
+
+        setToc(tocItems);
+    }, [content]);
+
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container || !toc.length) return;
+
+        const headings = toc
+            .map((item) => document.getElementById(item.id))
+            .filter(Boolean) as HTMLElement[];
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                // 只取进入视口的
+                const visible = entries
+                    .filter((e) => e.isIntersecting)
+                    .sort(
+                        (a, b) =>
+                            a.boundingClientRect.top - b.boundingClientRect.top
+                    );
+
+                if (visible.length > 0) {
+                    setActiveId(visible[0].target.id);
+                }
+            },
+            {
+                rootMargin: "-80px 0px -60% 0px",
+                threshold: 0,
+            }
+        );
+
+        headings.forEach((el) => observer.observe(el));
+
+        return () => observer.disconnect();
+    }, [toc]);
 
     useEffect(() => {
         const container = containerRef.current;
@@ -67,7 +137,6 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
             }
         });
     }, [content]);
-
 
     // 图片点击事件
     useEffect(() => {
@@ -109,6 +178,22 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         return () => observer.disconnect();
     }, [content]);
 
+    const maskRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        const html = document.documentElement;
+
+        if (tocOpen) {
+            html.style.overflow = "hidden";
+        } else {
+            html.style.overflow = "";
+        }
+
+        return () => {
+            html.style.overflow = "";
+        };
+    }, [tocOpen]);
+
     console.log("end");
 
     return (
@@ -119,6 +204,30 @@ export const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
                     <MemoMdViewer content={content} />
                 </div>
             </div>
+
+            {tocOpen && (
+                <div
+                    ref={maskRef}
+                    className="toc-mask"
+                    onClick={() => setTocOpen(false)}
+                />
+            )}
+
+
+            <MarkdownToc
+                toc={toc}
+                activeId={activeId}
+                open={tocOpen}
+                onClose={() => setTocOpen(false)}
+            />
+
+            <button
+                className="toc-fab"
+                onClick={() => setTocOpen(true)}
+            >
+                <TableOfContents />
+            </button>
+
 
             <ImagePreview />
         </div>

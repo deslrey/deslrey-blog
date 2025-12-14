@@ -19,3 +19,21 @@ export interface CountType {
     title: string;
     total: number;
 }
+
+export interface BytemdViewerProps {
+    article: Article;
+    carouseUrl: string;
+}
+
+export interface TocItem {
+    id: string;
+    text: string;
+    level: number;
+}
+
+export interface TocProps {
+    toc: TocItem[];
+    activeId: string | null;
+    open?: boolean;
+    onClose?: () => void;
+}
