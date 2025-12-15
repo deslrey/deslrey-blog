@@ -1,6 +1,8 @@
 package org.deslrey.service;
 
 
+import jakarta.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  * 文章访问日志表 服务类
@@ -11,4 +13,6 @@ package org.deslrey.service;
  */
 public interface ArticleVisitLogService {
 
+
+    void recordAsync(Integer articleId, String ip, String ua, String referer);
 }

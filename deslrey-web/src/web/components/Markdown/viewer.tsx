@@ -1,14 +1,15 @@
+import { useEffect, useRef, useMemo, memo, useState, lazy } from "react";
 import { Viewer as MdViewer } from "@bytemd/react";
 import { plugins } from "./config";
 import type { Article, BytemdViewerProps, TocItem } from "../../../interfaces";
 import { CodeBlockEnhancer } from "../../../utils/codeBlockEnhancer";
+
 const DetailHead = lazy(() => import('../DetailHead'))
+const MarkdownToc = lazy(() => import('../MarkdownToc'))
 
 import { hljs } from "./config";
 import "./index.scss";
-import { useEffect, useRef, useMemo, memo, useState, lazy } from "react";
 import { useImagePreview } from "../ImagePreviewManager";
-const MarkdownToc = lazy(() => import('../MarkdownToc'))
 import { TableOfContents } from "lucide-react";
 
 
