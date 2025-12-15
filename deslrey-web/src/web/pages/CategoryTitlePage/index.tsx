@@ -110,36 +110,44 @@ const CategoryTitlePage: React.FC = () => {
             <div className={styles.container}>
                 <h3 className={styles.categoryTitle}>{title}</h3>
 
-                <ul className={styles.list}>
-                    {articles.map((item) => (
-                        <Link
-                            key={item.id}
-                            to={`/detail/${item.id}`}
-                            className={`${styles.item} card-div`}
-                        >
-                            <div>
-                                <span className={styles.articleTitle}>
-                                    {item.title}
-                                </span>
+                {/* 列表 / 空状态 */}
+                {!loading && articles.length === 0 ? (
+                    <div className={styles.empty}>
+                        <p>该分类暂无内容</p>
+                    </div>
+                ) : (
+                    <ul className={styles.list}>
+                        {articles.map((item) => (
+                            <Link
+                                key={item.id}
+                                to={`/detail/${item.id}`}
+                                className={`${styles.item} card-div`}
+                            >
+                                <div>
+                                    <span className={styles.articleTitle}>
+                                        {item.title}
+                                    </span>
 
-                                <p className={styles.des}>{item.des}</p>
+                                    <p className={styles.des}>{item.des}</p>
 
-                                <div className={styles.meta}>
-                                    <span>#{item.category}</span>
+                                    <div className={styles.meta}>
+                                        <span>#{item.category}</span>
 
-                                    <div className={styles.timeGroup}>
-                                        <span>{dayjs(item.createTime).fromNow()}</span>
-                                        {item.edit && item.updateTime && (
-                                            <span className={styles.updated}>
-                                                （更新于 {dayjs(item.updateTime).fromNow()}）
-                                            </span>
-                                        )}
+                                        <div className={styles.timeGroup}>
+                                            <span>{dayjs(item.createTime).fromNow()}</span>
+                                            {item.edit && item.updateTime && (
+                                                <span className={styles.updated}>
+                                                    （更新于 {dayjs(item.updateTime).fromNow()}）
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </Link>
-                    ))}
-                </ul>
+                            </Link>
+                        ))}
+                    </ul>
+                )}
+
 
                 {/* 加载动画 */}
                 {loading && <BanterComponent />}

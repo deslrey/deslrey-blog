@@ -176,3 +176,29 @@
         font-size: 14px;
     }
 }
+
+.empty {
+    flex: 1;
+    min-height: 240px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--color-text);
+    font-size: 36px;
+    opacity: 0.6;
+
+    animation: fadeInEmpty 0.6s ease forwards;
+}
+
+@keyframes fadeInEmpty {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 0.6;
+        transform: translateY(0);
+    }
+}
