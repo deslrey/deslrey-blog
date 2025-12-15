@@ -2,17 +2,18 @@ import { Viewer as MdViewer } from "@bytemd/react";
 import { plugins } from "./config";
 import type { Article, BytemdViewerProps, TocItem } from "../../../interfaces";
 import { CodeBlockEnhancer } from "../../../utils/codeBlockEnhancer";
-import DetailHead from "../DetailHead";
+const DetailHead = lazy(() => import('../DetailHead'))
 
 import { hljs } from "./config";
 import "./index.scss";
-import { useEffect, useRef, useMemo, memo, useState } from "react";
+import { useEffect, useRef, useMemo, memo, useState, lazy } from "react";
 import { useImagePreview } from "../ImagePreviewManager";
-import { MarkdownToc } from "../MarkdownToc/MarkdownToc";
+const MarkdownToc = lazy(() => import('../MarkdownToc'))
 import { TableOfContents } from "lucide-react";
 
 
 const MemoMdViewer = memo(({ content }: { content: string }) => {
+
     return <MdViewer value={content} plugins={plugins} />;
 });
 
@@ -213,7 +214,6 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
                 />
             )}
 
-
             <MarkdownToc
                 toc={toc}
                 activeId={activeId}
@@ -227,7 +227,6 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
             >
                 <TableOfContents />
             </button>
-
 
             <ImagePreview />
         </div>

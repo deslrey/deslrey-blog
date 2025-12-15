@@ -1,7 +1,7 @@
 import { CircleX } from "lucide-react";
 import type { TocProps } from "../../../interfaces";
 
-export const MarkdownToc = ({ toc, activeId, open, onClose }: TocProps) => {
+const MarkdownToc = ({ toc, activeId, open, onClose }: TocProps) => {
     const handleClick = (e: React.MouseEvent, id: string) => {
         e.preventDefault();
 
@@ -43,3 +43,5 @@ export const MarkdownToc = ({ toc, activeId, open, onClose }: TocProps) => {
         </aside>
     );
 };
+
+export default MarkdownToc;
