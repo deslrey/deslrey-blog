@@ -4,7 +4,7 @@ import { plugins } from "./config";
 import type { Article, BytemdViewerProps, TocItem } from "../../../interfaces";
 import { CodeBlockEnhancer } from "../../../utils/codeBlockEnhancer";
 
-const DetailHead = lazy(() => import('../DetailHead'))
+import DetailHead from '../DetailHead'
 const MarkdownToc = lazy(() => import('../MarkdownToc'))
 
 import { hljs } from "./config";

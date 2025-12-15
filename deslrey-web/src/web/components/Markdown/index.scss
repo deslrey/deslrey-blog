@@ -11,7 +11,14 @@
 }
 
 :root {
-    --content-width: clamp(600px, 60vw, 1200px);
+    --content-width: clamp(600px, 60%, 1200px);
+}
+
+/* 当 TOC 变成侧边抽屉（无占位）时，正文加宽 */
+@media (max-width: 1280px) {
+    :root {
+        --content-width: clamp(600px, 75%, 1200px);
+    }
 }
 
 /* 正文容器 */
