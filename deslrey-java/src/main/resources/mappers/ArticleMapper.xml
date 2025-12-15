@@ -90,12 +90,12 @@
         limit 5
     </select>
 
-    <select id="selectArticleList" resultMap="BaseResultMap">
+    <select id="selectArticleList" resultType="org.deslrey.entity.vo.ArticleListVO">
         select id,
                title,
                des,
-               create_time,
-               update_time,
+               create_time as createTime,
+               update_time as updateTime,
                category,
                edit
         from article
@@ -130,13 +130,13 @@
         </where>
     </select>
 
-    <select id="selectArticleByCategory" resultMap="BaseResultMap"
+    <select id="selectArticleByCategory" resultType="org.deslrey.entity.vo.ArticleListVO"
             parameterType="java.lang.String">
         select id,
         title,
         des,
-        create_time,
-        update_time,
+        create_time as createTime,
+        update_time as updateTime,
         category,
         edit
         from article

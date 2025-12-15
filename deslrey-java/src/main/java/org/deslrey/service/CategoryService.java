@@ -3,6 +3,7 @@ package org.deslrey.service;
 import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.po.Category;
+import org.deslrey.entity.vo.ArticleListVO;
 import org.deslrey.entity.vo.CountVO;
 import org.deslrey.result.Results;
 
@@ -20,7 +21,7 @@ import java.util.List;
 public interface CategoryService {
     Results<List<CountVO>> categoryCount();
 
-    Results<PageInfo<Article>> categoryArticle(String title, int page, int pageSize);
+    Results<PageInfo<ArticleListVO>> categoryArticle(String title, int page, int pageSize);
 
     Results<PageInfo<Category>> categoryList(int page, int pageSize);
 

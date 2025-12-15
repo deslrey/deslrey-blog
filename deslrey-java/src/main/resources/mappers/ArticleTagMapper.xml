@@ -28,7 +28,7 @@
         where article_id = #{articleId}
     </delete>
 
-    <select id="selectArticleTag" resultType="org.deslrey.entity.po.Article" parameterType="java.lang.Integer">
+    <select id="selectArticleTag" resultType="org.deslrey.entity.vo.ArticleListVO" parameterType="java.lang.Integer">
         select a.id,
         a.title,
         a.des,
@@ -52,6 +52,22 @@
         <where>
             <if test="articleId != null">article_id = #{articleId}</if>
         </where>
+    </select>
+
+    <select id="selectTagsByArticleIds"
+            resultType="org.deslrey.entity.vo.ArticleTagVO">
+
+        SELECT
+        at.article_id AS articleId,
+        t.id AS tagId,
+        t.tag_title AS tagTitle
+        FROM article_tag at
+        JOIN tag t ON at.tag_id = t.id
+        WHERE at.article_id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
     </select>
 
 

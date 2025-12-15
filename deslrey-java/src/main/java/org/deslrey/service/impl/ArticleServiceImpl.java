@@ -5,7 +5,7 @@ import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.po.ArticleDraft;
 import org.deslrey.entity.po.Category;
-import org.deslrey.entity.vo.ArticleDraftVO;
+import org.deslrey.entity.vo.*;
 import org.deslrey.mapper.ArticleMapper;
 import org.deslrey.mapper.ArticleTagMapper;
 import org.deslrey.mapper.CategoryMapper;
@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <br>
@@ -55,15 +57,34 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Results<PageInfo<Article>> articleList(int page, int pageSize) {
-        if (page < 1)
-            page = 1;
-        if (pageSize < 1)
-            pageSize = 1;
+    public Results<PageInfo<ArticleListVO>> articleList(int page, int pageSize) {
         PageHelper.startPage(page, pageSize);
-        List<Article> articleList = articleMapper.selectArticleList();
-        PageInfo<Article> articlePageInfo = new PageInfo<>(articleList);
+        List<ArticleListVO> articleList = articleMapper.selectArticleList();
+        if (ArticleServiceImpl.ArticleTags(articleList, articleTagMapper))
+            return Results.ok(new PageInfo<>(new ArrayList<>(0)));
+
+        PageInfo<ArticleListVO> articlePageInfo = new PageInfo<>(articleList);
         return Results.ok(articlePageInfo);
+    }
+
+    static boolean ArticleTags(List<ArticleListVO> articleList, ArticleTagMapper articleTagMapper) {
+        if (articleList == null || articleList.isEmpty()) {
+            return true;
+        }
+
+        List<Integer> articleIds = articleList.stream().map(ArticleListVO::getId).toList();
+        List<ArticleTagVO> tagList = articleTagMapper.selectTagsByArticleIds(articleIds);
+
+        Map<Integer, List<String>> tagMap = tagList.stream()
+                .collect(Collectors.groupingBy(
+                        ArticleTagVO::getArticleId,
+                        Collectors.mapping(ArticleTagVO::getTagTitle,
+                                Collectors.toList())
+                ));
+
+        articleList.forEach(article ->
+                article.setTags(tagMap.getOrDefault(article.getId(), List.of())));
+        return false;
     }
 
     @Override

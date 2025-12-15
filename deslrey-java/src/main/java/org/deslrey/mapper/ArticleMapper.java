@@ -2,6 +2,7 @@ package org.deslrey.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import org.deslrey.entity.po.Article;
+import org.deslrey.entity.vo.ArticleListVO;
 
 import java.util.List;
 
@@ -17,11 +18,11 @@ import java.util.List;
 public interface ArticleMapper {
     List<Article> selectLatestReleases();
 
-    List<Article> selectArticleList();
+    List<ArticleListVO> selectArticleList();
 
     Article selectArticleDetail(Integer id);
 
-    List<Article> selectArticleByCategory(String title);
+    List<ArticleListVO> selectArticleByCategory(String title);
 
     List<Article> selectViewHot();
 

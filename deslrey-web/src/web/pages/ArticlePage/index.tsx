@@ -10,6 +10,7 @@ import type { Article } from "../../../interfaces";
 import { api } from "../../api";
 import request from "../../../utils/reques";
 import BanterComponent from "../../../loader/BanterComponent";
+import ArticleTags from "../../components/ArticleTags";
 
 const ArticlePage: React.FC = () => {
     const [articles, setArticles] = useState<Article[]>([]);
@@ -86,9 +87,19 @@ const ArticlePage: React.FC = () => {
                                 </span>
 
                                 <p className={styles.des}>{item.des}</p>
-                                <div className={styles.meta}>
-                                    <span>#{item.category}</span>
 
+                                <div className={styles.meta}>
+                                    {/* 分类 + 标签 */}
+                                    <div className={styles.categoryAndTags}>
+                                        <span className={styles.category}>
+                                            #{item.category}
+                                        </span>
+
+                                    </div>
+
+                                    <ArticleTags tags={item.tags} />
+
+                                    {/* 时间 */}
                                     <div className={styles.timeGroup}>
                                         <span>{dayjs(item.createTime).fromNow()}</span>
                                         {item.edit && item.updateTime && (
@@ -102,6 +113,7 @@ const ArticlePage: React.FC = () => {
                         </Link>
                     ))}
                 </ul>
+
 
                 {/* 加载动画 */}
                 {loading && (

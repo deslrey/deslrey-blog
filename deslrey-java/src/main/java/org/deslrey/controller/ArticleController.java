@@ -6,6 +6,7 @@ import org.deslrey.annotation.VisitLog;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.po.ArticleDraft;
 import org.deslrey.entity.vo.ArticleDraftVO;
+import org.deslrey.entity.vo.ArticleListVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class ArticleController {
     }
 
     @GetMapping("list")
-    public Results<PageInfo<Article>> articleList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
+    public Results<PageInfo<ArticleListVO>> articleList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
         return articleService.articleList(page, pageSize);
     }
 

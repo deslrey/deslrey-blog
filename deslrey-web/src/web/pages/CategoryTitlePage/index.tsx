@@ -11,6 +11,7 @@ import type { Article } from "../../../interfaces";
 import { api } from "../../api";
 import request from "../../../utils/reques";
 import BanterComponent from "../../../loader/BanterComponent";
+import ArticleTags from "../../components/ArticleTags";
 
 const CategoryTitlePage: React.FC = () => {
     const { category } = useParams<{ category: string }>();
@@ -132,6 +133,8 @@ const CategoryTitlePage: React.FC = () => {
 
                                     <div className={styles.meta}>
                                         <span>#{item.category}</span>
+
+                                        <ArticleTags tags={item.tags} />
 
                                         <div className={styles.timeGroup}>
                                             <span>{dayjs(item.createTime).fromNow()}</span>

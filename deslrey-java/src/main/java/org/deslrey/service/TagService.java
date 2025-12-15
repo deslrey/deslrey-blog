@@ -3,6 +3,7 @@ package org.deslrey.service;
 import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.po.Tag;
+import org.deslrey.entity.vo.ArticleListVO;
 import org.deslrey.entity.vo.CountVO;
 import org.deslrey.result.Results;
 
@@ -20,7 +21,7 @@ import java.util.List;
 public interface TagService {
     Results<List<CountVO>> tagCount();
 
-    Results<PageInfo<Article>> tagArticle(String title, int page, int pageSize);
+    Results<PageInfo<ArticleListVO>> tagArticle(String title, int page, int pageSize);
 
     Results<PageInfo<Tag>> tagList(int page, int pageSize);
 

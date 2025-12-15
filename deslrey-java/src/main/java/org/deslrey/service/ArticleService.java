@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.po.ArticleDraft;
 import org.deslrey.entity.vo.ArticleDraftVO;
+import org.deslrey.entity.vo.ArticleListVO;
 import org.deslrey.result.Results;
 
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 public interface ArticleService {
     Results<List<Article>> LatestReleases();
 
-    Results<PageInfo<Article>> articleList(int page, int pageSize);
+    Results<PageInfo<ArticleListVO>> articleList(int page, int pageSize);
 
     Results<Article> articleDetail(Integer id);
 

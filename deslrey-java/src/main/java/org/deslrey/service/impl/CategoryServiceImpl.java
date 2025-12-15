@@ -6,18 +6,24 @@ import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.po.Category;
+import org.deslrey.entity.vo.ArticleListVO;
+import org.deslrey.entity.vo.ArticleTagVO;
 import org.deslrey.entity.vo.CountVO;
 import org.deslrey.mapper.ArticleMapper;
+import org.deslrey.mapper.ArticleTagMapper;
 import org.deslrey.mapper.CategoryMapper;
 import org.deslrey.result.ResultCodeEnum;
 import org.deslrey.result.Results;
 import org.deslrey.service.CategoryService;
 import org.deslrey.util.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <br>
@@ -37,6 +43,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private ArticleMapper articleMapper;
+
+    @Autowired
+    private ArticleTagMapper articleTagMapper;
 
     @Autowired
     private RedisUtils redisUtils;
@@ -75,15 +84,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Results<PageInfo<Article>> categoryArticle(String title, int page, int pageSize) {
+    public Results<PageInfo<ArticleListVO>> categoryArticle(String title, int page, int pageSize) {
         if (StringUtils.isEmpty(title)) {
             return Results.ok(new PageInfo<>(new ArrayList<>(0)));
         }
         PageHelper.startPage(page, pageSize);
-        List<Article> articleList = articleMapper.selectArticleByCategory(title);
-        if (articleList == null || articleList.isEmpty()) {
+        List<ArticleListVO> articleList = articleMapper.selectArticleByCategory(title);
+
+        if (ArticleServiceImpl.ArticleTags(articleList, articleTagMapper))
             return Results.ok(new PageInfo<>(new ArrayList<>(0)));
-        }
+
         return Results.ok(new PageInfo<>(articleList));
     }
 

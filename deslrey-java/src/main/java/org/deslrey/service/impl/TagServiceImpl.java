@@ -5,6 +5,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.po.Tag;
+import org.deslrey.entity.vo.ArticleListVO;
+import org.deslrey.entity.vo.ArticleTagVO;
 import org.deslrey.entity.vo.CountVO;
 import org.deslrey.mapper.ArticleMapper;
 import org.deslrey.mapper.ArticleTagMapper;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <br>
@@ -74,26 +78,24 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Results<PageInfo<Article>> tagArticle(String title, int page, int pageSize) {
-        PageInfo<Article> articlePageInfo = new PageInfo<>(new ArrayList<>(0));
+    public Results<PageInfo<ArticleListVO>> tagArticle(String title, int page, int pageSize) {
         if (StringUtils.isEmpty(title)) {
-            return Results.ok(articlePageInfo);
+            return Results.ok(new PageInfo<>(new ArrayList<>(0)));
         }
 
         Integer tagId = tagMapper.selectIdByTitle(title);
 
         if (tagId == null) {
-            return Results.ok(articlePageInfo);
+            return Results.ok(new PageInfo<>(new ArrayList<>(0)));
         }
 
         PageHelper.startPage(page, pageSize);
-        List<Article> articleList = articleTagMapper.selectArticleTag(tagId);
-        if (articleList == null || articleList.isEmpty()) {
-            return Results.ok(articlePageInfo);
-        }
-        articlePageInfo.setList(articleList);
-        return Results.ok(articlePageInfo);
+        List<ArticleListVO> articleList = articleTagMapper.selectArticleTag(tagId);
+        if (ArticleServiceImpl.ArticleTags(articleList, articleTagMapper)) return Results.ok(new PageInfo<>(new ArrayList<>(0)));
+
+        return Results.ok(new PageInfo<>(new ArrayList<>(articleList)));
     }
+
 
     @Override
     public Results<Void> addTag(Tag tag) {

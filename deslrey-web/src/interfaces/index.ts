@@ -11,7 +11,8 @@ export interface Article {
     updateTime?: Date;
     category?: string;
     content?: string;
-    exist?: boolean
+    exist?: boolean;
+    tags?: string[];
 }
 
 export interface CountType {

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import org.deslrey.annotation.RequireLogin;
 import org.deslrey.entity.po.Article;
 import org.deslrey.entity.po.Category;
+import org.deslrey.entity.vo.ArticleListVO;
 import org.deslrey.entity.vo.CountVO;
 import org.deslrey.result.Results;
 import org.deslrey.service.CategoryService;
@@ -40,7 +41,7 @@ public class CategoryController {
     }
 
     @GetMapping("{title}")
-    public Results<PageInfo<Article>> categoryArticle(@PathVariable String title, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
+    public Results<PageInfo<ArticleListVO>> categoryArticle(@PathVariable String title, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
         return categoryService.categoryArticle(title,page,pageSize);
     }
 
