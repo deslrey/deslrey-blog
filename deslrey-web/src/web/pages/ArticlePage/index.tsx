@@ -97,8 +97,6 @@ const ArticlePage: React.FC = () => {
 
                                     </div>
 
-                                    <ArticleTags tags={item.tags} />
-
                                     {/* 时间 */}
                                     <div className={styles.timeGroup}>
                                         <span>{dayjs(item.createTime).fromNow()}</span>
@@ -108,6 +106,8 @@ const ArticlePage: React.FC = () => {
                                             </span>
                                         )}
                                     </div>
+
+                                    <ArticleTags tags={item.tags} />
                                 </div>
                             </div>
                         </Link>

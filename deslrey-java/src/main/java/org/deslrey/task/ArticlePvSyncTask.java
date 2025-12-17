@@ -35,7 +35,7 @@ public class ArticlePvSyncTask {
     /**
      * 每 5 分钟同步 Redis PV 到 MySQL
      */
-    @Scheduled(cron = "0 */5 * * * ?") // 每 5 分钟执行一次
+//    @Scheduled(cron = "0 */5 * * * ?") // 每 5 分钟执行一次
     public void syncPvToDB() {
         log.info("======      开始同步访问量      ======");
         Map<Object, Object> pvMap = redisUtils.hgetAll("article:pv");
@@ -57,11 +57,12 @@ public class ArticlePvSyncTask {
         log.info("======      访问量同步完成      ======");
     }
 
-    @Scheduled(cron = "0 0 */3 * * ?") // 每 3 小时执行一次
+    @Scheduled(cron = "0 0 0 * * ?")
     public void syncCount() {
         log.info("======      开始同步标签和分类统计      ======");
         dataInitUtils.CategoryInit();
         dataInitUtils.TagInit();
         log.info("======      标签和分类统计同步完成      ======");
     }
+
 }

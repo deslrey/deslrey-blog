@@ -146,8 +146,6 @@ const TagTitlePage: React.FC = () => {
                                     <div className={styles.meta}>
                                         <span>#{item.category}</span>
 
-                                        <ArticleTags tags={item.tags} />
-
                                         <div className={styles.timeGroup}>
                                             <span>{dayjs(item.createTime).fromNow()}</span>
                                             {item.edit && item.updateTime && (
@@ -156,6 +154,8 @@ const TagTitlePage: React.FC = () => {
                                                 </span>
                                             )}
                                         </div>
+
+                                        <ArticleTags tags={item.tags} />
                                     </div>
                                 </div>
                             </Link>

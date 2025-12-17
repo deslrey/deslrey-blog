@@ -13,7 +13,9 @@ const TagPage: React.FC = () => {
 
     useEffect(() => {
         request.get(api.tag.tagCount).then((res) => {
-            if (res.code === 200) setTags(res.data);
+            if (res.code === 200) {
+                setTags(res.data);
+            }
         });
     }, []);
 
@@ -25,27 +27,41 @@ const TagPage: React.FC = () => {
                 <div className={styles.list}>
                     {tags.map((item) => {
                         const icon = getTagIcon(item.title);
+
                         return (
                             <div
                                 key={item.id}
                                 className={styles.card}
+                                role="button"
+                                tabIndex={0}
                                 onClick={() => navigate(`/tag/${item.title}`)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        navigate(`/tag/${item.title}`);
+                                    }
+                                }}
                             >
                                 <div className={styles.left}>
                                     {icon ? (
                                         <span
                                             className={styles.icon}
                                             style={{ color: icon.color }}
-                                            dangerouslySetInnerHTML={{ __html: icon.svg }}
+                                            dangerouslySetInnerHTML={{
+                                                __html: icon.svg
+                                            }}
                                         />
                                     ) : (
                                         <DefaultTagIcon className={styles.icon} />
                                     )}
 
-                                    <span className={styles.tagName}>{item.title}</span>
+                                    <span className={styles.tagName}>
+                                        {item.title}
+                                    </span>
                                 </div>
 
-                                <span className={styles.count}>{item.total}</span>
+                                <span className={styles.count}>
+                                    {item.total}
+                                </span>
                             </div>
                         );
                     })}

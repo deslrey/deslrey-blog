@@ -42,15 +42,16 @@ const DetailHead: React.FC<DetailHeadProps> = ({ data, carouseUrl }) => {
                 <div className={styles.meta}>
                     <div className={styles.metaRow}>
                         {createTime && <span>发布时间：{formatDateZh(createTime)}</span>}
-                        {edit && updateTime && <span>更新：{formatDateZh(updateTime)}</span>}
+                        {/* {edit && updateTime && <span>更新：{formatDateZh(updateTime)}</span>} */}
                     </div>
                     <div className={styles.metaRow}>
+                        {/* <span>字数：{wordCount}</span> */}
+                        <span>阅读时间：{readTime} 分钟</span>
                         {category && <span>分类：{category}</span>}
                     </div>
                     <div className={styles.metaRow}>
-                        <span>字数：{wordCount}</span>
-                        <span>阅读时间：{readTime} 分钟</span>
-                        <span>阅读数：{views}</span>
+
+                        {/* <span>阅读数：{views}</span> */}
                     </div>
                 </div>
 

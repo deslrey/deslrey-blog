@@ -40,7 +40,7 @@ public class ArticleController {
         return articleService.articleList(page, pageSize);
     }
 
-    @VisitLog
+//    @VisitLog
     @GetMapping("articleDetail/{id}")
     public Results<Article> articleDetail(@PathVariable Integer id) {
         return articleService.articleDetail(id);

@@ -6,7 +6,6 @@
 
     @media (max-width: 768px) {
         padding: 100px 10px 50px;
-        // padding-top: 100px;
     }
 }
 
@@ -14,9 +13,9 @@
     width: 100%;
     margin-top: 10%;
     max-width: 1200px;
-    min-height: 600px; /* 固定最小高度 */
-    display: flex; /* 让容器成为 flex */
-    flex-direction: column; /* 垂直布局 */
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
 }
 
 .title {
@@ -24,10 +23,7 @@
     font-weight: 700;
     color: var(--color-text);
     margin-bottom: 25px;
-    position: relative;
     padding-left: 14px;
-
-    /* 动画淡入 */
     animation: fadeIn 1.4s ease;
 }
 
@@ -38,32 +34,66 @@
 }
 
 .card {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
     padding: 10px 16px;
-    border-radius: 10px;
     gap: 10px;
 
     min-width: 120px;
     height: 44px;
 
-    backdrop-filter: blur(6px);
+    border-radius: 10px;
     cursor: pointer;
-    transition: 0.2s;
+    backdrop-filter: blur(6px);
 
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 
-    &:hover {
-        background: rgba(255, 255, 255, 0.4);
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: -5px;
+        border-radius: 14px;
+        pointer-events: none;
+
+        opacity: 0;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow:
+            0 0 0 2px rgba(0, 0, 0, 0.02),
+            0 6px 18px rgba(0, 0, 0, 0.08);
+
+        transition: opacity 0.2s ease;
+    }
+
+    &:hover,
+    &:focus-visible {
+        transform: translateY(-1px);
+    }
+
+    &:hover::after,
+    &:focus-visible::after {
+        opacity: 1;
     }
 }
 
 [data-theme="dark"] .card {
     background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.12);
+
+    &::after {
+        border-color: rgba(255, 255, 255, 0.35);
+        box-shadow:
+            0 0 0 2px rgba(255, 255, 255, 0.12),
+            0 10px 26px rgba(0, 0, 0, 0.6);
+    }
 
     &:hover {
         background: rgba(255, 255, 255, 0.12);
@@ -76,20 +106,36 @@
     gap: 8px;
 }
 
-.icon svg {
-    width: 22px;
-    height: 22px;
-    fill: currentColor;
+.icon {
+    display: flex;
+    align-items: center;
+
+    svg {
+        width: 22px;
+        height: 22px;
+        fill: currentColor;
+        transition: transform 0.2s ease;
+    }
+}
+
+.card:hover .icon svg {
+    transform: scale(1.08);
 }
 
 .tagName {
     font-size: 15px;
     color: var(--color-text);
+    white-space: nowrap;
 }
 
 .count {
-    background: rgba(255, 255, 255, 0.15);
-    padding: 2px 6px;
-    border-radius: 6px;
-    font-size: 13px;
+    background: rgba(255, 255, 255, 0.18);
+    padding: 2px 7px;
+    border-radius: 999px;
+    font-size: 12px;
+    line-height: 1;
+}
+
+[data-theme="dark"] .count {
+    background: rgba(255, 255, 255, 0.2);
 }

@@ -19,8 +19,6 @@ const MemoMdViewer = memo(({ content }: { content: string }) => {
 });
 
 const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
-    console.log("start");
-
     const containerRef = useRef<HTMLDivElement | null>(null);
 
     const [toc, setToc] = useState<TocItem[]>([]);
@@ -75,8 +73,6 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
                 level,
             };
         });
-
-        console.log('toc======> ', tocItems)
 
         setToc(tocItems);
     }, [content]);
@@ -196,40 +192,40 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         };
     }, [tocOpen]);
 
-    console.log("end");
-
     return (
-        <div className="markdown-layout">
-            <div className="markdown-content">
-                <DetailHead data={headData} carouseUrl={carouseUrl} />
-                <div ref={containerRef} className="card-div">
-                    <MemoMdViewer content={content} />
+        <div className="bytemdViewer">
+            <DetailHead data={headData} carouseUrl={carouseUrl} />
+            <div className="markdown-layout">
+                <div className="markdown-content">
+                    <div ref={containerRef} className="markdown-div">
+                        <MemoMdViewer content={content} />
+                    </div>
                 </div>
-            </div>
 
-            {tocOpen && (
-                <div
-                    ref={maskRef}
-                    className="toc-mask"
-                    onClick={() => setTocOpen(false)}
+                {tocOpen && (
+                    <div
+                        ref={maskRef}
+                        className="toc-mask"
+                        onClick={() => setTocOpen(false)}
+                    />
+                )}
+
+                <MarkdownToc
+                    toc={toc}
+                    activeId={activeId}
+                    open={tocOpen}
+                    onClose={() => setTocOpen(false)}
                 />
-            )}
 
-            <MarkdownToc
-                toc={toc}
-                activeId={activeId}
-                open={tocOpen}
-                onClose={() => setTocOpen(false)}
-            />
+                <button
+                    className="toc-fab"
+                    onClick={() => setTocOpen(true)}
+                >
+                    <TableOfContents />
+                </button>
 
-            <button
-                className="toc-fab"
-                onClick={() => setTocOpen(true)}
-            >
-                <TableOfContents />
-            </button>
-
-            <ImagePreview />
+                <ImagePreview />
+            </div>
         </div>
     );
 };

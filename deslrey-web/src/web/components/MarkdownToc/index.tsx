@@ -18,7 +18,7 @@ const MarkdownToc = ({ toc, activeId, open, onClose }: TocProps) => {
     };
 
     return (
-        <aside className={`card-div markdown-toc ${open ? "open" : ""}`}>
+        <aside className={`markdown-div markdown-toc ${open ? "open" : ""}`}>
             <div className="markdown-toc-title">
                 目录
                 <span className="toc-close" onClick={onClose}>

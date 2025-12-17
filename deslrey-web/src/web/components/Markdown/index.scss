@@ -1,17 +1,30 @@
-/* === 基础布局 === */
-.markdown-layout {
-    display: flex;
-    justify-content: center; /* 正文居中 */
-    gap: 2rem;
-    position: relative;
-
-    @media (max-width: 1280px) {
-        padding: 0px;
-    }
+:root {
+    --content-width: clamp(600px, 55%, 1200px);
 }
 
-:root {
-    --content-width: clamp(600px, 60%, 1200px);
+.bytemdViewer {
+    padding: 0;
+    margin: 0;
+}
+
+.markdown-layout {
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
+
+    background: linear-gradient(to bottom, transparent 0, transparent 40px, var(--color-bg) 40px, var(--color-bg) 100%);
+}
+
+.markdown-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+
+    width: 100%;
+    max-width: calc(var(--content-width) + 300px);
+    margin: 0 auto;
 }
 
 /* 当 TOC 变成侧边抽屉（无占位）时，正文加宽 */
@@ -21,11 +34,40 @@
     }
 }
 
-
 /* 正文容器 */
 .markdown-content {
     width: var(--content-width);
     margin: 0 auto;
+}
+
+.markdown-div {
+    background: #ffffff;
+    color: #1f2933;
+    border-radius: 16px;
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.06),
+        0 2px 6px rgba(0, 0, 0, 0.04);
+    display: block;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.3s ease,
+        color 0.3s ease;
+}
+
+[data-theme="dark"] .markdown-div {
+    background: #252d38;
+    color: #e5e7eb;
+
+    border: 1px solid rgba(255, 255, 255, 0.02);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.45),
+        0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .markdown-body {
@@ -306,7 +348,8 @@
 /* === TOC 样式 === */
 .markdown-toc {
     position: fixed;
-    top: 200px;
+    // top: 200px;
+    top: 150px;
     left: calc(50% + var(--content-width) / 2 + 1.5rem);
     width: 260px;
     max-height: calc(100vh - 150px);
@@ -561,6 +604,10 @@
 }
 
 @media (max-width: 768px) {
+    .markdown-layout {
+        margin-top: 20px;
+    }
+
     .markdown-content {
         margin-top: 70px;
         width: 100%;
