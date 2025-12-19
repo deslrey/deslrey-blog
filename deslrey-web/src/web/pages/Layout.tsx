@@ -23,23 +23,22 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             try {
                 let res;
 
-                // if (series === "sex") {
-                //     const loliRes = await fetch("https://www.loliapi.com/acg/");
-                //     if (loliRes.ok && loliRes.url) {
-                //         setBgUrl(loliRes.url);
-                //     } else {
-                //         setBgUrl(theme === 'dark' ? '/images/bg0.webp' : '/images/bg1.webp');
-                //     }
+                if (series === "sex") {
+                    const loliRes = await fetch("https://www.loliapi.com/acg/");
+                    if (loliRes.ok && loliRes.url) {
+                        setBgUrl(loliRes.url);
+                    } else {
+                        setBgUrl(theme === 'dark' ? '/images/bg0.webp' : '/images/bg1.webp');
+                    }
 
-                //     return;
-                // } else if (series === 'scenery') {
-                //     res = await request.get(api.carouselPage.scenery);
-                // }
-
-                // else 
-                if (series === 'sex') {
-                    res = await request.get(api.carouselPage.sex);
+                    return;
+                } else if (series === 'scenery') {
+                    res = await request.get(api.carouselPage.scenery);
                 }
+
+                // else if (series === 'sex') {
+                //     res = await request.get(api.carouselPage.sex);
+                // }
 
                 if (res && res.code === 200) {
                     setBgUrl(res.data);

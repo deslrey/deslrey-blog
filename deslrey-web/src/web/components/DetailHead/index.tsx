@@ -15,9 +15,9 @@ const DetailHead: React.FC<DetailHeadProps> = ({ data, carouseUrl }) => {
         category,
         createTime,
         updateTime,
-        wordCount,
+        // wordCount,
         readTime,
-        views,
+        // views,
         edit
     } = data;
 

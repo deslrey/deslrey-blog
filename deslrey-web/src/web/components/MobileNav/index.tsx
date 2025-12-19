@@ -35,10 +35,16 @@ const MobileNav: React.FC = () => {
 
     return (
         <>
-            {/* 悬浮按钮 */}
-            <button className={styles.mobileNavButton} onClick={() => setOpen(!open)}>
-                <Checkbox checked={open} onChange={() => setOpen(!open)} />
-            </button>
+            {/* 悬浮操作栏 */}
+            <div className={styles.floatingBar}>
+                <button
+                    className={styles.mobileNavButton}
+                    onClick={() => setOpen(!open)}
+                >
+                    <Checkbox checked={open} onChange={() => setOpen(!open)} />
+                </button>
+            </div>
+
 
             {/* 背景遮罩 */}
             {open && <div className={styles.overlay} onClick={() => setOpen(false)} />}
