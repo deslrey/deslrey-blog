@@ -4,14 +4,15 @@
     @media (max-width: 768px) {
         display: flex;
         align-items: center;
-        justify-content: flex-start;
 
         position: fixed;
         top: 0;
         left: 0;
+
         width: 100%;
         height: 50px;
         padding: 0 12px;
+
         background: rgba(255, 255, 255, 0.35);
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
@@ -35,40 +36,63 @@
         display: flex;
         position: relative;
 
-        width: 42px;
-        height: 42px;
-        border-radius: 12px;
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
 
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        z-index: 3001;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
 
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.18);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
 
-        box-shadow:
-            0 6px 16px rgba(0, 0, 0, 0.18),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.08);
 
-        /* 去系统行为 */
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+
         appearance: none;
         -webkit-appearance: none;
         outline: none;
-
         -webkit-tap-highlight-color: transparent;
     }
 }
 
 [data-theme="dark"] .mobileNavButton {
-    background: rgba(30, 30, 30, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(71, 71, 71, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
 
-    box-shadow:
-        0 8px 20px rgba(0, 0, 0, 0.55),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+.leftArea,
+.rightArea {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.rightArea {
+    visibility: hidden;
+}
+
+.centerText {
+    flex: 1;
+    margin: 0 10px;
+
+    font-size: 12px;
+    color: var(--color-text);
+    opacity: 0.85;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    text-align: center;
+}
+
+[data-theme="dark"] .centerText {
+    color: rgba(255, 255, 255, 0.85);
 }
 
 /* 背景遮罩 */

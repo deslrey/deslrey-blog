@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
+import useNavStore from "../../store/navStore";
+import { useWebRoutes } from "../../../router/config";
 
 const ColorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const colors = [
@@ -26,12 +28,35 @@ const ColorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         "157,78,221",
     ];
 
-    const [index, setIndex] = useState(0);
+    const [index, _setIndex] = useState(0);
     const location = useLocation();
+    const routes = useWebRoutes();
+    const setTitle = useNavStore((state) => state.setTitle);
+
 
     useEffect(() => {
-        setIndex(prev => (prev + 1) % colors.length);
+        const pathname = location.pathname;
+
+        const exactMatch = routes.find(r => r.path === pathname);
+        if (exactMatch) {
+            setTitle(exactMatch.title);
+            return;
+        }
+
+        const dynamicRoute = routes.find(r =>
+            pathname.startsWith(r.path + "/")
+        );
+
+        if (dynamicRoute) {
+            const param = pathname.replace(dynamicRoute.path + "/", "");
+            const decoded = decodeURIComponent(param);
+
+            setTitle(`${dynamicRoute.title} · ${decoded}`);
+            return;
+        }
+        setTitle("");
     }, [location.pathname]);
+
 
     useEffect(() => {
         document.documentElement.style.setProperty("--activeColor", colors[index]);

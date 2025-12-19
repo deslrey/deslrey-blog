@@ -1,25 +1,25 @@
 import { useEffect, useRef, useMemo, memo, useState, lazy } from "react";
 import { Viewer as MdViewer } from "@bytemd/react";
-import { plugins } from "./config";
+import { plugins, hljs } from "./config";
 import type { Article, BytemdViewerProps, TocItem } from "../../../interfaces";
 import { CodeBlockEnhancer } from "../../../utils/codeBlockEnhancer";
 
-import DetailHead from '../DetailHead'
-const MarkdownToc = lazy(() => import('../MarkdownToc'))
-
-import { hljs } from "./config";
-import "./index.scss";
+import DetailHead from "../DetailHead";
 import { useImagePreview } from "../ImagePreviewManager";
 import { TableOfContents } from "lucide-react";
 
+import "./index.scss";
+import { useReadingTitle } from "../../hooks/useReadingTitle";
+
+const MarkdownToc = lazy(() => import("../MarkdownToc"));
 
 const MemoMdViewer = memo(({ content }: { content: string }) => {
-
     return <MdViewer value={content} plugins={plugins} />;
 });
 
 const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
+    const maskRef = useRef<HTMLDivElement | null>(null);
 
     const [toc, setToc] = useState<TocItem[]>([]);
     const [activeId, setActiveId] = useState<string | null>(null);
@@ -27,23 +27,14 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
 
     const { setImage, ImagePreview } = useImagePreview();
 
-    const content = useMemo(() => article.content as string, [article.content]);
+    const content = useMemo(
+        () => article.content as string,
+        [article.content]
+    );
 
-    const headData: Article = {
-        id: article.id,
-        title: article.title,
-        wordCount: article.wordCount,
-        views: article.views,
-        readTime: article.readTime,
-        createTime: article.createTime,
-        updateTime: article.updateTime,
-        category: article.category,
-        edit: article.edit,
-        des: article.des,
-        sticky: article.sticky,
-    };
+    useReadingTitle(article.title, toc, activeId);
 
-
+    // 生成 TOC
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
@@ -52,47 +43,40 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
             container.querySelectorAll("h1, h2, h3, h4")
         );
 
-        const tocItems: TocItem[] = headings.map((el) => {
-            const level = Number(el.tagName[1]);
-            let id = el.id;
+        setToc(
+            headings.map(el => {
+                const level = Number(el.tagName[1]);
 
-            // 兜底：如果没有 id，自己生成一个
-            if (!id) {
-                id =
-                    el.textContent
-                        ?.trim()
-                        .toLowerCase()
-                        .replace(/\s+/g, "-")
-                        .replace(/[^\w\-]/g, "") ?? "";
-                el.id = id;
-            }
+                if (!el.id) {
+                    el.id =
+                        el.textContent
+                            ?.trim()
+                            .toLowerCase()
+                            .replace(/\s+/g, "-")
+                            .replace(/[^\w\-]/g, "") ?? "";
+                }
 
-            return {
-                id,
-                text: el.textContent ?? "",
-                level,
-            };
-        });
-
-        setToc(tocItems);
+                return {
+                    id: el.id,
+                    text: el.textContent ?? "",
+                    level,
+                };
+            })
+        );
     }, [content]);
 
+    // IntersectionObserver
     useEffect(() => {
-        const container = containerRef.current;
-        if (!container || !toc.length) return;
-
-        const headings = toc
-            .map((item) => document.getElementById(item.id))
-            .filter(Boolean) as HTMLElement[];
+        if (!toc.length) return;
 
         const observer = new IntersectionObserver(
-            (entries) => {
-                // 只取进入视口的
+            entries => {
                 const visible = entries
-                    .filter((e) => e.isIntersecting)
+                    .filter(e => e.isIntersecting)
                     .sort(
                         (a, b) =>
-                            a.boundingClientRect.top - b.boundingClientRect.top
+                            a.boundingClientRect.top -
+                            b.boundingClientRect.top
                     );
 
                 if (visible.length > 0) {
@@ -105,19 +89,21 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
             }
         );
 
-        headings.forEach((el) => observer.observe(el));
+        toc.forEach(item => {
+            const el = document.getElementById(item.id);
+            if (el) observer.observe(el);
+        });
 
         return () => observer.disconnect();
     }, [toc]);
 
+    //  图片加载状态
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
 
         const imgs = container.querySelectorAll("img");
-
-        imgs.forEach((img) => {
-            // 标记为 loading
+        imgs.forEach(img => {
             img.classList.add("img-loading");
 
             if (img.complete) {
@@ -136,23 +122,23 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         });
     }, [content]);
 
-    // 图片点击事件
+    //  图片点击预览
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
 
         const handleClick = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            if (target.tagName.toLowerCase() !== "img") return;
-
-            setImage(target as HTMLImageElement);
+            if (target.tagName.toLowerCase() === "img") {
+                setImage(target as HTMLImageElement);
+            }
         };
 
         container.addEventListener("click", handleClick);
         return () => container.removeEventListener("click", handleClick);
     }, [setImage]);
 
-    // 代码块增强 & 高亮
+    //  代码块增强 & 高亮
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
@@ -160,41 +146,52 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         const enhancer = new CodeBlockEnhancer({ container });
         enhancer.enhance();
 
-        const highlightCode = () => {
-            const blocks = container.querySelectorAll("pre code:not([data-highlighted])");
-            blocks.forEach((block) => hljs.highlightElement(block as HTMLElement));
+        const highlight = () => {
+            container
+                .querySelectorAll("pre code:not([data-highlighted])")
+                .forEach(block =>
+                    hljs.highlightElement(block as HTMLElement)
+                );
         };
 
-        requestAnimationFrame(() => highlightCode());
+        requestAnimationFrame(highlight);
 
         const observer = new MutationObserver(() => {
             enhancer.enhance();
-            highlightCode();
+            highlight();
         });
 
         observer.observe(container, { childList: true, subtree: true });
         return () => observer.disconnect();
     }, [content]);
 
-    const maskRef = useRef<HTMLDivElement | null>(null);
-
+    //  TOC 打开时锁滚动
     useEffect(() => {
-        const html = document.documentElement;
-
-        if (tocOpen) {
-            html.style.overflow = "hidden";
-        } else {
-            html.style.overflow = "";
-        }
-
+        document.documentElement.style.overflow = tocOpen ? "hidden" : "";
         return () => {
-            html.style.overflow = "";
+            document.documentElement.style.overflow = "";
         };
     }, [tocOpen]);
+
+    //  Head 数据
+    const headData: Article = {
+        id: article.id,
+        title: article.title,
+        wordCount: article.wordCount,
+        views: article.views,
+        readTime: article.readTime,
+        createTime: article.createTime,
+        updateTime: article.updateTime,
+        category: article.category,
+        edit: article.edit,
+        des: article.des,
+        sticky: article.sticky,
+    };
 
     return (
         <div className="bytemdViewer">
             <DetailHead data={headData} carouseUrl={carouseUrl} />
+
             <div className="markdown-layout">
                 <div className="markdown-content">
                     <div ref={containerRef} className="markdown-div">

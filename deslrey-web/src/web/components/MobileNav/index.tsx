@@ -7,12 +7,15 @@ import { useWebRoutes } from "../../../router/config";
 import BgSeriesToggle from "../BgSeriesToggle";
 import ThemeToggle from "../ThemeToggle.tsx";
 import Checkbox from "../Checkbox/idnex.tsx";
+import useNavStore from "../../store/navStore.ts";
 
 const MobileNav: React.FC = () => {
 
     const location = useLocation();
 
     const [open, setOpen] = useState(false);
+
+    const title = useNavStore((state) => state.title);
 
     // 禁止滚动背景
     useEffect(() => {
@@ -37,12 +40,30 @@ const MobileNav: React.FC = () => {
         <>
             {/* 悬浮操作栏 */}
             <div className={styles.floatingBar}>
-                <button
-                    className={styles.mobileNavButton}
-                    onClick={() => setOpen(!open)}
-                >
-                    <Checkbox checked={open} onChange={() => setOpen(!open)} />
-                </button>
+                {/* 左侧 */}
+                <div className={styles.leftArea}>
+                    <button
+                        className={styles.mobileNavButton}
+                        onClick={() => setOpen(!open)}
+                    >
+                        <Checkbox checked={open} onChange={() => setOpen(!open)} />
+                    </button>
+                </div>
+
+                {/* 中间文字 */}
+                <div className={styles.centerText}>
+                    {title || ""}
+                </div>
+
+                {/* 右侧预留 */}
+                <div className={styles.rightArea}>
+                    <button
+                        className={styles.mobileNavButton}
+                        onClick={() => setOpen(!open)}
+                    >
+                        <Checkbox checked={open} onChange={() => setOpen(!open)} />
+                    </button>
+                </div>
             </div>
 
 
