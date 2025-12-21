@@ -1,5 +1,6 @@
 package org.deslrey.service.impl;
 
+import com.alibaba.fastjson2.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.deslrey.entity.po.Article;
@@ -14,6 +15,8 @@ import org.deslrey.result.Results;
 import org.deslrey.service.ArticleService;
 import org.deslrey.util.DataInitUtils;
 import org.deslrey.util.NumberUtils;
+import org.deslrey.util.RedisUtils;
+import org.deslrey.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +49,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private DataInitUtils dataInitUtils;
+
+    @Autowired
+    private RedisUtils redisUtils;
 
     @Override
     public Results<List<Article>> LatestReleases() {
@@ -105,12 +111,26 @@ public class ArticleServiceImpl implements ArticleService {
             return Results.fail(ResultCodeEnum.CODE_501);
         }
 
+        String cacheKey = "article:detail:" + id;
+
+        String articleJson = redisUtils.get(cacheKey);
+        if (StringUtils.isNotEmpty(articleJson)) {
+            Article article = JSON.parseObject(articleJson, Article.class);
+            if (article != null) {
+                return Results.ok(article);
+            }
+        }
+
         Article article = articleMapper.selectArticleDetail(id);
         if (article == null) {
             return Results.fail("查找文章失败");
         }
+
+        redisUtils.set(cacheKey, JSON.toJSONString(article), 60 * 12);
+
         return Results.ok(article);
     }
+
 
     @Override
     public Results<List<Article>> viewHot() {
