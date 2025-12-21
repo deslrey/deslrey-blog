@@ -36,7 +36,7 @@ export function useReadingTitle(
         }
 
         if (info.isMain) {
-            setTitle(`${info.sectionNumber} / ${info.sectionTitle}`);
+            setTitle(info.sectionTitle);
         } else {
             setTitle(`${info.sectionNumber} / ${info.currentTitle}`);
         }

@@ -21,6 +21,8 @@ import scss from "highlight.js/lib/languages/scss";
 import shell from "highlight.js/lib/languages/shell";
 import json from "highlight.js/lib/languages/json";
 import sql from "highlight.js/lib/languages/sql";
+import dockerfile from "highlight.js/lib/languages/dockerfile";
+
 import { rehypeImgLazy } from "./rehype-img-lazy";
 
 // --- 注册语言 ---
@@ -34,6 +36,9 @@ hljs.registerLanguage("scss", scss);
 hljs.registerLanguage("shell", shell);
 hljs.registerLanguage("json", json);
 hljs.registerLanguage("sql", sql);
+hljs.registerLanguage("cypher", sql);
+hljs.registerLanguage("dockerfile", dockerfile);
+hljs.registerLanguage("docker", dockerfile);
 
 hljs.configure({ ignoreUnescapedHTML: true });
 

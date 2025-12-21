@@ -1,5 +1,3 @@
-// import * as simpleIcons from 'simple-icons';
-
 import {
     siJavascript,
     siTypescript,
@@ -17,7 +15,9 @@ import {
     siMysql,
     siRedis,
     siCss,
-    siSass
+    siSass,
+    siDocker,
+    siNeo4j,
 } from 'simple-icons';
 import { Message } from './message';
 
@@ -53,7 +53,10 @@ export class CodeBlockEnhancer {
             mysql: siMysql,
             css: siCss,
             sass: siSass,
-            scss: siSass
+            scss: siSass,
+            docker: siDocker,
+            dockerfile: siDocker,
+            cypher: siNeo4j
         };
     }
 
