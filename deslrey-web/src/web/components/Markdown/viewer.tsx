@@ -10,6 +10,7 @@ import { TableOfContents } from "lucide-react";
 
 import "./index.scss";
 import { useReadingTitle } from "../../hooks/useReadingTitle";
+import ValineComment from "../ValineComment";
 
 const MarkdownToc = lazy(() => import("../MarkdownToc"));
 
@@ -197,6 +198,7 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
                     <div ref={containerRef} className="markdown-div">
                         <MemoMdViewer content={content} />
                     </div>
+                    <ValineComment article={article} />
                 </div>
 
                 {tocOpen && (
