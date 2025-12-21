@@ -34,6 +34,7 @@
     "simple-icons": "^15.19.0",
     "styled-components": "^6.1.19",
     "unist-util-visit": "^5.0.0",
+    "valine": "^1.5.3",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
