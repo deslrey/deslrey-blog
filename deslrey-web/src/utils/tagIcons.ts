@@ -7,7 +7,8 @@ import {
     siDocker,
     siLinux,
     siNeo4j,
-    siRedis
+    siRedis,
+    siRabbitmq
 } from 'simple-icons';
 
 type IconInfo = {
@@ -24,7 +25,8 @@ const tagIcons: Record<string, IconInfo> = {
     Docker: { svg: siDocker.svg, color: `#${siDocker.hex}` },
     Linux: { svg: siLinux.svg, color: `#${siLinux.hex}` },
     Neo4j: { svg: siNeo4j.svg, color: `#${siNeo4j.hex}` },
-    Redis: { svg: siRedis.svg, color: `#${siRedis.hex}` }
+    Redis: { svg: siRedis.svg, color: `#${siRedis.hex}` },
+    RabbitMQ: { svg: siRabbitmq.svg, color: `#${siRabbitmq.hex}` }
 };
 
 export const getTagIcon = (title: string): IconInfo | null => {
