@@ -8,7 +8,11 @@ import {
     siLinux,
     siNeo4j,
     siRedis,
-    siRabbitmq
+    siRabbitmq,
+    siPython,
+    siMysql,
+    siSpring,
+    siSpringboot
 } from 'simple-icons';
 
 type IconInfo = {
@@ -26,7 +30,11 @@ const tagIcons: Record<string, IconInfo> = {
     Linux: { svg: siLinux.svg, color: `#${siLinux.hex}` },
     Neo4j: { svg: siNeo4j.svg, color: `#${siNeo4j.hex}` },
     Redis: { svg: siRedis.svg, color: `#${siRedis.hex}` },
-    RabbitMQ: { svg: siRabbitmq.svg, color: `#${siRabbitmq.hex}` }
+    RabbitMQ: { svg: siRabbitmq.svg, color: `#${siRabbitmq.hex}` },
+    Python: { svg: siPython.svg, color: `#${siPython.hex}` },
+    MySQL: { svg: siMysql.svg, color: `#${siMysql.hex}` },
+    Spring: { svg: siSpring.svg, color: `#${siSpring.hex}` },
+    SpringBoot: { svg: siSpringboot.svg, color: `#${siSpringboot.hex}` },
 };
 
 export const getTagIcon = (title: string): IconInfo | null => {
