@@ -2,7 +2,7 @@ import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { useParams } from 'react-router';
 import styles from './index.module.scss';
 import type { Article } from '../../../interfaces';
-import request from '../../../utils/reques';
+import request from '../../../utils/request';
 import { api } from '../../api';
 import BanterComponent from '../../../loader/BanterComponent';
 

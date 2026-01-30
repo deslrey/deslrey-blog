@@ -154,3 +154,34 @@ body::-webkit-scrollbar-track {
     // --pure-bg: #15181d;
     --pure-bg: #000000;
 }
+
+/* 涟漪动画样式 */
+@keyframes ripple-animation {
+    0% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+.theme-ripple {
+    position: fixed;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
+    transform: scale(0);
+    animation: ripple-animation 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    pointer-events: none;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+}
+
+/* 在暗色主题下使用不同的涟漪颜色 */
+[data-theme="dark"] .theme-ripple {
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+}

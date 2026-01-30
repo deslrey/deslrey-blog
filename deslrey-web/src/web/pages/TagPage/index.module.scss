@@ -1,36 +1,80 @@
 .tagPage {
     width: 100%;
+    min-height: 85vh;
+    padding: 100px 20px 40px;
     display: flex;
     justify-content: center;
-    padding: 40px 20px;
+    align-items: flex-start;
 
     @media (max-width: 768px) {
-        padding: 100px 10px 50px;
+        padding: 140px 20px 60px;
     }
 }
 
 .container {
-    width: 100%;
-    margin-top: 10%;
     max-width: 1200px;
-    min-height: 600px;
+    width: 100%;
     display: flex;
     flex-direction: column;
+    gap: 30px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
 }
 
 .title {
-    font-size: 50px;
+    font-size: 2.5rem;
     font-weight: 700;
     color: var(--color-text);
-    margin-bottom: 25px;
-    padding-left: 14px;
-    animation: fadeIn 1.4s ease;
+    margin: 0;
+    position: relative;
+    letter-spacing: -0.5px;
+
+    @media (max-width: 768px) {
+        font-size: 2rem;
+    }
+}
+
+.stats {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 8px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+
+    [data-theme="dark"] & {
+        background: rgba(26, 26, 31, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+}
+
+.count,
+.total {
+    font-size: 1rem;
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+.total {
+    margin-left: 10px;
+    opacity: 0.8;
 }
 
 .list {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 16px;
 }
 
 .card {
@@ -38,104 +82,153 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    padding: 10px 16px;
-    gap: 10px;
-
-    min-width: 120px;
-    height: 44px;
-
-    border-radius: 10px;
+    padding: 14px 18px;
+    gap: 12px;
+    min-width: 160px;
+    max-width: 300px;
+    height: 60px;
+    border-radius: 14px;
     cursor: pointer;
-    backdrop-filter: blur(6px);
-
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease;
-
-    &::after {
-        content: "";
-        position: absolute;
-        inset: -5px;
-        border-radius: 14px;
-        pointer-events: none;
-
-        opacity: 0;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        box-shadow:
-            0 0 0 2px rgba(0, 0, 0, 0.02),
-            0 6px 18px rgba(0, 0, 0, 0.08);
-
-        transition: opacity 0.2s ease;
-    }
-
-    &:hover,
-    &:focus-visible {
-        transform: translateY(-1px);
-    }
-
-    &:hover::after,
-    &:focus-visible::after {
-        opacity: 1;
-    }
-}
-
-[data-theme="dark"] .card {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.12);
-
-    &::after {
-        border-color: rgba(255, 255, 255, 0.35);
-        box-shadow:
-            0 0 0 2px rgba(255, 255, 255, 0.12),
-            0 10px 26px rgba(0, 0, 0, 0.6);
-    }
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.7);
+    border: 2px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
 
     &:hover {
-        background: rgba(255, 255, 255, 0.12);
+        border-color: var(--activeColor);
+        box-shadow: 0 0 0 2px rgba(var(--activeColor-rgb), 0.1);
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    &:focus-visible {
+        outline: none;
+        border-color: var(--activeColor);
+        box-shadow: 0 0 0 3px rgba(var(--activeColor-rgb), 0.2);
+    }
+
+    [data-theme="dark"] & {
+        background: rgba(26, 26, 31, 0.6);
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        
+        &:hover {
+            border-color: var(--activeColor);
+            box-shadow: 0 0 0 2px rgba(var(--activeColor-rgb), 0.2);
+            background: rgba(26, 26, 31, 0.9);
+        }
+        
+        &:focus-visible {
+            border-color: var(--activeColor);
+            box-shadow: 0 0 0 3px rgba(var(--activeColor-rgb), 0.3);
+        }
     }
 }
 
-.left {
+.content {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    flex: 1;
 }
 
 .icon {
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
 
     svg {
-        width: 22px;
-        height: 22px;
+        width: 24px;
+        height: 24px;
         fill: currentColor;
-        transition: transform 0.2s ease;
+        transition: all 0.3s ease;
     }
 }
 
 .card:hover .icon svg {
-    transform: scale(1.08);
+    transform: scale(1.1);
 }
 
 .tagName {
-    font-size: 15px;
+    font-size: 1.1rem;
     color: var(--color-text);
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
 }
 
-.count {
-    background: rgba(255, 255, 255, 0.18);
-    padding: 2px 7px;
-    border-radius: 999px;
-    font-size: 12px;
+.postCount {
+    background: rgba(var(--activeColor-rgb), 0.1);
+    color: var(--activeColor);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
     line-height: 1;
+    font-weight: 500;
+    flex-shrink: 0;
 }
 
-[data-theme="dark"] .count {
-    background: rgba(255, 255, 255, 0.2);
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+}
+
+.errorContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+
+    [data-theme="dark"] & {
+        background: rgba(26, 26, 31, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+}
+
+.errorMessage {
+    font-size: 1.1rem;
+    color: var(--color-text);
+    margin: 0 0 20px 0;
+    opacity: 0.8;
+}
+
+.retryButton {
+    padding: 10px 24px;
+    background: var(--activeColor);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(var(--activeColor-rgb), 0.3);
+    }
+}
+
+.emptyMessage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    color: var(--color-text);
+    opacity: 0.6;
+    text-align: center;
+    
+    p {
+        font-size: 1.1rem;
+    }
 }

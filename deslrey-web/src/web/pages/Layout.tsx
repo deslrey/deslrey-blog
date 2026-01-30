@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "../components/ThemeProvider";
 import { useBgSeries } from "../components/BgSeriesProvider";
 import { api } from "../api";
-import request from "../../utils/reques";
+import request from "../../utils/request";
 import styles from './index.module.scss'
 import ColorProvider from "../components/ColorProvider";
 import Nav from "../components/NavComponents";

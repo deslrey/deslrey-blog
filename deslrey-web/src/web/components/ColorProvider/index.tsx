@@ -28,15 +28,29 @@ const ColorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         "157,78,221",
     ];
 
-    const [index, _setIndex] = useState(0);
+    const [index, setIndex] = useState(0);
     const location = useLocation();
     const routes = useWebRoutes();
     const setTitle = useNavStore((state) => state.setTitle);
 
+    // 随机生成一个新颜色，避免与当前颜色相同
+    const getRandomColorIndex = () => {
+        let newIndex = Math.floor(Math.random() * colors.length);
+        // 如果新索引与当前索引相同，则使用下一个索引
+        if (newIndex === index) {
+            newIndex = (newIndex + 1) % colors.length;
+        }
+        return newIndex;
+    };
 
     useEffect(() => {
         const pathname = location.pathname;
 
+        // 随机更新颜色索引
+        const newIndex = getRandomColorIndex();
+        setIndex(newIndex);
+
+        // 设置标题
         const exactMatch = routes.find(r => r.path === pathname);
         if (exactMatch) {
             setTitle(exactMatch.title);
@@ -56,7 +70,6 @@ const ColorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         }
         setTitle("");
     }, [location.pathname]);
-
 
     useEffect(() => {
         document.documentElement.style.setProperty("--activeColor", colors[index]);

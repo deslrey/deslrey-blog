@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import type { CountType } from '../../../../interfaces'
 import { Link } from 'react-router'
-import request from '../../../../utils/reques'
+import request from '../../../../utils/request'
 import { api } from '../../../api'
 
 const Classify: React.FC = () => {

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useRef } from 'react';
 
 type ThemeMode = 'light' | 'dark' | 'system';
 type ActiveTheme = 'light' | 'dark';
@@ -21,9 +21,41 @@ export function useTheme() {
     return useContext(ThemeContext);
 }
 
+// 创建水波纹动画函数
+const createRippleEffect = (x: number, y: number) => {
+    // 创建涟漪元素
+    const ripple = document.createElement('div');
+    ripple.className = 'theme-ripple';
+    
+    // 设置涟漪样式
+    ripple.style.left = `${x - 10}px`; // 减去一半宽度以居中
+    ripple.style.top = `${y - 10}px`;  // 减去一半高度以居中
+    
+    // 添加涟漪到页面
+    document.body.appendChild(ripple);
+    
+    // 动画结束后移除元素
+    setTimeout(() => {
+        document.body.removeChild(ripple);
+    }, 800);
+};
+
+
+
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
     const [mode, setMode] = useState<ThemeMode>('system');
     const [theme, setTheme] = useState<ActiveTheme>('light');
+    const lastClickPosition = useRef<{ x: number; y: number } | null>(null);
+
+    // 监听点击事件以记录点击位置
+    useEffect(() => {
+        const handleClick = (e: MouseEvent) => {
+            lastClickPosition.current = { x: e.clientX, y: e.clientY };
+        };
+        
+        document.addEventListener('click', handleClick);
+        return () => document.removeEventListener('click', handleClick);
+    }, []);
 
     useEffect(() => {
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
@@ -33,6 +65,12 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
         const applyTheme = (mode: ThemeMode) => {
             const activeTheme: ActiveTheme =
                 mode === 'system' ? (prefersDark.matches ? 'dark' : 'light') : mode;
+
+            // 如果有记录的点击位置，则创建涟漪效果
+            if (lastClickPosition.current) {
+                createRippleEffect(lastClickPosition.current.x, lastClickPosition.current.y);
+                lastClickPosition.current = null; // 清除点击位置
+            }
 
             setTheme(activeTheme);
             document.documentElement.setAttribute('data-theme', activeTheme);

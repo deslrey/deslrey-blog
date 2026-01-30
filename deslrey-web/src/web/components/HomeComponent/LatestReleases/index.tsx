@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router'
 import styles from './index.module.scss'
 import type { Article } from '../../../../interfaces';
-import request from '../../../../utils/reques';
+import request from '../../../../utils/request';
 import { api } from '../../../api';
 import dayjs from 'dayjs';
 import relativeTime from "dayjs/plugin/relativeTime";

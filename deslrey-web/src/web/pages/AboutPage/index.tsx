@@ -1,4 +1,3 @@
-// AboutPage.tsx
 import React from "react";
 import styles from "./index.module.scss";
 import {
@@ -34,38 +33,68 @@ const IconText = ({ icon, text }: { icon: any; text: string }) => (
 const AboutPage: React.FC = () => {
     return (
         <div className={styles.about}>
-            <div className={`${styles.container} ${styles.cardDiv} card-div`}>
-                <h2 className={styles.name}>Deslrey</h2>
-                <p className={styles.bio}>
-                    👋 Hi~ 我是 Deslrey，一名前后端开发爱好者，热衷于现代 Web 技术。
-                </p>
+            <div className={styles.container}>
 
-                <section className={styles.section}>
-                    <h3 className={styles.sectionTitle}>前端</h3>
-                    <div className={styles.skills}>
-                        <IconText icon={siReact} text="React" />
-                        <IconText icon={siVuedotjs} text="Vue" />
-                        <IconText icon={siJavascript} text="JavaScript" />
-                        <IconText icon={siHtml5} text="HTML" />
-                        <IconText icon={siCss} text="CSS" />
+                <div className={styles.content}>
+                    <div className={styles.profile}>
+                        <div className={styles.profileCard}>
+                            <h2 className={styles.profileName}>Deslrey</h2>
+                            <p className={styles.profileBio}>
+                                👋 Hi~ 我是 Deslrey，一名前后端开发爱好者，热衷于现代 Web 技术。
+                                <br />
+                                <br />
+                                专注于构建优雅、高效的应用程序，热爱开源文化与技术分享。
+                            </p>
+                        </div>
                     </div>
-                </section>
 
-                <section className={styles.section}>
-                    <h3 className={styles.sectionTitle}>后端</h3>
-                    <div className={styles.skills}>
-                        <IconText icon={siOpenjdk} text="Java" />
-                        <IconText icon={siGo} text="Go" />
-                    </div>
-                </section>
+                    <div className={styles.skillsSection}>
+                        <div className={styles.skillCategory}>
+                            <h3 className={styles.categoryTitle}>前端技能</h3>
+                            <div className={styles.skillGrid}>
+                                <div className={styles.skillItem}>
+                                    <IconText icon={siReact} text="React" />
+                                </div>
+                                <div className={styles.skillItem}>
+                                    <IconText icon={siVuedotjs} text="Vue" />
+                                </div>
+                                <div className={styles.skillItem}>
+                                    <IconText icon={siJavascript} text="JavaScript" />
+                                </div>
+                                <div className={styles.skillItem}>
+                                    <IconText icon={siHtml5} text="HTML" />
+                                </div>
+                                <div className={styles.skillItem}>
+                                    <IconText icon={siCss} text="CSS" />
+                                </div>
+                            </div>
+                        </div>
 
-                <section className={styles.section}>
-                    <h3 className={styles.sectionTitle}>工具</h3>
-                    <div className={styles.skills}>
-                        <IconText icon={siDocker} text="Docker" />
-                        <IconText icon={siNginx} text="NGINX" />
+                        <div className={styles.skillCategory}>
+                            <h3 className={styles.categoryTitle}>后端技能</h3>
+                            <div className={styles.skillGrid}>
+                                <div className={styles.skillItem}>
+                                    <IconText icon={siOpenjdk} text="Java" />
+                                </div>
+                                <div className={styles.skillItem}>
+                                    <IconText icon={siGo} text="Go" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={styles.skillCategory}>
+                            <h3 className={styles.categoryTitle}>工具与部署</h3>
+                            <div className={styles.skillGrid}>
+                                <div className={styles.skillItem}>
+                                    <IconText icon={siDocker} text="Docker" />
+                                </div>
+                                <div className={styles.skillItem}>
+                                    <IconText icon={siNginx} text="NGINX" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </section>
+                </div>
             </div>
         </div>
     );
