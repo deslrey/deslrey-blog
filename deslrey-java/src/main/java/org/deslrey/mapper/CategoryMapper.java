@@ -24,7 +24,7 @@ public interface CategoryMapper {
 
     int updateCategoryTitle(Category category);
 
-    Category selectCategoryByTitle(@Param("categoryTitle") String category);
+    Category selectCategoryByTitle(@Param("categoryId") Integer categoryId);
 
     List<Category> selectCategoryArticleList();
 

@@ -15,7 +15,7 @@ const CategoryPage: React.FC = () => {
     const fetchCategories = async () => {
         setLoading(true);
         setError(null);
-        
+
         try {
             const res = await request.get(api.category.categoryCount);
             if (res.code === 200) {
@@ -36,23 +36,18 @@ const CategoryPage: React.FC = () => {
     }, []);
 
     const displayedCount = categories.length;
-    const totalPosts = categories.reduce((sum, item) => sum + item.total, 0);
 
     return (
         <div className={styles.categoryPage}>
             <div className={styles.container}>
                 <div className={styles.header}>
                     <h2 className={styles.title}>分类</h2>
-                    <div className={styles.stats}>
-                        <span className={styles.count}>{displayedCount} 个分类</span>
-                        <span className={styles.total}>共 {totalPosts} 篇文章</span>
-                    </div>
                 </div>
 
                 {error ? (
                     <div className={styles.errorContainer}>
                         <p className={styles.errorMessage}>{error}</p>
-                        <button 
+                        <button
                             className={styles.retryButton}
                             onClick={fetchCategories}
                         >
@@ -89,14 +84,14 @@ const CategoryPage: React.FC = () => {
                                     <span className={styles.postCount}>{item.total} 篇文章</span>
                                 </div>
                                 <div className={styles.arrow}>
-                                    <svg 
-                                        width="20" 
-                                        height="20" 
-                                        viewBox="0 0 24 24" 
-                                        fill="none" 
-                                        stroke="currentColor" 
-                                        strokeWidth="2" 
-                                        strokeLinecap="round" 
+                                    <svg
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
                                         strokeLinejoin="round"
                                     >
                                         <line x1="5" y1="12" x2="19" y2="12"></line>

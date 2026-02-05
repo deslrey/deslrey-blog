@@ -38,17 +38,12 @@ const TagPage: React.FC = () => {
     }, []);
 
     const displayedCount = tags.length;
-    const totalPosts = tags.reduce((sum, item) => sum + item.total, 0);
 
     return (
         <div className={styles.tagPage}>
             <div className={styles.container}>
                 <div className={styles.header}>
                     <h2 className={styles.title}>标签</h2>
-                    <div className={styles.stats}>
-                        <span className={styles.count}>{displayedCount} 个标签</span>
-                        <span className={styles.total}>共 {totalPosts} 篇文章</span>
-                    </div>
                 </div>
 
                 {error ? (

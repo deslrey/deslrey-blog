@@ -43,7 +43,7 @@
                COUNT(a.id)      AS total
         FROM category c
                  LEFT JOIN article a
-                           ON a.category = c.category_title
+                           ON a.category_id = c.id
                                AND a.exist = 1
         GROUP BY c.id, c.category_title
         ORDER BY total DESC
@@ -62,8 +62,8 @@
         select id, category_title
         from category
         <where>
-            <if test="categoryTitle != null and categoryTitle != ''">
-                category_title = #{categoryTitle}
+            <if test="categoryId != null">
+                id = #{categoryId}
             </if>
         </where>
     </select>

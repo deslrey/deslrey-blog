@@ -34,10 +34,11 @@
         a.des,
         a.create_time as createTime,
         a.update_time as updateTime,
-        a.category,
+        c.category_title as category,
         a.edit
         from article_tag t
         left join article a on t.article_id = a.id
+        left join category c on c.id = a.category_id
         <where>
             <if test="tagId != null">t.tag_id = #{tagId}</if>
             <if test="tagId == null">a.exist = 1</if>

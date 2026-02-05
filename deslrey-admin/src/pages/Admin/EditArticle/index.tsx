@@ -93,7 +93,7 @@ const EditArticle: React.FC = () => {
             id: '',
             title,
             content,
-            category: category?.categoryTitle || null,
+            categoryId: category?.id || null,
             tagIdList: selectedTagIds,
             des: description,
         };

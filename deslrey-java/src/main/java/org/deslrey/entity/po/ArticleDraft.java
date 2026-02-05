@@ -31,7 +31,7 @@ public class ArticleDraft {
     /**
      * 分类
      */
-    private String category;
+    private Integer categoryId;
 
     /**
      * 标签id集合

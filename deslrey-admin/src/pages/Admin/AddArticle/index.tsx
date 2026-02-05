@@ -58,10 +58,12 @@ const AddArticle: React.FC = () => {
         const payload = {
             title,
             content,
-            category: category?.categoryTitle || null,
+            categoryId: category?.id || null,
             tagIdList: selectedTagIds,
             des: description,
         };
+
+        console.log('payload ========>', payload);
 
         try {
             const res = await request.post(addArticleApi.addArticle, payload);

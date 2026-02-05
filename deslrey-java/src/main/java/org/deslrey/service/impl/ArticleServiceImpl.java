@@ -160,7 +160,7 @@ public class ArticleServiceImpl implements ArticleService {
         }
         articleDraftVO.setTagIdList(articleTagList);
 
-        Category category = categoryMapper.selectCategoryByTitle(article.getCategory());
+        Category category = categoryMapper.selectCategoryByTitle(article.getCategoryId());
         if (category != null) {
             articleDraftVO.setCategory(category);
         }
@@ -182,7 +182,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setWordCount(content.length());
         int readTime = Math.max(1, content.length() / 200);
         article.setReadTime(readTime);
-        article.setCategory(articleDraft.getCategory());
+        article.setCategoryId(articleDraft.getCategoryId());
         article.setDes(articleDraft.getDes());
         article.setExist(true);
 

@@ -66,9 +66,9 @@ public class Article implements Serializable {
     private LocalDateTime updateTime;
 
     /**
-     * 分类
+     * 分类Id
      */
-    private String category;
+    private Integer categoryId;
 
     /**
      * 描述
