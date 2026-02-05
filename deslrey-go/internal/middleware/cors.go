@@ -1,0 +1,25 @@
+package middleware
+
+import (
+	"deslrey-go/internal/config"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
+
+func Cors() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Header("Access-Control-Allow-Origin", config.Config.DomainName)
+		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		c.Header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Jwt")
+		c.Header("Access-Control-Expose-Headers", "X-Jwt")
+		c.Header("Access-Control-Allow-Credentials", "true")
+
+		if c.Request.Method == http.MethodOptions {
+			c.AbortWithStatus(http.StatusOK)
+			return
+		}
+
+		c.Next()
+	}
+}

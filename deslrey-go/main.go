@@ -1,20 +1,19 @@
 package main
 
 import (
-	"deslrey-go/configs"
-	"deslrey-go/dao"
-	"deslrey-go/logs"
-	"deslrey-go/redis"
-	"deslrey-go/router"
-	"deslrey-go/scheduler"
+	"deslrey-go/internal/config"
+	"deslrey-go/internal/repository"
+	"deslrey-go/internal/router"
+	"deslrey-go/internal/scheduler"
+	"deslrey-go/pkg/cache"
+	"deslrey-go/pkg/logger"
 )
 
 func main() {
-	configs.Init()
-	logs.Init()
-	dao.Init()
-	redis.Init()
-	redis.InitCache()
+	config.Init()
+	logger.Init()
+	cache.Init()
+	repository.Init()
 	scheduler.Start()
 	router.Start()
 }
