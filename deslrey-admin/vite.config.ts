@@ -6,10 +6,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/deslrey': {
+      '/blog-api': {
         target: 'http://localhost:8080', // 后端接口地址
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/deslrey/, '/deslrey'),
+        rewrite: (path) => path.replace(/^\/blog-api/, 'blog-api'),
       },
     },
   },

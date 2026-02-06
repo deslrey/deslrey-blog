@@ -19,13 +19,20 @@ func Start() {
 	engine.Use(middleware.HandleEndpointLantency())
 	engine.Use(middleware.Cors())
 
-	api := engine.Group("/deslrey/api")
+	staticPath := config.Config.Custom.StaticSourcePath
 
-	userGroup := api.Group("/user")
+	staticGroup := engine.Group(config.Config.Custom.StaticUrl)
 	{
-		userGroup.POST("/login", user.HandleLogin)
-		userGroup.POST("/register", user.HandleRegister)
+		// 设置强缓存
+		staticGroup.Use(func(c *gin.Context) {
+			c.Header("Cache-Control", "public, max-age=31536000, immutable")
+			c.Next()
+		})
+		// 映射物理路径到 URL
+		staticGroup.Static("", staticPath)
 	}
+
+	api := engine.Group("/blog-api")
 
 	whitelistApi := api.Group("/white")
 
@@ -48,7 +55,15 @@ func Start() {
 	}
 
 	blacklist := api.Group("/black")
-	blacklist.Use(middleware.JWTAuth())
+
+	userAuth := blacklist.Group("/user")
+	{
+		userAuth.POST("/login", user.HandleLogin)
+		userAuth.POST("/register", user.HandleRegister)
+	}
+
+	protected := blacklist.Group("/")
+	protected.Use(middleware.JWTAuth())
 
 	err := engine.Run(":" + strconv.Itoa(config.Config.Port))
 	if err != nil {

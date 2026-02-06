@@ -16,6 +16,17 @@ type ConfigType struct {
 
 	JwtSigningKey string `yaml:"jwtSigningKey"`
 
+	Custom struct {
+		StaticSourcePath string `yaml:"staticSourcePath"`
+		StaticUrl        string `yaml:"staticUrl"`
+		URL              string `yaml:"url"`
+	} `yaml:"custom"`
+
+	Carousel struct {
+		SexApi     string `yaml:"sexApi"`
+		SceneryApi string `yaml:"sceneryApi"`
+	} `yaml:"carousel"`
+
 	PostgreSQL struct {
 		Host string `yaml:"host"`
 		Port int    `yaml:"port"`
