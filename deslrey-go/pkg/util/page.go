@@ -1,6 +1,11 @@
 package util
 
-import "gorm.io/gorm"
+import (
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
+)
 
 type PageInfo[T any] struct {
 	Page        int  `json:"page"`
@@ -41,4 +46,16 @@ func PaginateScope(page, size int) func(*gorm.DB) *gorm.DB {
 		offset := (page - 1) * size
 		return db.Offset(offset).Limit(size)
 	}
+}
+
+func GetPageParams(ctx *gin.Context) (int, int) {
+	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
+	size, _ := strconv.Atoi(ctx.DefaultQuery("pageSize", "10"))
+	if page <= 0 {
+		page = 1
+	}
+	if size <= 0 || size > 100 {
+		size = 10
+	}
+	return page, size
 }

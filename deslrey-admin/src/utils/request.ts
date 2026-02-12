@@ -20,7 +20,7 @@ class Request {
             (config) => {
                 const token = useUserStore.getState().user.token;
                 if (token && config.headers) {
-                    config.headers.Authorization = `token-${token}`;
+                    config.headers.Authorization = `Bearer ${token}`;
                 }
                 return config;
             },
@@ -34,10 +34,10 @@ class Request {
 
                 // 检查响应头是否有新 token
                 const newToken = response.headers['authorization'];
-                if (newToken && newToken.startsWith("token-")) {
+                if (newToken && newToken.startsWith("Bearer ")) {
                     useUserStore.getState().setUser({
                         ...useUserStore.getState().user,
-                        token: newToken.replace("token-", ""),
+                        token: newToken.replace("Bearer ", ""),
                     });
                 }
 
@@ -56,7 +56,13 @@ class Request {
                 return response;
             },
             (error) => {
-                Message.error("请求异常");
+                if (error.response?.status === 401) {
+                    Message.error("登录超时，请重新登录");
+                    useUserStore.getState().clearUser();
+                    window.location.href = "/login";
+                } else {
+                    Message.error("请求异常");
+                }
                 return Promise.reject(error);
             }
         );

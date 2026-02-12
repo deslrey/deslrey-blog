@@ -2,6 +2,7 @@ package scheduler
 
 import (
 	"context"
+	"deslrey-go/internal/biz/visit"
 	"deslrey-go/internal/repository"
 	"deslrey-go/pkg/cache"
 	"deslrey-go/pkg/logger"
@@ -49,6 +50,13 @@ func refreshCacheWithLock() {
 
 	start := time.Now()
 	repository.InitCache()
+
+	if err := visit.RefreshVisitStats(); err != nil {
+		logger.Logger.Error("刷新访问量统计失败", "err", err)
+	} else {
+		logger.Logger.Info("访问量统计刷新完成")
+	}
+
 	logger.Logger.Info(
 		"缓存刷新完成",
 		"cost", time.Since(start).String(),

@@ -93,7 +93,36 @@ func doLogin(req *LoginRequest) (*LoginResponse, error) {
 	}
 
 	return &LoginResponse{
-		Token:    "Bearer " + token,
+		Token:    token,
 		UserName: user.UserName,
 	}, nil
+}
+
+func HandleUpdateUserName(ctx *gin.Context) {
+	var req UpdateUserNameRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		result.FailMsg("请求参数错误").SendCode(http.StatusBadRequest, ctx)
+		return
+	}
+
+	if err := UpdateUserName(req.OldName, req.NewName); err != nil {
+		result.FailMsg(err.Error()).SendCode(http.StatusInternalServerError, ctx)
+		return
+	}
+	result.OkMsg("更新成功").Send(ctx)
+}
+
+func HandleUpdatePassword(ctx *gin.Context) {
+	var req UpdatePasswordRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		result.FailMsg("请求参数错误").SendCode(http.StatusBadRequest, ctx)
+		return
+	}
+
+	userId := ctx.GetInt("userId")
+	if err := UpdatePassword(userId, req.OldPassword, req.NewPassword); err != nil {
+		result.FailMsg(err.Error()).SendCode(http.StatusInternalServerError, ctx)
+		return
+	}
+	result.OkMsg("更新成功").Send(ctx)
 }

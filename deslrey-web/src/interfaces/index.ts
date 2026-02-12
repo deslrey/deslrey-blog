@@ -18,7 +18,7 @@ export interface Article {
 export interface CountType {
     id: number;
     title: string;
-    total: number;
+    count: number;
 }
 
 export interface BytemdViewerProps {

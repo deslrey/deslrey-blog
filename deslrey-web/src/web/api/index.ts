@@ -1,25 +1,27 @@
-const baseUrl = import.meta.env.VITE_BASE_URL;
-
 export const api = {
 
     carouselPage: {
-        sex: `${baseUrl}/carousel/sex`,
-        scenery: `${baseUrl}/carousel/scenery`
+        sex: `/carousel/sex`,
+        scenery: `/carousel/scenery`
     },
 
     article: {
-        LatestReleases: `${baseUrl}/article/LatestReleases`,
-        articleList: `${baseUrl}/article/list`,
-        articleDetail: `${baseUrl}/article/articleDetail/`
+        LatestReleases: `/article/list`,
+        articleList: `/article/list`,
+        articleDetail: `/article/`
     },
 
     category: {
-        categoryCount: `${baseUrl}/category/categoryCount`,
-        categoryArticle: `${baseUrl}/category/`
+        categoryCount: `/category/count`,
+        categoryArticle: `/category/`
     },
 
     tag: {
-        tagCount: `${baseUrl}/tag/tagCount`,
-        tagArticle: `${baseUrl}/tag/`
+        tagCount: `/tag/count`,
+        tagArticle: `/tag/`
+    },
+
+    visit: {
+        stats: `/visit/stats`
     }
 }

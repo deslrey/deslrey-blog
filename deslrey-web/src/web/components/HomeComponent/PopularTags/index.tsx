@@ -12,7 +12,6 @@ const PopularTags: React.FC = () => {
 
     useEffect(() => {
 
-
         const fetchData = async () => {
             try {
                 const res = await request.get(api.tag.tagCount)
@@ -37,10 +36,10 @@ const PopularTags: React.FC = () => {
                     tags.length === 0 ? (
                         <div className={styles.empty}>暂无更多标签</div>
                     ) : (tags.map(tag => (
-                        <Link key={tag.id} to={`/tag/${tag.title}`} className={styles.item}>
+                        <Link key={tag.id} to={`/tag/${tag.title}`} state={{ id: tag.id }} className={styles.item}>
                             <div key={tag.id} className={styles.tagItem}>
                                 <span className={styles.title}>{tag.title}</span>
-                                <span className={styles.total}>{tag.total}</span>
+                                <span className={styles.total}>{tag.count}</span>
                             </div>
                         </Link>
                     )))

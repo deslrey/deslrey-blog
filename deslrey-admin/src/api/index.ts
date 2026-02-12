@@ -1,9 +1,9 @@
 export const loginApi = {
-    login: '/user/login'
+    login: '/auth/login'
 }
 
 export const registerApi = {
-    register: '/user/register'
+    register: '/auth/register'
 }
 
 export const addArticleApi = {
@@ -14,7 +14,7 @@ export const addArticleApi = {
 };
 
 export const articleApi = {
-    list: "/article/admin-list",
+    list: "/article/list",
     viewHot: "/article/viewHot",
     editExist: "/article/editExist"
 }

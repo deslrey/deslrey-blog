@@ -57,3 +57,41 @@ func SelectByID(id int) (*UserInfo, error) {
 	}
 	return &user, nil
 }
+
+func UpdateUserName(oldName, newName string) error {
+	user, err := SelectByUserName(oldName)
+	if err != nil {
+		return errors.New("用户不存在")
+	}
+
+	result := db.Model(&UserInfo{}).Where("id = ?", user.ID).Update("user_name", newName)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return errors.New("更新失败")
+	}
+	return nil
+}
+
+func UpdatePassword(userId int, oldPassword, newPassword string) error {
+	user, err := SelectByID(userId)
+	if err != nil || user == nil {
+		return errors.New("用户不存在")
+	}
+
+	hashedOldPassword := hashPasswordWithSalt(oldPassword, user.Salt)
+	if hashedOldPassword != user.PassWord {
+		return errors.New("原密码错误")
+	}
+
+	hashedNewPassword := hashPasswordWithSalt(newPassword, user.Salt)
+	result := db.Model(&UserInfo{}).Where("id = ?", userId).Update("pass_word", hashedNewPassword)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return errors.New("更新失败")
+	}
+	return nil
+}

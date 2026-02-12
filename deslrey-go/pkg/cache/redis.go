@@ -121,7 +121,7 @@ func HGet(ctx context.Context, key, field string) (string, bool, error) {
 
 	val, err := client.HGet(ctx, key, field).Result()
 	if err != nil {
-		if err == redis.Nil {
+		if errors.Is(err, redis.Nil) {
 			return "", false, nil
 		}
 		return "", false, err

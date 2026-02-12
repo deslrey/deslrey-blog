@@ -34,10 +34,10 @@ const Classify: React.FC = () => {
                     <div className={styles.empty}>暂无分类</div>
                 ) :
                     (classifys.map((item, index) => (
-                        <Link key={index} to={`/category/${item.title}`} className={styles.item}>
+                        <Link key={index} to={`/category/${item.title}`} state={{ id: item.id }} className={styles.item}>
                             <div key={index} className={styles.classifyItem}>
                                 <span className={styles.title}>{item.title}</span>
-                                <span className={styles.total}>{item.total}</span>
+                                <span className={styles.total}>{item.count}</span>
                             </div></Link>
                     )))}
             </div>

@@ -4,8 +4,12 @@ import (
 	"context"
 	"deslrey-go/internal/biz/article"
 	"deslrey-go/internal/biz/category"
+	"deslrey-go/internal/biz/draft"
+	"deslrey-go/internal/biz/folder"
+	"deslrey-go/internal/biz/image"
 	"deslrey-go/internal/biz/tag"
 	"deslrey-go/internal/biz/user"
+	"deslrey-go/internal/biz/visit"
 	"deslrey-go/internal/config"
 	"deslrey-go/pkg/cache"
 	pkgLogger "deslrey-go/pkg/logger"
@@ -54,6 +58,10 @@ func Init() {
 	article.InitDB(postgresqlDB)
 	category.InitDB(postgresqlDB)
 	tag.InitDB(postgresqlDB)
+	image.InitDB(postgresqlDB)
+	folder.InitDB(postgresqlDB)
+	draft.InitDB(postgresqlDB)
+	visit.InitDB(postgresqlDB)
 
 	InitCache()
 }
@@ -61,6 +69,7 @@ func Init() {
 func InitCache() {
 	cacheTagCount()
 	cacheCategoryCount()
+	visit.InitVisitStats()
 }
 
 func cacheTagCount() {

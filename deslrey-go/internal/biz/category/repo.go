@@ -1,6 +1,11 @@
 package category
 
-import "gorm.io/gorm"
+import (
+	"deslrey-go/pkg/util"
+	"errors"
+
+	"gorm.io/gorm"
+)
 
 var db *gorm.DB
 
@@ -22,11 +27,19 @@ func SelectCounts() ([]TitleCount, error) {
 	return list, err
 }
 
-func SelectArticles(categoryId int) ([]ArticleListItem, error) {
-	var articles []ArticleListItem
-
-	err := db.
+func SelectArticles(categoryId, page, size int) (*util.PageInfo[ArticleListItem], error) {
+	baseQuery := db.
 		Table("article a").
+		Where("a.category_id = ?", categoryId).
+		Where("a.exist = true")
+
+	var count int64
+	if err := baseQuery.Count(&count).Error; err != nil {
+		return nil, err
+	}
+
+	var articles []ArticleListItem
+	err := baseQuery.
 		Select(`
 		a.id,
 		a.title,
@@ -38,9 +51,8 @@ func SelectArticles(categoryId int) ([]ArticleListItem, error) {
 		`).
 		Joins("JOIN article_tag at ON at.article_id = a.id").
 		Joins("LEFT JOIN category c ON c.id = a.category_id").
-		Where("a.category_id = ?", categoryId).
-		Where("a.exist = true").
 		Order("a.create_time DESC").
+		Scopes(util.PaginateScope(page, size)).
 		Scan(&articles).Error
 
 	if err != nil {
@@ -48,8 +60,9 @@ func SelectArticles(categoryId int) ([]ArticleListItem, error) {
 	}
 
 	if len(articles) == 0 {
-		return articles, nil
+		return util.Paginate(count, articles, page, size), nil
 	}
+
 	articleIDs := make([]int, 0, len(articles))
 	for _, a := range articles {
 		articleIDs = append(articleIDs, int(a.ID))
@@ -80,5 +93,42 @@ func SelectArticles(categoryId int) ([]ArticleListItem, error) {
 		articles[i].Tags = tagMap[int(articles[i].ID)]
 	}
 
-	return articles, nil
+	return util.Paginate(count, articles, page, size), nil
+}
+
+func InsertCategory(title string) error {
+	category := Category{Title: title}
+	return db.Create(&category).Error
+}
+
+func UpdateCategoryTitle(id int, title string) error {
+	result := db.Model(&Category{}).Where("id = ?", id).Update("title", title)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return errors.New("更新失败")
+	}
+	return nil
+}
+
+func SelectCategoryArticleList() ([]Category, error) {
+	var categories []Category
+	err := db.Model(&Category{}).Select("id, title").Find(&categories).Error
+	return categories, err
+}
+
+func SelectAdminList(page, size int) (*util.PageInfo[Category], error) {
+	query := db.Model(&Category{}).Order("id DESC")
+
+	var count int64
+	if err := query.Count(&count).Error; err != nil {
+		return nil, err
+	}
+
+	var list []Category
+	if err := query.Scopes(util.PaginateScope(page, size)).Find(&list).Error; err != nil {
+		return nil, err
+	}
+	return util.Paginate(count, list, page, size), nil
 }

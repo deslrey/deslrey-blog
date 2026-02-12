@@ -69,19 +69,19 @@ const CategoryPage: React.FC = () => {
                                 key={item.id}
                                 className={styles.card}
                                 onClick={() =>
-                                    navigate(`/category/${encodeURIComponent(item.title)}`)
+                                    navigate(`/category/${encodeURIComponent(item.title)}`, { state: { id: item.id } })
                                 }
                                 tabIndex={0}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' || e.key === ' ') {
                                         e.preventDefault();
-                                        navigate(`/category/${encodeURIComponent(item.title)}`);
+                                        navigate(`/category/${encodeURIComponent(item.title)}`, { state: { id: item.id } });
                                     }
                                 }}
                             >
                                 <div className={styles.content}>
                                     <span className={styles.catName}>{item.title}</span>
-                                    <span className={styles.postCount}>{item.total} 篇文章</span>
+                                    <span className={styles.postCount}>{item.count} 篇文章</span>
                                 </div>
                                 <div className={styles.arrow}>
                                     <svg

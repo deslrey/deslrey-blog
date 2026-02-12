@@ -36,3 +36,13 @@ type RegisterRequest struct {
 	PassWord string `json:"passWord" binding:"required"`
 	Email    string `json:"email"`
 }
+
+type UpdateUserNameRequest struct {
+	OldName string `json:"oldName" binding:"required"`
+	NewName string `json:"newName" binding:"required"`
+}
+
+type UpdatePasswordRequest struct {
+	OldPassword string `json:"oldPassword" binding:"required"`
+	NewPassword string `json:"newPassword" binding:"required"`
+}

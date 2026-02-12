@@ -1,18 +1,45 @@
 import React, { useEffect, useState } from "react";
 import styles from "./index.module.scss";
-import { useParams } from "react-router";
+import { useParams, useLocation } from "react-router";
 import { api } from "../../api";
 import ArticleList from "../../components/ArticleList";
+import request from "../../../utils/request";
 
 const TagTitlePage: React.FC = () => {
     const { tag } = useParams<{ tag: string }>();
+    const location = useLocation();
     const [title, setTitle] = useState<string>("");
+    const [tagId, setTagId] = useState<number | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (!tag) return;
         const decoded = decodeURIComponent(tag);
         setTitle(decoded);
-    }, [tag]);
+
+        const state = location.state as { id?: number } | null;
+        if (state?.id) {
+            setTagId(state.id);
+            setLoading(false);
+        } else {
+            const fetchTagId = async () => {
+                try {
+                    const res = await request.get(api.tag.tagCount);
+                    if (res.code === 200 && Array.isArray(res.data)) {
+                        const found = res.data.find((item: any) => item.title === decoded);
+                        if (found) {
+                            setTagId(found.id);
+                        }
+                    }
+                } catch (error) {
+                    console.error("获取标签ID失败:", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+            fetchTagId();
+        }
+    }, [tag, location.state]);
 
     useEffect(() => {
         if (!title) return;
@@ -33,13 +60,17 @@ const TagTitlePage: React.FC = () => {
     return (
         <div className={styles.tagTitlePage}>
             <div className={styles.container}>
-                {title && (
-                    <ArticleList 
-                        apiUrl={`${api.tag.tagArticle}${encodeURIComponent(title)}`}
+                {loading ? (
+                    <div>加载中...</div>
+                ) : title && tagId ? (
+                    <ArticleList
+                        apiUrl={`${api.tag.tagArticle}${tagId}`}
                         title={title}
                         showCategory={true}
                         showStats={true}
                     />
+                ) : (
+                    <div>未找到该标签</div>
                 )}
             </div>
         </div>

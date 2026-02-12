@@ -2,7 +2,7 @@ package tag
 
 type Tag struct {
 	ID    int    `gorm:"primaryKey" json:"id"`
-	Title string `json:"title"`
+	Title string `gorm:"column:title" json:"tagTitle"`
 }
 
 func (Tag) TableName() string {
@@ -25,4 +25,13 @@ type ArticleListItem struct {
 	Edit       bool     `json:"edit"`
 	CreateTime any      `json:"createTime"`
 	UpdateTime any      `json:"updateTime"`
+}
+
+type AddTagRequest struct {
+	Title string `json:"tagTitle" binding:"required"`
+}
+
+type UpdateTagRequest struct {
+	ID    int    `json:"id" binding:"required"`
+	Title string `json:"tagTitle" binding:"required"`
 }

@@ -75,11 +75,11 @@ const TagPage: React.FC = () => {
                                     className={styles.card}
                                     role="button"
                                     tabIndex={0}
-                                    onClick={() => navigate(`/tag/${encodeURIComponent(item.title)}`)}
+                                    onClick={() => navigate(`/tag/${encodeURIComponent(item.title)}`, { state: { id: item.id } })}
                                     onKeyDown={(e) => {
                                         if (e.key === "Enter" || e.key === " ") {
                                             e.preventDefault();
-                                            navigate(`/tag/${encodeURIComponent(item.title)}`);
+                                            navigate(`/tag/${encodeURIComponent(item.title)}`, { state: { id: item.id } });
                                         }
                                     }}
                                 >
@@ -102,7 +102,7 @@ const TagPage: React.FC = () => {
                                     </div>
 
                                     <span className={styles.postCount}>
-                                        {item.total} 篇
+                                        {item.count} 篇
                                     </span>
                                 </div>
                             );

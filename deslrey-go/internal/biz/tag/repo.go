@@ -1,6 +1,11 @@
 package tag
 
-import "gorm.io/gorm"
+import (
+	"deslrey-go/pkg/util"
+	"errors"
+
+	"gorm.io/gorm"
+)
 
 var db *gorm.DB
 
@@ -23,11 +28,20 @@ func SelectCounts() ([]TitleCount, error) {
 	return list, err
 }
 
-func SelectArticles(tagId int) ([]ArticleListItem, error) {
-	var articles []ArticleListItem
-
-	err := db.
+func SelectArticles(tagId, page, size int) (*util.PageInfo[ArticleListItem], error) {
+	baseQuery := db.
 		Table("article a").
+		Joins("JOIN article_tag at ON at.article_id = a.id").
+		Where("at.tag_id = ?", tagId).
+		Where("a.exist = true")
+
+	var count int64
+	if err := baseQuery.Count(&count).Error; err != nil {
+		return nil, err
+	}
+
+	var articles []ArticleListItem
+	err := baseQuery.
 		Select(`
 			a.id,
 			a.title,
@@ -38,11 +52,9 @@ func SelectArticles(tagId int) ([]ArticleListItem, error) {
 			a.update_time,
 			c.title AS category
 		`).
-		Joins("JOIN article_tag at ON at.article_id = a.id").
 		Joins("LEFT JOIN category c ON c.id = a.category_id").
-		Where("at.tag_id = ?", tagId).
-		Where("a.exist = true").
 		Order("a.create_time DESC").
+		Scopes(util.PaginateScope(page, size)).
 		Scan(&articles).Error
 
 	if err != nil {
@@ -50,7 +62,7 @@ func SelectArticles(tagId int) ([]ArticleListItem, error) {
 	}
 
 	if len(articles) == 0 {
-		return articles, nil
+		return util.Paginate(count, articles, page, size), nil
 	}
 
 	articleIDs := make([]int, 0, len(articles))
@@ -83,5 +95,42 @@ func SelectArticles(tagId int) ([]ArticleListItem, error) {
 		articles[i].Tags = tagMap[int(articles[i].ID)]
 	}
 
-	return articles, nil
+	return util.Paginate(count, articles, page, size), nil
+}
+
+func InsertTag(title string) error {
+	tag := Tag{Title: title}
+	return db.Create(&tag).Error
+}
+
+func UpdateTagTitle(id int, title string) error {
+	result := db.Model(&Tag{}).Where("id = ?", id).Update("title", title)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return errors.New("更新失败")
+	}
+	return nil
+}
+
+func SelectTagNameList() ([]Tag, error) {
+	var tags []Tag
+	err := db.Model(&Tag{}).Select("id, title").Find(&tags).Error
+	return tags, err
+}
+
+func SelectAdminList(page, size int) (*util.PageInfo[Tag], error) {
+	query := db.Model(&Tag{}).Order("id DESC")
+
+	var count int64
+	if err := query.Count(&count).Error; err != nil {
+		return nil, err
+	}
+
+	var list []Tag
+	if err := query.Scopes(util.PaginateScope(page, size)).Find(&list).Error; err != nil {
+		return nil, err
+	}
+	return util.Paginate(count, list, page, size), nil
 }

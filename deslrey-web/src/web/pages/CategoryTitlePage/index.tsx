@@ -1,19 +1,46 @@
 import React, { useEffect, useState } from "react";
 import styles from "./index.module.scss";
-import { useParams } from "react-router";
+import { useParams, useLocation } from "react-router";
 import { api } from "../../api";
 import ArticleList from "../../components/ArticleList";
+import request from "../../../utils/request";
 
 const CategoryTitlePage: React.FC = () => {
     const { category } = useParams<{ category: string }>();
+    const location = useLocation();
     const [title, setTitle] = useState<string>("");
+    const [categoryId, setCategoryId] = useState<number | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (!category) return;
 
         const decoded = decodeURIComponent(category);
         setTitle(decoded);
-    }, [category]);
+
+        const state = location.state as { id?: number } | null;
+        if (state?.id) {
+            setCategoryId(state.id);
+            setLoading(false);
+        } else {
+            const fetchCategoryId = async () => {
+                try {
+                    const res = await request.get(api.category.categoryCount);
+                    if (res.code === 200 && Array.isArray(res.data)) {
+                        const found = res.data.find((item: any) => item.title === decoded);
+                        if (found) {
+                            setCategoryId(found.id);
+                        }
+                    }
+                } catch (error) {
+                    console.error("获取分类ID失败:", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+            fetchCategoryId();
+        }
+    }, [category, location.state]);
 
     useEffect(() => {
         if (!title) return;
@@ -34,13 +61,17 @@ const CategoryTitlePage: React.FC = () => {
     return (
         <div className={styles.categoryTitlePage}>
             <div className={styles.container}>
-                {title && (
-                    <ArticleList 
-                        apiUrl={`${api.category.categoryArticle}${encodeURIComponent(title)}`}
+                {loading ? (
+                    <div>加载中...</div>
+                ) : title && categoryId ? (
+                    <ArticleList
+                        apiUrl={`${api.category.categoryArticle}${categoryId}`}
                         title={title}
                         showCategory={true}
                         showStats={true}
                     />
+                ) : (
+                    <div>未找到该分类</div>
                 )}
             </div>
         </div>

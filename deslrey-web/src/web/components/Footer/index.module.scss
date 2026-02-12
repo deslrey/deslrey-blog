@@ -1,0 +1,30 @@
+.footer {
+    padding: 15px 20px;
+    text-align: center;
+    background: var(--color-footer);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 16px;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.visits {
+    color: var(--color-text);
+    opacity: 0.8;
+}
+
+.count {
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.copyright {
+    color: var(--color-text);
+    opacity: 0.6;
+}

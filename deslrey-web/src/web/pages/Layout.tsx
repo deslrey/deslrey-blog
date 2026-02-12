@@ -8,6 +8,7 @@ import ColorProvider from "../components/ColorProvider";
 import Nav from "../components/NavComponents";
 import TitleSyncComponent from "../components/TitleSyncComponent";
 import MobileNav from "../components/MobileNav";
+import Footer from "../components/Footer";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     const { theme } = useTheme();
@@ -90,7 +91,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <ColorProvider>
                 <TitleSyncComponent />
                 {isMobile ? <MobileNav /> : <Nav />}
-                {children}
+                <div className={styles.contentWrapper}>
+                    {children}
+                </div>
+                <Footer />
             </ColorProvider>
         </div>
     );

@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const TokenExpiration = 30 * time.Minute
+const TokenExpiration = 24 * time.Hour
 
 func JWTAuth() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -24,7 +24,7 @@ func JWTAuth() gin.HandlerFunc {
 
 		parts := strings.Split(authHeader, " ")
 		if len(parts) != 2 || parts[0] != "Bearer" {
-			result.FailMsg("token格式错误").SendCode(http.StatusUnauthorized, ctx)
+			result.FailCodeMsg(http.StatusUnauthorized, "token格式错误").SendCode(http.StatusUnauthorized, ctx)
 			ctx.Abort()
 			return
 		}
@@ -32,7 +32,7 @@ func JWTAuth() gin.HandlerFunc {
 		tokenString := parts[1]
 		claims, err := util.ParseToken(tokenString)
 		if err != nil {
-			result.FailMsg("token无效或已过期").SendCode(http.StatusUnauthorized, ctx)
+			result.FailCodeMsg(http.StatusUnauthorized, "token无效或已过期").SendCode(http.StatusUnauthorized, ctx)
 			ctx.Abort()
 			return
 		}
@@ -41,7 +41,7 @@ func JWTAuth() gin.HandlerFunc {
 		var cachedToken string
 		found, err := cache.Get(ctx.Request.Context(), tokenKey, &cachedToken)
 		if err != nil || !found || cachedToken != tokenString {
-			result.FailMsg("token无效或已过期").SendCode(http.StatusUnauthorized, ctx)
+			result.FailCodeMsg(http.StatusUnauthorized, "token无效或已过期").SendCode(http.StatusUnauthorized, ctx)
 			ctx.Abort()
 			return
 		}

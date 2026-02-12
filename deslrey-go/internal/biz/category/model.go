@@ -2,7 +2,7 @@ package category
 
 type Category struct {
 	ID    int    `gorm:"primaryKey" json:"id"`
-	Title string `json:"title"`
+	Title string `gorm:"column:title" json:"categoryTitle"`
 }
 
 func (Category) TableName() string {
@@ -24,4 +24,13 @@ type ArticleListItem struct {
 	Edit       bool     `json:"edit"`
 	CreateTime any      `json:"createTime"`
 	UpdateTime any      `json:"updateTime"`
+}
+
+type AddCategoryRequest struct {
+	Title string `json:"categoryTitle" binding:"required"`
+}
+
+type UpdateCategoryRequest struct {
+	ID    int    `json:"id" binding:"required"`
+	Title string `json:"categoryTitle" binding:"required"`
 }
