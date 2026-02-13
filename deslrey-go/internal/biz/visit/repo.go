@@ -100,3 +100,51 @@ func GetVisitCountString() string {
 	}
 	return strconv.FormatInt(count, 10)
 }
+
+func SelectWeeklyStats() ([]map[string]interface{}, error) {
+	var stats []map[string]interface{}
+
+	// 获取近7天的日期
+	endDate := time.Now()
+	startDate := endDate.AddDate(0, 0, -6)
+
+	// 按天分组查询访问量
+	rows, err := db.Model(&VisitLog{}).
+		Select("TO_CHAR(visit_time, 'YYYY-MM-DD') as date, COUNT(*) as count").
+		Where("visit_time >= ? AND visit_time <= ?", startDate, endDate).
+		Group("TO_CHAR(visit_time, 'YYYY-MM-DD')").
+		Order("date").
+		Rows()
+
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	// 构建日期到访问量的映射
+	dateCountMap := make(map[string]int64)
+	for rows.Next() {
+		var date string
+		var count int64
+		if err := rows.Scan(&date, &count); err != nil {
+			return nil, err
+		}
+		dateCountMap[date] = count
+	}
+
+	// 填充缺失的日期，确保连续7天的数据
+	for i := 0; i < 7; i++ {
+		date := startDate.AddDate(0, 0, i).Format("2006-01-02")
+		count, ok := dateCountMap[date]
+		if !ok {
+			count = 0
+		}
+
+		stats = append(stats, map[string]interface{}{
+			"date":  date,
+			"count": count,
+		})
+	}
+
+	return stats, nil
+}

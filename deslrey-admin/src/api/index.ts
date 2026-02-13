@@ -16,7 +16,13 @@ export const addArticleApi = {
 export const articleApi = {
     list: "/article/list",
     viewHot: "/article/viewHot",
-    editExist: "/article/editExist"
+    editExist: "/article/editExist",
+    counts: "/article/counts"
+}
+
+export const visitApi = {
+    stats: "/visit/stats",
+    weekly: "/visit/weekly"
 }
 
 export const categoryApi = {

@@ -37,3 +37,12 @@ func HandleGetStats(ctx *gin.Context) {
 	}
 	result.OkData(stats).Send(ctx)
 }
+
+func HandleGetWeeklyStats(ctx *gin.Context) {
+	stats, err := SelectWeeklyStats()
+	if err != nil {
+		result.FailMsg(err.Error()).SendCode(http.StatusInternalServerError, ctx)
+		return
+	}
+	result.OkData(stats).Send(ctx)
+}

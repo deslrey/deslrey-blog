@@ -95,6 +95,7 @@ func Start() {
 			articleAdmin.GET("/editArticle/:articleId", article.HandleEditArticle)
 			articleAdmin.POST("/addArticle", article.HandleAddArticle)
 			articleAdmin.POST("/editExist", article.HandleEditExist)
+			articleAdmin.GET("/counts", article.HandleArticleCounts)
 		}
 
 		tagAdmin := protected.Group("/tag")
@@ -142,6 +143,12 @@ func Start() {
 		{
 			userAdmin.POST("/updateUserName", user.HandleUpdateUserName)
 			userAdmin.POST("/updatePassword", user.HandleUpdatePassword)
+		}
+
+		visitAdmin := protected.Group("/visit")
+		{
+			visitAdmin.GET("/stats", visit.HandleGetStats)
+			visitAdmin.GET("/weekly", visit.HandleGetWeeklyStats)
 		}
 	}
 

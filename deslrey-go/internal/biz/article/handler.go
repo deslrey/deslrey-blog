@@ -100,3 +100,12 @@ func HandleEditExist(ctx *gin.Context) {
 	}
 	result.OkMsg("操作成功").Send(ctx)
 }
+
+func HandleArticleCounts(ctx *gin.Context) {
+	counts, err := SelectArticleCountsByMonth()
+	if err != nil {
+		result.FailMsg(err.Error()).SendCode(http.StatusInternalServerError, ctx)
+		return
+	}
+	result.OkData(counts).Send(ctx)
+}

@@ -251,3 +251,50 @@ func UpdateArticleExist(id int, exist bool) error {
 	}
 	return nil
 }
+
+func SelectArticleCountsByMonth() ([]map[string]interface{}, error) {
+	var counts []map[string]interface{}
+
+	// 获取当前年份的月份
+	now := time.Now()
+	year := now.Year()
+
+	// 按月份分组查询文章发布数
+	rows, err := db.Model(&Article{}).
+		Select("EXTRACT(MONTH FROM create_time) as month, COUNT(*) as count").
+		Where("EXTRACT(YEAR FROM create_time) = ? AND exist = ?", year, true).
+		Group("EXTRACT(MONTH FROM create_time)").
+		Order("month").
+		Rows()
+
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	// 构建月份到发布数的映射
+	monthCountMap := make(map[int]int64)
+	for rows.Next() {
+		var month float64
+		var count int64
+		if err := rows.Scan(&month, &count); err != nil {
+			return nil, err
+		}
+		monthCountMap[int(month)] = count
+	}
+
+	// 填充缺失的月份，确保12个月的数据
+	for i := 1; i <= 12; i++ {
+		count, ok := monthCountMap[i]
+		if !ok {
+			count = 0
+		}
+
+		counts = append(counts, map[string]interface{}{
+			"month": i,
+			"count": count,
+		})
+	}
+
+	return counts, nil
+}

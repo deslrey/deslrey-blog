@@ -32,7 +32,9 @@
             height: 100%;
             width: 85%;
             padding: 10px;
+            padding-right: calc(10px + (100vw - 100%));
             background-color: rgba(#fff, 0.4);
+            overflow-y: auto;
         }
     }
 }
