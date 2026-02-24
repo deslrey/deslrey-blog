@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import { TriangleAlert } from 'lucide-react';
+import { Calendar, Clock, FolderOpen, TriangleAlert } from 'lucide-react';
 import type { Article } from '../../../interfaces';
 
 interface DetailHeadProps {
@@ -15,52 +15,59 @@ const DetailHead: React.FC<DetailHeadProps> = ({ data, carouseUrl }) => {
         category,
         createTime,
         updateTime,
-        // wordCount,
         readTime,
-        // views,
-        edit
+        edit,
+        tags
     } = data;
 
     const formatDateZh = (dateInput: string | Date) => {
         const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
-        const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-        return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日 ${weekdays[date.getDay()]}`;
+        return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
     };
 
-
     return (
-        <div
-            className={styles.detailHeadPage}
-            style={{
-                backgroundImage: `url(${carouseUrl})`,
-            }}
-        >
-            <div className={styles.detailCard}>
+        <div className={styles.detailHeadPage}>
+            <div className={styles.detailHeader}>
                 <h1 className={styles.title}>{title}</h1>
                 {des && <p className={styles.description}>{des}</p>}
 
                 <div className={styles.meta}>
-                    <div className={styles.metaRow}>
-                        {createTime && <span>发布时间：{formatDateZh(createTime)}</span>}
-                        {/* {edit && updateTime && <span>更新：{formatDateZh(updateTime)}</span>} */}
-                    </div>
-                    <div className={styles.metaRow}>
-                        {/* <span>字数：{wordCount}</span> */}
-                        <span>阅读时间：{readTime} 分钟</span>
-                        {category && <span>分类：{category}</span>}
-                    </div>
-                    <div className={styles.metaRow}>
-
-                        {/* <span>阅读数：{views}</span> */}
-                    </div>
+                    {createTime && (
+                        <span className={styles.metaItem}>
+                            <Calendar size={16} />
+                            {formatDateZh(createTime)}
+                        </span>
+                    )}
+                    {readTime && (
+                        <span className={styles.metaItem}>
+                            <Clock size={16} />
+                            {readTime} 分钟阅读
+                        </span>
+                    )}
+                    {category && (
+                        <span className={styles.metaItem}>
+                            <FolderOpen size={16} />
+                            {category}
+                        </span>
+                    )}
                 </div>
 
-                {edit && (
-                    <div className={styles.edit}>
-                        <p className={styles.editedNotice}>
-                            <TriangleAlert className={styles.alertIcon} />
-                            这篇文章上次修改于 {formatDateZh(updateTime!)}，可能部分内容已经不适用，如有疑问可询问作者
-                        </p>
+                {tags && tags.length > 0 && (
+                    <div className={styles.tags}>
+                        {tags.map((tag, index) => (
+                            <span key={index} className={styles.tag}>
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
+                )}
+
+                {edit && updateTime && (
+                    <div className={styles.editNotice}>
+                        <TriangleAlert size={16} />
+                        <span>
+                            这篇文章上次修改于 {formatDateZh(updateTime)}，可能部分内容已经不适用
+                        </span>
                     </div>
                 )}
             </div>

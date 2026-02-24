@@ -6,7 +6,7 @@ import { CodeBlockEnhancer } from "../../../utils/codeBlockEnhancer";
 
 import DetailHead from "../DetailHead";
 import { useImagePreview } from "../ImagePreviewManager";
-import { TableOfContents } from "lucide-react";
+import FloatingButtons from "../FloatingButtons";
 
 import "./index.scss";
 import { useReadingTitle } from "../../hooks/useReadingTitle";
@@ -216,14 +216,11 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
                     onClose={() => setTocOpen(false)}
                 />
 
-                <button
-                    className="toc-fab"
-                    onClick={() => setTocOpen(true)}
-                >
-                    <TableOfContents />
-                </button>
-
                 <ImagePreview />
+                <FloatingButtons
+                    title={article.title}
+                    onTocClick={() => setTocOpen(true)}
+                />
             </div>
         </div>
     );

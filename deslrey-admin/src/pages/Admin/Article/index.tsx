@@ -123,7 +123,7 @@ const Article: React.FC = () => {
                                 <TableCell sx={{ width: 120 }}>分类</TableCell>
                                 <TableCell sx={{ width: 160 }}>创建时间</TableCell>
                                 <TableCell sx={{ width: 160 }}>修改时间</TableCell>
-                                <TableCell sx={{ width: 100 }}>浏览量</TableCell>
+                                <TableCell sx={{ width: 80 }}>浏览量</TableCell>
                                 <TableCell sx={{ width: 80 }}>置顶</TableCell>
                                 <TableCell sx={{ width: 80 }}>已编辑</TableCell>
                                 <TableCell sx={{ width: 80 }}>可见</TableCell>

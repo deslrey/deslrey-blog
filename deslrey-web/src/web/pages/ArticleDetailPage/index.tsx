@@ -15,6 +15,7 @@ const ArticleDetailPage: React.FC = () => {
     const [post, setPost] = useState<Article | null>(null);
     const [carouseUrl, _setCarouseUrl] = useState("");
     const [loading, setLoading] = useState(true);
+    const [readProgress, setReadProgress] = useState(0);
 
     // 请求文章数据
     useEffect(() => {
@@ -62,8 +63,25 @@ const ArticleDetailPage: React.FC = () => {
         }
     }, [post]);
 
+    // 阅读进度条
+    useEffect(() => {
+        const handleScroll = () => {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            const scrollTop = window.scrollY;
+            const progress = (scrollTop / (documentHeight - windowHeight)) * 100;
+            setReadProgress(Math.min(100, Math.max(0, progress)));
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
         <div className={styles.blogBox}>
+            {/* 阅读进度条 */}
+            <div className={styles.readProgress} style={{ width: `${readProgress}%` }} />
+
             {/* 显示加载动画或文章 */}
             <Suspense fallback={<BanterComponent />}>
                 {loading ? (
