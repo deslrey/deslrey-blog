@@ -9,6 +9,7 @@ import Nav from "../components/NavComponents";
 import TitleSyncComponent from "../components/TitleSyncComponent";
 import MobileNav from "../components/MobileNav";
 import Footer from "../components/Footer";
+import { TopProgressBar } from "../components/TopProgressBar";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     const { theme } = useTheme();
@@ -88,7 +89,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 '--bg-url': bgUrl ? `url(${bgUrl})` : 'none'
             } as React.CSSProperties}
         >
-            <ColorProvider>
+            <TopProgressBar>
+        <ColorProvider>
                 <TitleSyncComponent />
                 {isMobile ? <MobileNav /> : <Nav />}
                 <div className={styles.contentWrapper}>
@@ -96,6 +98,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 </div>
                 <Footer />
             </ColorProvider>
+        </TopProgressBar>
         </div>
     );
 }

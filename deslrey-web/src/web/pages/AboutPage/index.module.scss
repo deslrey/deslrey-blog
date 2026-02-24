@@ -141,11 +141,6 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
 
-    &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-    }
-
     [data-theme="dark"] & {
         background: rgba(26, 26, 31, 0.6);
         border: 1px solid rgba(255, 255, 255, 0.1);
@@ -176,12 +171,6 @@
     background: rgba(255, 255, 255, 0.7);
     border: 1px solid rgba(0, 0, 0, 0.05);
     transition: all 0.2s ease;
-
-    &:hover {
-        transform: translateX(4px);
-        background: rgba(255, 255, 255, 0.9);
-        border-color: rgba(0, 0, 0, 0.1);
-    }
 
     [data-theme="dark"] & {
         background: rgba(38, 38, 43, 0.6);

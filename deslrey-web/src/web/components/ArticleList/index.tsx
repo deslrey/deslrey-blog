@@ -47,16 +47,27 @@ const ArticleList: React.FC<ArticleListProps> = ({
             );
             
             if (res && res.code === 200) {
+                // 检查 res.data 是否存在
+                if (!res.data) {
+                    setError("返回数据格式错误：缺少 data 字段");
+                    return;
+                }
+
+                const list = Array.isArray(res.data.list) ? res.data.list : [];
+                
                 setArticles(prev => {
                     const map = new Map<number, Article>();
-                    [...prev, ...res.data.list].forEach(item => {
-                        map.set(item.id, item);
+                    [...prev, ...list].forEach(item => {
+                        if (item && item.id) {
+                            map.set(item.id, item);
+                        }
                     });
                     return Array.from(map.values());
                 });
 
-                setTotal(res.data.total);
-                setHasNextPage(res.data.hasNextPage);
+                // 安全地设置 total 和 hasNextPage，提供默认值
+                setTotal(res.data.total ?? 0);
+                setHasNextPage(res.data.hasNextPage ?? false);
             } else {
                 setError(res?.message || "获取文章列表失败");
             }

@@ -1,0 +1,22 @@
+.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 9999;
+  pointer-events: none;
+  background: var(--activeColor, #6366f1);
+  transform-origin: left;
+  transition: transform 0.2s ease-out;
+}
+
+.barComplete {
+  transform-origin: right;
+  transition: transform 0.15s ease-in;
+}
+
+.barHidden {
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
+}

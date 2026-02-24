@@ -41,7 +41,7 @@ const EditArticle: React.FC = () => {
     const [searchParams] = useSearchParams()
 
     const operateType = searchParams.get('type')
-    const operateId = searchParams.get('id') ? parseInt(searchParams.get('id')!, 10) : null
+    const operateId = searchParams.get('id')
 
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState<Category | null>(null);
@@ -90,7 +90,7 @@ const EditArticle: React.FC = () => {
     const handleConfirmSave = async () => {
         setOpenConfirmSave(false);
         const payload = {
-            id: null as number | null,
+            id: '',
             title,
             content,
             categoryId: category?.id || null,
@@ -119,19 +119,23 @@ const EditArticle: React.FC = () => {
     const handleConfirmDraft = async () => {
         setOpenConfirmDraft(false);
         const payload = {
-            articleId: null as number | null,
+            id: '',
             title,
             content,
             des: description,
         };
 
-        if (operateType === OperateType.article && operateId) {
-            payload.articleId = operateId;
+        if (operateId) {
+            payload.id = operateId;
         }
 
 
         try {
-            const res = await request.post(editArticleApi.addDraft, payload);
+            const api = operateId
+                ? editArticleApi.updateDraft   // 有 id = 更新草稿
+                : editArticleApi.addDraft;     // 无 id = 新增草稿
+
+            const res = await request.post(api, payload);
             if (res && res.code === 200) {
                 Message.success(res.message);
                 resetForm();
