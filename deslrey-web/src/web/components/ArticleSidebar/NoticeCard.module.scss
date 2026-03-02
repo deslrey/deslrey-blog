@@ -1,0 +1,55 @@
+.noticeCard {
+    background: var(--color-bg);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    margin-bottom: 24px;
+}
+
+[data-theme="dark"] .noticeCard {
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 16px;
+    color: var(--color-text);
+    
+    svg {
+        color: var(--activeColor);
+        animation: shake 2s infinite;
+    }
+}
+
+.content {
+    font-size: 0.9rem;
+    color: #6a737d;
+    line-height: 1.6;
+
+    p {
+        margin-bottom: 8px;
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+[data-theme="dark"] .content {
+    color: #8b949e;
+}
+
+@keyframes shake {
+    0% { transform: rotate(0); }
+    10% { transform: rotate(15deg); }
+    20% { transform: rotate(-15deg); }
+    30% { transform: rotate(15deg); }
+    40% { transform: rotate(-15deg); }
+    50% { transform: rotate(0); }
+    100% { transform: rotate(0); }
+}

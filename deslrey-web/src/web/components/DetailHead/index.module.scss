@@ -1,22 +1,24 @@
 .detailHeadPage {
     width: 100%;
-    max-width: 900px;
-    margin: 0 auto 48px;
-    padding: 0 40px;
+    margin-bottom: 24px;
 }
 
 .detailHeader {
-    padding: 24px 28px;
+    padding: 40px 50px;
     position: relative;
     background: var(--color-bg);
     border-radius: 16px;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+    @media (max-width: 768px) {
+        padding: 24px 20px;
+    }
 }
 
 [data-theme="dark"] .detailHeader {
     border-color: rgba(255, 255, 255, 0.06);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .title {

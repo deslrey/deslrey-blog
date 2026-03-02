@@ -1,15 +1,16 @@
 .blogBox {
     font-size: 1rem;
-    padding-top: 120px;
+    padding-top: 100px;
     width: 100%;
     position: relative;
+    min-height: 100vh;
 
     @media (max-width: 1024px) {
-        padding-top: 100px;
+        padding-top: 80px;
     }
 
     @media (max-width: 768px) {
-        padding-top: 80px;
+        padding-top: 60px;
     }
 }
 

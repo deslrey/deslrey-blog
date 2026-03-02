@@ -7,13 +7,51 @@
     margin: 0;
 }
 
-.markdown-layout {
-    margin-top: 0;
+.article-container {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    gap: 2rem;
-    padding: 0 40px;
+    align-items: stretch; // Ensure sidebar has height matching main content
+    gap: 24px;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0px;
+
+    @media (max-width: 1100px) {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+.markdown-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.article-sidebar {
+    width: 300px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    @media (max-width: 1100px) {
+        width: 100%;
+        order: -1;
+    }
+}
+
+.sidebar-sticky {
+    position: sticky;
+    top: 100px;
+    z-index: 10;
+    // Removed max-height and overflow-y to ensure proper window-sticky behavior
+}
+
+.markdown-layout {
+    display: none; /* Old layout no longer used */
 }
 
 .markdown-main {
@@ -34,36 +72,29 @@
 }
 
 /* 正文容器 */
-.markdown-content {
-    width: var(--content-width);
-    margin: 0 auto;
-}
+// .markdown-content handled above
 
 .markdown-div {
     background: var(--color-bg);
     color: var(--color-text);
     border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     display: block;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.3s ease,
-        color 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 [data-theme="dark"] .markdown-div {
     background: var(--color-bg);
     color: #e5e7eb;
     border: 1px solid rgba(255, 255, 255, 0.06);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .markdown-body {
-    padding: 24px 20px;
-    font-family: "Inter", "Segoe UI", Tahoma, sans-serif;
-    line-height: 1.7;
+    padding: 20px 25px;
+    font-family: var(--font-family-base, "Inter", "Segoe UI", system-ui, sans-serif);
+    line-height: 1.8;
     font-size: 1.0625rem;
 }
 
@@ -385,26 +416,13 @@
 
 /* === TOC 样式 === */
 .markdown-toc {
-    position: fixed;
-    // top: 200px;
-    top: 150px;
-    left: calc(50% + var(--content-width) / 2 + 1.5rem);
-    width: 260px;
-    max-height: calc(100vh - 150px);
+    width: 100%;
     margin: 0;
-
-    padding: 16px 16px 12px;
-    overflow-y: auto;
-
-    // background: var(--color-bg);
-    border-radius: 12px;
+    padding: 24px;
+    border-radius: 16px;
+    background: var(--color-bg);
     border: 1px solid rgba(0, 0, 0, 0.06);
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.08),
-        0 1px 3px rgba(0, 0, 0, 0.06);
-
-    font-size: 0.8rem;
-    // z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .markdown-toc-title {
@@ -444,11 +462,11 @@
 
 .markdown-toc li.active {
     border-left-color: var(--activeColor);
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(var(--activeColor-rgb, 59, 130, 246), 0.1);
 }
 
 [data-theme="dark"] .markdown-toc li.active {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: rgba(var(--activeColor-rgb, 59, 130, 246), 0.2);
 }
 
 .markdown-toc li a {
@@ -494,14 +512,7 @@
     color: var(--activeColor);
 }
 
-.markdown-toc li.active {
-    border-left-color: var(--activeColor);
-    background-color: rgba(0, 0, 0, 0.05);
-}
-
-[data-theme="dark"] .markdown-toc li.active {
-    background-color: rgba(255, 255, 255, 0.08);
-}
+// Duplicate rules removed
 
 /* === Skeleton 加载动画 === */
 .markdown-toc li.skeleton {

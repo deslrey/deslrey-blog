@@ -12,6 +12,9 @@ import "./index.scss";
 import { useReadingTitle } from "../../hooks/useReadingTitle";
 import ValineComment from "../ValineComment";
 
+import ProfileCard from "../ArticleSidebar/ProfileCard";
+import NoticeCard from "../ArticleSidebar/NoticeCard";
+
 const MarkdownToc = lazy(() => import("../MarkdownToc"));
 
 const MemoMdViewer = memo(({ content }: { content: string }) => {
@@ -187,43 +190,52 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         edit: article.edit,
         des: article.des,
         sticky: article.sticky,
+        tags: article.tags
     };
 
     return (
         <div className="bytemdViewer">
-            <DetailHead data={headData} carouseUrl={carouseUrl} />
-
-            <div className="markdown-layout">
-                <div className="markdown-content">
+            <div className="article-container">
+                <main className="markdown-content">
+                    <DetailHead data={headData} carouseUrl={carouseUrl} />
                     <div ref={containerRef} className="markdown-div">
                         <MemoMdViewer content={content} />
                     </div>
-                    <ValineComment article={article} />
-                </div>
+                    <div className="comment-wrapper">
+                        <ValineComment article={article} />
+                    </div>
+                </main>
 
-                {tocOpen && (
-                    <div
-                        ref={maskRef}
-                        className="toc-mask"
-                        onClick={() => setTocOpen(false)}
-                    />
-                )}
-
-                <MarkdownToc
-                    toc={toc}
-                    activeId={activeId}
-                    open={tocOpen}
-                    onClose={() => setTocOpen(false)}
-                />
-
-                <ImagePreview />
-                <FloatingButtons
-                    title={article.title}
-                    onTocClick={() => setTocOpen(true)}
-                />
+                <aside className="article-sidebar">
+                    <ProfileCard />
+                    <NoticeCard />
+                    <div className="sidebar-sticky">
+                        <MarkdownToc
+                            toc={toc}
+                            activeId={activeId}
+                            open={tocOpen}
+                            onClose={() => setTocOpen(false)}
+                        />
+                    </div>
+                </aside>
             </div>
+
+            {tocOpen && (
+                <div
+                    ref={maskRef}
+                    className="toc-mask"
+                    onClick={() => setTocOpen(false)}
+                />
+            )}
+
+            <ImagePreview />
+            <FloatingButtons
+                title={article.title}
+                onTocClick={() => setTocOpen(true)}
+            />
         </div>
     );
 };
+
 
 export default BytemdViewer;

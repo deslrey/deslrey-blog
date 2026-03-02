@@ -4,7 +4,7 @@
     min-height: 100svh;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: visible; // Sticky requires visible overflow on all parents up to scroll container
     transition:
         background-color 0.8s ease,
         background-image 1s ease;
@@ -12,6 +12,7 @@
 
 .contentWrapper {
     flex: 1;
+    overflow: visible;
 }
 
 /* 默认背景（桌面端用正常全屏） */

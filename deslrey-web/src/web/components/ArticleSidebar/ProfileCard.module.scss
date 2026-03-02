@@ -1,0 +1,123 @@
+.profileCard {
+    background: var(--color-bg);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    margin-bottom: 24px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+[data-theme="dark"] .profileCard {
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.avatarWrapper {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--activeColor);
+    padding: 3px;
+    transition: transform 0.5s ease;
+
+    &:hover {
+        transform: rotate(360deg);
+    }
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--color-text);
+}
+
+.signature {
+    font-size: 0.9rem;
+    color: #6a737d;
+    margin-bottom: 20px;
+}
+
+[data-theme="dark"] .signature {
+    color: #8b949e;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 24px;
+    padding: 16px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .stats {
+    border-top-color: rgba(255, 255, 255, 0.05);
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+.statItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.count {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.label {
+    font-size: 0.8rem;
+    color: #6a737d;
+}
+
+.followBtn {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    background: var(--activeColor);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background 0.3s ease;
+    margin-bottom: 16px;
+
+    &:hover {
+        background: var(--activeColor-hover, #34495e);
+        opacity: 0.9;
+    }
+}
+
+.socialIcons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+
+    a {
+        color: #6a737d;
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: var(--activeColor);
+        }
+    }
+}
+
+[data-theme="dark"] .socialIcons a {
+    color: #8b949e;
+}
