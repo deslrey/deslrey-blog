@@ -1,6 +1,6 @@
 .article {
     width: 100%;
-    min-height: 85vh;
+    min-height: 100vh;
     padding: 100px 20px 40px;
     display: flex;
     justify-content: center;
@@ -142,6 +142,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     overflow: hidden;
     text-decoration: none;
 
@@ -160,6 +161,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     overflow: hidden;
 }
 
