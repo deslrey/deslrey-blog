@@ -6,6 +6,21 @@
     height: 100%;
     padding: 16px;
     box-sizing: border-box;
+    position: relative;
+
+    .loadingMask {
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.85);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        z-index: 10;
+        font-size: 14px;
+        color: #666;
+    }
 
     .headerBox {
         display: grid;
@@ -31,5 +46,26 @@
         flex: 1;
         width: 100%;
         overflow: auto;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+
+        .editorHeader {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 4px;
+        }
+
+        .wordCount {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .editorWrap {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
     }
 }

@@ -30,7 +30,16 @@ class Request {
         // 响应拦截器
         this.instance.interceptors.response.use(
             (response) => {
-                const res = response.data;
+                let res = response.data;
+                // 若后端返回的是字符串（如部分代理/网关未按 JSON 解析），尝试解析为对象
+                if (typeof res === "string") {
+                    try {
+                        res = JSON.parse(res);
+                        response.data = res;
+                    } catch {
+                        // 解析失败按业务失败处理
+                    }
+                }
 
                 // 检查响应头是否有新 token
                 const newToken = response.headers['authorization'];
@@ -41,15 +50,15 @@ class Request {
                     });
                 }
 
-                if (res.code === 401) {
+                if (res?.code === 401) {
                     Message.error("登录超时，请重新登录");
                     useUserStore.getState().clearUser();
                     window.location.href = "/login";
                     return Promise.reject(res);
                 }
 
-                if (res.code !== 200) {
-                    Message.error(res.message);
+                if (res?.code !== 200) {
+                    Message.error(res?.message ?? "请求失败");
                     return Promise.reject(res);
                 }
 

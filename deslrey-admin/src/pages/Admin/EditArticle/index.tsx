@@ -10,6 +10,8 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
+    CircularProgress,
+    FormHelperText,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import styles from './index.module.scss';
@@ -54,9 +56,12 @@ const EditArticle: React.FC = () => {
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
     const [folders, setFolders] = useState<Folder[]>([])
 
-    //  弹窗状态
-    const [openConfirmSave, setOpenConfirmSave] = useState(false);
-    const [openConfirmDraft, setOpenConfirmDraft] = useState(false);
+    //  弹窗状态（统一为一个确认弹窗）
+    const [openDialog, setOpenDialog] = useState(false);
+    const [dialogType, setDialogType] = useState<'save' | 'draft' | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const editorRef = React.useRef<HTMLDivElement>(null);
 
     //  校验函数
     const validateForm = (type: 'save' | 'draft') => {
@@ -76,84 +81,58 @@ const EditArticle: React.FC = () => {
         }
     };
 
-    //  点击保存按钮时，先弹出确认框
-    const handleSaveClick = () => {
-        if (validateForm('save')) setOpenConfirmSave(true);
+    const openConfirmDialog = (type: 'save' | 'draft') => {
+        if (!validateForm(type)) return;
+        setDialogType(type);
+        setOpenDialog(true);
     };
 
-    //  点击存草稿按钮时，先弹出确认框
-    const handleDraftClick = () => {
-        if (validateForm('draft')) setOpenConfirmDraft(true);
-    };
+    const handleConfirm = async () => {
+        if (dialogType === 'save') {
+            const payload = {
+                id: '',
+                title,
+                content,
+                categoryId: category?.id || null,
+                tagIdList: selectedTagIds,
+                des: description,
+            };
+            if (operateType === OperateType.article && operateId) payload.id = operateId;
 
-    //  确认保存
-    const handleConfirmSave = async () => {
-        setOpenConfirmSave(false);
-        const payload = {
-            id: '',
-            title,
-            content,
-            categoryId: category?.id || null,
-            tagIdList: selectedTagIds,
-            des: description,
-        };
-
-        if (operateType === OperateType.article && operateId) {
-            payload.id = operateId;
-        }
-
-        try {
-            const res = await request.post(editArticleApi.addArticle, payload);
-            if (res && res.code === 200) {
-                Message.success(res.message);
-                resetForm();
-            } else {
-                Message.error(res.message || '保存失败');
+            setSaving(true);
+            try {
+                const res = await request.post(editArticleApi.addArticle, payload);
+                if (res && res.code === 200) {
+                    Message.success(res.message);
+                    setOpenDialog(false);
+                } else {
+                    Message.error(res.message || '保存失败');
+                }
+            } catch {
+                Message.error('保存失败');
+            } finally {
+                setSaving(false);
             }
-        } catch {
-            Message.error('保存失败');
-        }
-    };
+        } else if (dialogType === 'draft') {
+            const payload = { id: '', title, content, des: description };
+            if (operateId) payload.id = operateId;
 
-    //  确认保存草稿
-    const handleConfirmDraft = async () => {
-        setOpenConfirmDraft(false);
-        const payload = {
-            id: '',
-            title,
-            content,
-            des: description,
-        };
-
-        if (operateId) {
-            payload.id = operateId;
-        }
-
-
-        try {
-            const api = operateId
-                ? editArticleApi.updateDraft   // 有 id = 更新草稿
-                : editArticleApi.addDraft;     // 无 id = 新增草稿
-
-            const res = await request.post(api, payload);
-            if (res && res.code === 200) {
-                Message.success(res.message);
-                resetForm();
-            } else {
-                Message.error(res.message || '草稿保存失败');
+            setSaving(true);
+            try {
+                const api = operateId ? editArticleApi.updateDraft : editArticleApi.addDraft;
+                const res = await request.post(api, payload);
+                if (res && res.code === 200) {
+                    Message.success(res.message);
+                    setOpenDialog(false);
+                } else {
+                    Message.error(res.message || '草稿保存失败');
+                }
+            } catch {
+                Message.error('草稿保存失败');
+            } finally {
+                setSaving(false);
             }
-        } catch {
-            Message.error('草稿保存失败');
         }
-    };
-
-    //  重置表单
-    const resetForm = () => {
-        setTitle('');
-        setContent('');
-        setDescription('');
-        setCategory(null);
-        setSelectedTagIds([]);
     };
 
     const fetchCategories = async () => {
@@ -179,64 +158,62 @@ const EditArticle: React.FC = () => {
     };
 
     const fetchEditArticleData = () => {
-        if (operateType === OperateType.article) {
-            fetchArticleData()
-        } else {
-            fetchDraftData()
-        }
-    }
+        if (operateType === OperateType.article && operateId) return fetchArticleData();
+        if (operateId) return fetchDraftData();
+        return Promise.resolve();
+    };
 
     const fetchArticleData = async () => {
         try {
-            const res = await request.get<ArticleDraft>(`${editArticleApi.editArticle}/${operateId}`)
+            const res = await request.get<ArticleDraft>(`${editArticleApi.editArticle}/${operateId}`);
             if (res.code !== 200) {
-                Message.warning(res.message)
-                return
+                Message.warning(res.message);
+                return;
             }
-            const data = res.data
-            setTitle(data.title)
-            setContent(data.content)
-            setDescription(data.des)
-            setCategory(data.category)
-            setSelectedTagIds(data.tagIdList)
-        } catch (error) {
-            Message.error('获取数据失败')
+            const data = res.data;
+            setTitle(data.title);
+            setContent(data.content);
+            setDescription(data.des ?? '');
+            setCategory(data.category ?? null);
+            setSelectedTagIds(data.tagIdList ?? []);
+        } catch {
+            Message.error('获取文章数据失败');
         }
-    }
+    };
 
     const fetchDraftData = async () => {
         try {
-            const res = await request.get<Draft>(`${editArticleApi.draftDetail}/${operateId}`)
+            const res = await request.get<Draft>(`${editArticleApi.draftDetail}/${operateId}`);
             if (res.code !== 200) {
-                Message.warning(res.message)
-                return
+                Message.warning(res.message);
+                return;
             }
-            const data = res.data
-            setTitle(data.title)
-            setContent(data.content)
-            setDescription(data.des)
-        } catch (error) {
-            Message.error('获取数据失败')
+            const data = res.data;
+            setTitle(data.title);
+            setContent(data.content);
+            setDescription(data.des ?? '');
+        } catch {
+            Message.error('获取草稿数据失败');
         }
-    }
+    };
 
     const fetchFolders = async () => {
         try {
             const res = await request.get(folderApi.folderNameList);
-            if (res.code == 200) {
-                console.log(res.data)
-                setFolders(res.data)
-            }
-        } catch (error) {
-            setFolders([])
+            if (res.code === 200 && res.data) setFolders(res.data);
+        } catch {
+            setFolders([]);
         }
-    }
+    };
 
     useEffect(() => {
-        fetchEditArticleData();
-        fetchCategories();
-        fetchTags();
-        fetchFolders();
+        setLoading(true);
+        Promise.all([
+            fetchCategories(),
+            fetchTags(),
+            fetchFolders(),
+            fetchEditArticleData(),
+        ]).finally(() => setLoading(false));
     }, []);
 
     const handlePaste = async (event: React.ClipboardEvent<HTMLDivElement>) => {
@@ -268,35 +245,62 @@ const EditArticle: React.FC = () => {
         formData.append("folderId", folder.id.toString());
 
         try {
-            const res = await request.post(imageApi.uploadImage, formData, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
+            const res = await request.post(imageApi.uploadImage, formData);
 
-            if (res.code === 200) {
-                const url = import.meta.env.VITE_IMAGE_API + res.data;
+            if (res?.code === 200 && res?.data != null) {
+                const path = String(res.data);
+                const url = (import.meta.env.VITE_IMAGE_API ?? "") + path;
                 insertToEditor(url);
             } else {
-                Message.error(res.message);
+                Message.error((res as { message?: string })?.message ?? "上传失败");
             }
-        } catch (error) {
-            Message.error("上传失败");
+        } catch (error: unknown) {
+            const msg = (error as { response?: { data?: { message?: string } }; message?: string })?.response?.data?.message
+                ?? (error as { message?: string })?.message
+                ?? "上传失败";
+            Message.error(msg);
         }
     };
 
     const insertToEditor = (url: string) => {
         if (!url) return;
 
-        setContent((prev) =>
-            prev + `\n\n![image](${url})\n`
-        );
+        const insertText = `\n\n![image](${url})\n`;
+        const editor = editorRef.current;
+        const isDom = editor && typeof (editor as HTMLElement).querySelector === 'function';
+        const textarea = isDom ? (editor as HTMLElement).querySelector('textarea') : null;
+
+        if (textarea && typeof textarea.selectionStart === 'number') {
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const before = content.substring(0, start);
+            const after = content.substring(end);
+            setContent(before + insertText + after);
+            setTimeout(() => {
+                textarea.selectionStart = textarea.selectionEnd = start + insertText.length;
+                textarea.focus();
+            }, 0);
+        } else {
+            setContent((prev) => prev + insertText);
+        }
     };
+
+    const wordCount = content.replace(/\s/g, '').length;
+    const descLength = description.length;
 
     return (
         <div className={styles.addArticleBox}>
+            {loading && (
+                <div className={styles.loadingMask}>
+                    <CircularProgress />
+                    <span>加载中…</span>
+                </div>
+            )}
             {/* 顶部输入区 */}
             <div className={styles.headerBox}>
                 <TextField
                     label="文章标题"
+                    placeholder="输入文章标题"
                     variant="outlined"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -343,16 +347,22 @@ const EditArticle: React.FC = () => {
                     )}
                 />
 
-                {/* 文件夹选择 */}
+                {/* 图片文件夹（用于粘贴/上传图片） */}
                 <Autocomplete
                     options={folders}
                     getOptionLabel={(option) => option.folderName}
                     value={folder}
                     onChange={(_, newValue) => setFolder(newValue)}
                     renderInput={(params) => (
-                        <TextField {...params} label="文件夹" variant="outlined" fullWidth />
+                        <TextField
+                            {...params}
+                            label="图片文件夹"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="选择后可在编辑器中粘贴图片上传"
+                        />
                     )}
-                    noOptionsText="暂无选择"
+                    noOptionsText="暂无文件夹，请先在图库中创建"
                     fullWidth
                     clearOnBlur
                     PopperComponent={CustomPopper}
@@ -362,59 +372,79 @@ const EditArticle: React.FC = () => {
                         </li>
                     )}
                 />
+                {!folder && (
+                    <FormHelperText sx={{ gridColumn: '1 / -1', mt: -1 }}>
+                        选择「图片文件夹」后，在下方编辑器中可直接粘贴截图上传
+                    </FormHelperText>
+                )}
 
                 <TextField
                     label="文章描述"
+                    placeholder="简短描述文章内容，用于列表与摘要"
                     variant="outlined"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     fullWidth
+                    multiline
+                    minRows={2}
+                    maxRows={4}
+                    inputProps={{ maxLength: 200 }}
+                    helperText={descLength > 0 ? `${descLength}/200 字` : '建议 200 字以内'}
                 />
             </div>
 
             <div className={styles.butBox}>
-                <Button variant="contained" color="primary" onClick={handleSaveClick}>
-                    保存文章
+                <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={saving || loading}
+                    onClick={() => openConfirmDialog('save')}
+                    startIcon={saving ? <CircularProgress size={18} color="inherit" /> : null}
+                >
+                    {saving ? '保存中…' : '保存文章'}
                 </Button>
-                <Button variant="contained" color="primary" onClick={handleDraftClick}>
-                    存为草稿
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    disabled={saving || loading}
+                    onClick={() => openConfirmDialog('draft')}
+                    startIcon={saving ? <CircularProgress size={18} color="inherit" /> : null}
+                >
+                    {saving ? '保存中…' : '存为草稿'}
                 </Button>
             </div>
 
-            {/* Markdown 编辑器 */}
+            {/* Markdown 编辑器：用 div 包一层以便 ref 拿到 DOM，再在 insertToEditor 里 querySelector textarea */}
             <div className={styles.mdBox}>
-                <MDEditor
-                    value={content}
-                    onChange={(value = '') => setContent(value)}
-                    height="100%"
-                    data-color-mode="light"
-                    onPaste={(e) => {
-                        handlePaste(e)
-                    }}
-                />
+                <div className={styles.editorHeader}>
+                    <span className={styles.wordCount}>正文约 {wordCount} 字</span>
+                </div>
+                <div ref={editorRef} className={styles.editorWrap}>
+                    <MDEditor
+                        value={content}
+                        onChange={(value = '') => setContent(value)}
+                        height="100%"
+                        data-color-mode="light"
+                        onPaste={(e) => handlePaste(e)}
+                    />
+                </div>
             </div>
 
-            {/*  保存确认弹窗 */}
-            <Dialog open={openConfirmSave} onClose={() => setOpenConfirmSave(false)}>
-                <DialogTitle sx={{ textAlign: 'center' }}>确认保存</DialogTitle>
+            {/* 统一确认弹窗 */}
+            <Dialog open={openDialog} onClose={() => !saving && setOpenDialog(false)}>
+                <DialogTitle sx={{ textAlign: 'center' }}>确认操作</DialogTitle>
                 <DialogContent sx={{ textAlign: 'center', mt: 1 }}>
-                    确定要保存该文章吗？
+                    {dialogType === 'save'
+                        ? '确定要保存该文章吗？保存后将更新前台展示。'
+                        : '确定要保存为草稿吗？可稍后继续编辑再发布。'}
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'center', gap: 2, pb: 2 }}>
-                    <Button variant="outlined" onClick={() => setOpenConfirmSave(false)}>取消</Button>
-                    <Button variant="contained" onClick={handleConfirmSave}>确定保存</Button>
-                </DialogActions>
-            </Dialog>
-
-            {/*  草稿确认弹窗 */}
-            <Dialog open={openConfirmDraft} onClose={() => setOpenConfirmDraft(false)}>
-                <DialogTitle sx={{ textAlign: 'center' }}>确认保存草稿</DialogTitle>
-                <DialogContent sx={{ textAlign: 'center', mt: 1 }}>
-                    确定要保存为草稿吗？
-                </DialogContent>
-                <DialogActions sx={{ justifyContent: 'center', gap: 2, pb: 2 }}>
-                    <Button variant="outlined" onClick={() => setOpenConfirmDraft(false)}>取消</Button>
-                    <Button variant="contained" onClick={handleConfirmDraft}>确定保存</Button>
+                    <Button variant="outlined" onClick={() => setOpenDialog(false)} disabled={saving}>
+                        取消
+                    </Button>
+                    <Button variant="contained" onClick={handleConfirm} disabled={saving}>
+                        {saving ? '处理中…' : '确定'}
+                    </Button>
                 </DialogActions>
             </Dialog>
         </div>
