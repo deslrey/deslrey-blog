@@ -10,6 +10,7 @@ import type { Article } from "../../../interfaces";
 import BanterComponent from "../../../loader/BanterComponent";
 import ArticleTags from "../ArticleTags";
 import request from "../../../utils/request";
+import SkeletonCard from "./SkeletonCard";
 
 interface ArticleListProps {
     apiUrl: string;
@@ -40,12 +41,12 @@ const ArticleList: React.FC<ArticleListProps> = ({
     const fetchArticles = async (pageNum: number) => {
         setLoading(true);
         setError(null);
-        
+
         try {
             const res = await request.get(
                 `${apiUrl}?page=${pageNum}&pageSize=${pageSize}`
             );
-            
+
             if (res && res.code === 200) {
                 // 检查 res.data 是否存在
                 if (!res.data) {
@@ -54,7 +55,7 @@ const ArticleList: React.FC<ArticleListProps> = ({
                 }
 
                 const list = Array.isArray(res.data.list) ? res.data.list : [];
-                
+
                 setArticles(prev => {
                     const map = new Map<number, Article>();
                     [...prev, ...list].forEach(item => {
@@ -114,7 +115,7 @@ const ArticleList: React.FC<ArticleListProps> = ({
             {error ? (
                 <div className={styles.errorContainer}>
                     <p className={styles.errorMessage}>{error}</p>
-                    <button 
+                    <button
                         className={styles.retryButton}
                         onClick={() => fetchArticles(page)}
                     >
@@ -144,7 +145,7 @@ const ArticleList: React.FC<ArticleListProps> = ({
                                                         #{item.category}
                                                     </span>
                                                 )}
-                                                
+
                                                 <div className={styles.timeGroup}>
                                                     <span className={styles.date}>
                                                         {dayjs(item.createTime).fromNow()}
@@ -165,7 +166,17 @@ const ArticleList: React.FC<ArticleListProps> = ({
                         ))}
                     </ul>
 
-                    {loading && (
+                    {loading && articles.length === 0 && (
+                        <ul className={styles.list}>
+                            {[...Array(6)].map((_, i) => (
+                                <li key={i} className={styles.listItem}>
+                                    <SkeletonCard />
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+
+                    {loading && articles.length > 0 && (
                         <div className={styles.loadingContainer}>
                             <BanterComponent />
                         </div>

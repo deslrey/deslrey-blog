@@ -157,18 +157,6 @@ body,
     background: var(--activeColor);
 }
 
-:root {
-    --overlay-gradient: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.08));
-    // --pure-bg: #f2f4f7;
-    --pure-bg: #fcfcfc;
-}
-
-[data-theme="dark"] {
-    --overlay-gradient: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
-    // --pure-bg: #15181d;
-    --pure-bg: #000000;
-}
-
 /* 涟漪动画样式 */
 @keyframes ripple-animation {
     0% {

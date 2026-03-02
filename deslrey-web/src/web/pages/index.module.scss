@@ -19,7 +19,14 @@
     content: "";
     position: fixed;
     inset: 0;
-    background-image: var(--overlay-gradient), var(--bg-url);
+    background-image: var(--bg-url);
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--overlay-gradient);
+        z-index: 0;
+    }
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
