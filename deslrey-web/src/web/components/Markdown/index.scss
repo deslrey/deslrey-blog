@@ -61,7 +61,7 @@
 }
 
 .markdown-body {
-    padding: 48px 56px;
+    padding: 24px 20px;
     font-family: "Inter", "Segoe UI", Tahoma, sans-serif;
     line-height: 1.7;
     font-size: 1.0625rem;
@@ -69,7 +69,7 @@
 
 @media (max-width: 768px) {
     .markdown-body {
-        padding: 24px 20px;
+        padding: 12px 10px;
         font-size: 1rem;
         line-height: 1.6;
     }

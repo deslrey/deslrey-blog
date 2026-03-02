@@ -19,6 +19,7 @@ import { OperateType, type ArticleDraft, type Category, type Draft, type Folder,
 import request from '../../../utils/request';
 import { Message } from '../../../utils/message';
 import { useSearchParams } from 'react-router-dom';
+import { useTabSearchParams } from '../../../context/TabLocationContext';
 import { editArticleApi, folderApi, imageApi } from '../../../api';
 
 const CustomPopper = styled(Popper)({
@@ -38,12 +39,12 @@ const CustomPopper = styled(Popper)({
 });
 
 const EditArticle: React.FC = () => {
+    const tabParams = useTabSearchParams();
+    const [routerParams] = useSearchParams();
+    const searchParams = tabParams ?? routerParams;
 
-    //  路由接收参数
-    const [searchParams] = useSearchParams()
-
-    const operateType = searchParams.get('type')
-    const operateId = searchParams.get('id')
+    const operateType = searchParams.get('type');
+    const operateId = searchParams.get('id');
 
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState<Category | null>(null);

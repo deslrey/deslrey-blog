@@ -6,8 +6,8 @@ import styles from "./index.module.scss";
 import { useWebRoutes } from "../../../router/config";
 import BgSeriesToggle from "../BgSeriesToggle";
 import ThemeToggle from "../ThemeToggle.tsx";
-import Checkbox from "../Checkbox/idnex.tsx";
 import useNavStore from "../../store/navStore.ts";
+import Checkbox from "../Checkbox/index.tsx";
 
 const MobileNav: React.FC = () => {
 
