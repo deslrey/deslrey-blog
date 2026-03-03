@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useMemo, useRef } from 'react'
 import { Activity } from 'react'
 import styles from './index.module.scss'
-import { useRoutes, type RouteType } from './config'
+import { useRoutes, type RouteType } from '../../config/config'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import Header from '../../components/Header'
 import LoaderComponent from '../../components/LoaderComponent'

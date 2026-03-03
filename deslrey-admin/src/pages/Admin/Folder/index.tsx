@@ -5,11 +5,11 @@ import {
     TextField, Button, TableSortLabel
 } from "@mui/material";
 import styles from './index.module.scss';
-import type { Folder, Order } from '../../../interfaces';
-import request from '../../../utils/request';
+import type { Folder, Order } from '../../../types';
+import request from '../../../utils/http';
 import dayjs from 'dayjs';
 import { FolderPlus, SquarePen } from 'lucide-react';
-import { Message } from '../../../utils/message';
+import { Message } from '../../../utils/ui';
 import { folderApi } from '../../../api';
 
 const FolderPage: React.FC = () => {

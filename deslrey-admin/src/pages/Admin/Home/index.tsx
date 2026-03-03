@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import * as echarts from 'echarts'
 import styles from './index.module.scss'
-import request from '../../../utils/request'
+import request from '../../../utils/http'
 import { articleApi, visitApi } from '../../../api'
 
 const Home: React.FC = () => {

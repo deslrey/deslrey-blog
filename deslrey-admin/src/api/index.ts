@@ -1,72 +1,9 @@
-export const loginApi = {
-    login: '/auth/login'
-}
-
-export const registerApi = {
-    register: '/auth/register'
-}
-
-export const addArticleApi = {
-    addArticle: '/article/addArticle',
-    categoryArticleList: '/category/categoryArticleList',
-    tagNameList: '/tag/tagNameList',
-    addDraft: '/draft/addDraft',
-};
-
-export const articleApi = {
-    list: "/article/list",
-    viewHot: "/article/viewHot",
-    editExist: "/article/editExist",
-    counts: "/article/counts"
-}
-
-export const visitApi = {
-    stats: "/visit/stats",
-    weekly: "/visit/weekly"
-}
-
-export const categoryApi = {
-    categoryList: '/category/categoryList',
-    updateCategoryTitle: '/category/updateCategoryTitle',
-    addCategory: '/category/addCategory',
-}
-
-export const draftApi = {
-    draftList: "/draft/draftList",
-    deleteDraft: "/draft/deleteDraft",
-}
-
-export const editArticleApi = {
-    addArticle: '/article/addArticle',
-    tagNameList: '/tag/tagNameList',
-    editArticle: '/article/editArticle',
-    addDraft: '/draft/addDraft',
-    draftDetail: '/draft/detail',
-    updateDraft: '/draft/updateDraft',
-    categoryArticleList: '/category/categoryArticleList',
-}
-
-export const folderApi = {
-    list: '/folder/list',
-    addFolder: '/folder/addFolder',
-    updateFolder: '/folder/updateFolder',
-    folderNameList: '/folder/folderNameList'
-}
-
-export const imageApi = {
-    list: '/image/list',
-    obscureFolderName: '/image/obscure',
-    uploadImage: '/image/uploadImage',
-    deleteImage: '/image/deleteImage',
-}
-
-export const tagApi = {
-    tagList: '/tag/tagList',
-    addTag: '/tag/addTag',
-    updateTagTitle: '/tag/updateTagTitle',
-}
-
-export const userApi = {
-    updatePassword: '/user/updatePassword',
-    updateUserName: '/user/updateUserName',
-}
+export * from './auth';
+export * from './article';
+export * from './visit';
+export * from './category';
+export * from './draft';
+export * from './folder';
+export * from './image';
+export * from './tag';
+export * from './user';

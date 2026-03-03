@@ -3,7 +3,7 @@ import { useSnackbar } from 'notistack';
 import type { SnackbarKey } from 'notistack';
 import { CheckCircle, AlertTriangle, XCircle, Info } from 'lucide-react';
 
-import '../styles/utils/message/message.scss'
+import '../../styles/utils/message/message.scss'
 
 let useSnackbarRef: any;
 export const SnackbarUtilsConfigurator: React.FC = () => {

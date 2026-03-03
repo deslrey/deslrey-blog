@@ -9,16 +9,16 @@ export interface RouteType {
     icon?: React.ReactNode;
 }
 
-const UserPage = lazy(() => import('./User'))
-const AddArticle = lazy(() => import('../Admin/AddArticle'))
-const EditArticle = lazy(() => import('../Admin/EditArticle'))
-const Article = lazy(() => import('../Admin/Article'))
-const CategoryPage = lazy(() => import('../Admin/Category'))
-const TagPage = lazy(() => import('../Admin/Tag'))
-const ImagePage = lazy(() => import('../Admin/Image'))
-const FolderPage = lazy(() => import('../Admin/Folder'))
-const Draft = lazy(() => import('../Admin/Draft'))
-const Home = lazy(() => import('../Admin/Home'))
+const UserPage = lazy(() => import('../pages/Admin/User'))
+const AddArticle = lazy(() => import('../pages/Admin/AddArticle'))
+const EditArticle = lazy(() => import('../pages/Admin/EditArticle'))
+const Article = lazy(() => import('../pages/Admin/Article'))
+const CategoryPage = lazy(() => import('../pages/Admin/Category'))
+const TagPage = lazy(() => import('../pages/Admin/Tag'))
+const ImagePage = lazy(() => import('../pages/Admin/Image'))
+const FolderPage = lazy(() => import('../pages/Admin/Folder'))
+const Draft = lazy(() => import('../pages/Admin/Draft'))
+const Home = lazy(() => import('../pages/Admin/Home'))
 
 export const useRoutes = (): RouteType[] => [
     {

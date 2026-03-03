@@ -16,9 +16,9 @@ import {
 } from "@mui/material";
 
 import { SquarePen, PenLine, Trash } from 'lucide-react';
-import request from "../../../utils/request";
-import type { Draft } from "../../../interfaces";
-import { OperateType } from "../../../interfaces";
+import request from "../../../utils/http";
+import type { Draft } from "../../../types";
+import { OperateType } from "../../../types";
 import styles from "./index.module.scss";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";

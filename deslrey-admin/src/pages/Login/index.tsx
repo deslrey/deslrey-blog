@@ -8,11 +8,11 @@ import {
 } from "@mui/material";
 
 import styles from "./index.module.scss";
-import request from "../../utils/request";
+import request from "../../utils/http";
 import { Message } from "../../utils/message";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../../store";
-import type { User } from "../../interfaces";
+import type { User } from "../../types";
 import { loginApi } from "../../api";
 
 interface LoginForm {

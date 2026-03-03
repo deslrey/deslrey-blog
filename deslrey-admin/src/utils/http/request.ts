@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { AxiosInstance, AxiosRequestConfig } from "axios";
-import { Message } from "./message";
-import { useUserStore } from "../store";
+import { Message } from "../ui";
+import { useUserStore } from "../../store";
 
 export interface Results<T = any> {
     code: number;

@@ -6,10 +6,10 @@ import {
 } from "@mui/material";
 
 import styles from './index.module.scss'
-import type { Order, Tag } from '../../../interfaces';
+import type { Order, Tag } from '../../../types';
 import dayjs from 'dayjs';
-import request from '../../../utils/request';
-import { Message } from '../../../utils/message';
+import request from '../../../utils/http';
+import { Message } from '../../../utils/ui';
 import { FolderPlus, SquarePen } from 'lucide-react';
 import { tagApi } from '../../../api';
 

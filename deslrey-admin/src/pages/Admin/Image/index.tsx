@@ -5,13 +5,13 @@ import {
     Button, TableSortLabel, Autocomplete, TextField
 } from "@mui/material";
 import styles from './index.module.scss';
-import { type Folder, type Image, type Order } from '../../../interfaces';
-import request from '../../../utils/request';
+import { type Folder, type Image, type Order } from '../../../types';
+import request from '../../../utils/http';
 import dayjs from 'dayjs';
 import { Copy, Eye, ImageUp, ScanSearch, Trash2 } from 'lucide-react';
-import { Message } from '../../../utils/message';
-import { formatFileSize } from '../../../utils/format';
+import { Message } from '../../../utils/ui';
 import { folderApi, imageApi } from '../../../api';
+import { formatFileSize } from '../../../utils';
 
 
 const ImageTable: React.FC = () => {
@@ -48,7 +48,7 @@ const ImageTable: React.FC = () => {
         const res = await request.get<Folder[]>(folderApi.folderNameList);
         const uniqueFolders = Array.from(
             new Map(res.data.map((f: Folder) => [f.id, f])).values()
-        );
+        ) as Folder[];
         setFolders(uniqueFolders);
     };
 

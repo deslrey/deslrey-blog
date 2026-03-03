@@ -15,9 +15,9 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import styles from './index.module.scss';
-import { OperateType, type ArticleDraft, type Category, type Draft, type Folder, type Tag } from '../../../interfaces';
-import request from '../../../utils/request';
-import { Message } from '../../../utils/message';
+import { OperateType, type ArticleDraft, type Category, type Draft, type Folder, type Tag } from '../../../types';
+import request from '../../../utils/http';
+import { Message } from '../../../utils/ui';
 import { useSearchParams } from 'react-router-dom';
 import { useTabSearchParams } from '../../../context/TabLocationContext';
 import { editArticleApi, folderApi, imageApi } from '../../../api';

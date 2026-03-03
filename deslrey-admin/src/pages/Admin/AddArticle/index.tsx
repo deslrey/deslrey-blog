@@ -15,9 +15,9 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import styles from './index.module.scss';
-import type { Category, Folder, Tag } from '../../../interfaces';
-import request from '../../../utils/request';
-import { Message } from '../../../utils/message';
+import type { Category, Folder, Tag } from '../../../types';
+import request from '../../../utils/http';
+import { Message } from '../../../utils/ui';
 import { addArticleApi, folderApi, imageApi } from '../../../api';
 
 const CustomPopper = styled(Popper)({

@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import Styles from "./index.module.scss";
 import { Message } from "../../utils/message";
-import request from "../../utils/request";
+import request from "../../utils/http";
 import { useNavigate } from "react-router-dom";
 import { registerApi } from "../../api";
 

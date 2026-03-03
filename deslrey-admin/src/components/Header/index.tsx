@@ -6,7 +6,7 @@ import { useUserStore } from '../../store'
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
 import { Message } from '../../utils/message'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { useRoutes } from '../../pages/Admin/config'
+import { useRoutes } from '../../config/config'
 
 const Header: React.FC = () => {
     const navigate = useNavigate()
@@ -25,7 +25,7 @@ const Header: React.FC = () => {
 
     const currentTitle = useMemo(() => {
         const path = location.pathname.split('/').pop()
-        const matchedRoute = routes.find(r => r.path === path)
+        const matchedRoute = routes.find((r: any) => r.path === path)
         return matchedRoute?.title || '后台管理'
     }, [location.pathname, routes])
 
