@@ -1,0 +1,168 @@
+@use "../../styles/hovers/hacks" as hacks;
+@use "../../styles/hovers/_mixins.scss" as mixins;
+@use "../../styles/hovers/_options.scss" as options;
+
+/* ========= 顶层导航容器 ========= */
+.NavWrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2000;
+
+    margin-top: 10px;
+    opacity: 1;
+
+    transition:
+        margin-top 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.25s ease;
+
+    &.scrolled {
+        margin-top: 0;
+    }
+
+    &.hidden {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+    &.visible {
+        pointer-events: auto;
+        margin-top: 10px;
+        opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+}
+
+/* ========= 桌面端导航 ========= */
+.NavMain {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    width: 60%;
+    margin: 0 auto;
+    padding: 15px 20px;
+
+    min-width: 600px;
+    max-width: 900px;
+
+    border-radius: 20px;
+    position: relative;
+
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    box-shadow:
+        0 6px 25px rgba(0, 0, 0, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+
+    transition:
+        transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        background 0.4s ease,
+        box-shadow 0.4s ease;
+
+    transform: translateY(0);
+
+    [data-theme="dark"] & {
+        background: rgba(23, 25, 35, 0.65);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+
+        backdrop-filter: blur(12px);
+
+        box-shadow:
+            0 12px 32px rgba(0, 0, 0, 0.45),
+            inset 0 0 18px rgba(255, 255, 255, 0.05);
+    }
+}
+
+.NavWrapper.hidden .NavMain {
+    transform: translateY(-120%) translateZ(0);
+    opacity: 0;
+    transition:
+        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s ease;
+}
+
+/* ========= 导航项 ========= */
+.navItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--color-text);
+    position: relative;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+
+    &:hover {
+        color: options.$activeColor;
+        transform: translateY(-1px);
+    }
+
+    &:before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        right: 50%;
+        bottom: -3px;
+        background: options.$activeColor;
+        height: 2px;
+        border-radius: 2px;
+        transition:
+            left 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+            right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    &:hover:before {
+        left: 0;
+        right: 0;
+    }
+}
+
+/* 激活态颜色加强 */
+.active {
+    color: options.$activeColor;
+
+    &:before {
+        left: 0;
+        right: 0;
+    }
+}
+
+/* ========= 图标 ========= */
+.icon {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* icon 在 hover 时轻微缩放，增强触感 */
+    transition: transform 0.25s ease;
+}
+
+.navItem:hover .icon {
+    transform: scale(1.15);
+}
+
+/* ========= 文字 ========= */
+.title {
+    font-size: 16px;
+
+    @media (max-width: 1380px) {
+        display: none;
+    }
+}

@@ -3,18 +3,18 @@ import { Route, Routes } from 'react-router'
 import TruckLoadComponent from './loader/TruckLoadComponent'
 
 // web端路由
-const HomePage = lazy(() => import('./web/pages/HomePage'))
-const ArticlePage = lazy(() => import('./web/pages/ArticlePage'))
-const ArchivePage = lazy(() => import('./web/pages/ArchivePage'))
-const AboutPage = lazy(() => import('./web/pages/AboutPage'))
-const ArticleDetailPage = lazy(() => import('./web/pages/ArticleDetailPage'))
-const CategoryPage = lazy(() => import('./web/pages/CategoryPage'))
-const CategoryTitlePage = lazy(() => import('./web/pages/CategoryTitlePage'))
-const TagPage = lazy(() => import('./web/pages/TagPage'))
-const TagTitlePage = lazy(() => import('./web/pages/TagTitlePage'))
+const HomePage = lazy(() => import('./pages/HomePage'))
+const ArticlePage = lazy(() => import('./pages/ArticlePage'))
+const ArchivePage = lazy(() => import('./pages/ArchivePage'))
+const AboutPage = lazy(() => import('./pages/AboutPage'))
+const ArticleDetailPage = lazy(() => import('./pages/ArticleDetailPage'))
+const CategoryPage = lazy(() => import('./pages/CategoryPage'))
+const CategoryTitlePage = lazy(() => import('./pages/CategoryTitlePage'))
+const TagPage = lazy(() => import('./pages/TagPage'))
+const TagTitlePage = lazy(() => import('./pages/TagTitlePage'))
 
 // 404
-const NotFoundPage = lazy(() => import('./web/pages/NotFoundPage'))
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 const App: React.FC = () => {
   return (

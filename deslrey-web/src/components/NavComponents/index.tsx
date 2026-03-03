@@ -1,0 +1,91 @@
+import React, { useState, useRef, useEffect } from "react";
+import { Link, useLocation } from "react-router";
+import styles from "./index.module.scss";
+import BgSeriesToggle from "../BgSeriesToggle";
+import type { RouteType } from "../../types";
+import { useWebRoutes } from "../../router/config";
+import ThemeToggle from "../ThemeToggle.tsx";
+
+const NavItem: React.FC<{ item: RouteType }> = ({ item }) => {
+    const location = useLocation();
+    const isActive = location.pathname === item.path;
+
+    return (
+        <Link
+            to={item.path}
+            className={`${styles.navItem} ${isActive ? styles.active : ""}`}
+        >
+            {item.icon && <span className={styles.icon}>{item.icon}</span>}
+            <span className={styles.title}>{item.title}</span>
+        </Link>
+    );
+};
+
+const Nav: React.FC = () => {
+    const [scrollY, setScrollY] = useState(0);
+    const [visible, setVisible] = useState(true);
+    const lastScrollY = useRef(0);
+    const ticking = useRef(false);
+    const hideThreshold = 100;
+    const showThreshold = 10;
+    const hideTimeout = useRef<any>(null);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const current = window.scrollY;
+            setScrollY(current);
+
+            if (!ticking.current) {
+                window.requestAnimationFrame(() => {
+                    const diff = current - lastScrollY.current;
+
+                    if (diff > 0 && current > hideThreshold) {
+                        if (visible) {
+                            if (hideTimeout.current) clearTimeout(hideTimeout.current);
+                            hideTimeout.current = setTimeout(() => {
+                                setVisible(false);
+                            }, 50);
+                        }
+                    } else if (
+                        diff < 0 &&
+                        lastScrollY.current - current > showThreshold
+                    ) {
+                        if (!visible) setVisible(true);
+                    }
+
+                    lastScrollY.current = current;
+                    ticking.current = false;
+                });
+
+                ticking.current = true;
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            if (hideTimeout.current) clearTimeout(hideTimeout.current);
+        };
+    }, [visible]);
+
+    return (
+        <nav
+            className={`
+                ${styles.NavWrapper}
+                ${scrollY > 200 ? styles.scrolled : ""}
+                ${visible ? styles.visible : styles.hidden}
+            `}
+        >
+            <div className={styles.NavMain}>
+                {useWebRoutes().map((item: RouteType) => (
+                    <NavItem key={item.path} item={item} />
+                ))}
+
+                <ThemeToggle />
+                <BgSeriesToggle />
+            </div>
+        </nav>
+    );
+};
+
+export default Nav;

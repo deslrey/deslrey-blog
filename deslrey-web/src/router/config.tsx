@@ -1,4 +1,4 @@
-import type { RouteType } from "../interfaces/router";
+import type { RouteType } from "../types";
 import { Archive, House, Newspaper, Tag, User } from "lucide-react";
 
 

@@ -3,15 +3,15 @@ import { BrowserRouter } from 'react-router'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import { SnackbarProvider } from 'notistack'
-import { SnackbarUtilsConfigurator } from './utils/message.tsx'
+import { SnackbarUtilsConfigurator } from './utils/ui'
 
 import './styles/global/global.scss'
 import './styles/base.scss'
 import './styles/card/card.scss'
 import 'bytemd/dist/index.css'
-import ThemeProvider from './web/components/ThemeProvider/index.tsx'
-import BgSeriesProvider from './web/components/BgSeriesProvider/index.tsx'
-import AppLayout from './web/pages/Layout.tsx'
+import ThemeProvider from './components/ThemeProvider/index.tsx'
+import BgSeriesProvider from './components/BgSeriesProvider/index.tsx'
+import AppLayout from './pages/Layout.tsx'
 
 const element = (
   <BrowserRouter>
