@@ -40,18 +40,20 @@ func QueryIPLocation(ip string) string {
 		return "本地访问"
 	}
 
-	client := &http.Client{Timeout: 2 * time.Second}
+	client := &http.Client{Timeout: 5 * time.Second}
 	url := fmt.Sprintf("https://opendata.baidu.com/api.php?query=%s&co=&resource_id=6006&oe=utf8", ip)
 
 	resp, err := client.Get(url)
 	if err != nil {
-		return ""
+		fmt.Printf("QueryIPLocation error: %v\n", err)
+		return "未知位置"
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return ""
+		fmt.Printf("Read IP response body error: %v\n", err)
+		return "未知位置"
 	}
 
 	var result struct {
@@ -61,13 +63,14 @@ func QueryIPLocation(ip string) string {
 	}
 
 	if err := json.Unmarshal(body, &result); err != nil {
-		return ""
+		fmt.Printf("Unmarshal IP response error: %v\n", err)
+		return "未知位置"
 	}
 
 	if len(result.Data) > 0 {
 		return result.Data[0].Location
 	}
-	return ""
+	return "未知位置"
 }
 
 func GetDeviceType(userAgent string) string {

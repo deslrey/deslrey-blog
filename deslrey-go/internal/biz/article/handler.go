@@ -1,6 +1,7 @@
 package article
 
 import (
+	"deslrey-go/pkg/cache"
 	"deslrey-go/pkg/result"
 	"deslrey-go/pkg/util"
 	"net/http"
@@ -11,13 +12,23 @@ import (
 
 func HandleWebList(ctx *gin.Context) {
 	page, size := util.GetPageParams(ctx)
+	cacheKey := GetWebListKey(page, size)
 
-	pageInfo, err := SelectWebList(page, size)
+	var pageInfo util.PageInfo[ArticleWebListItem]
+	found, _ := cache.Get(ctx, cacheKey, &pageInfo)
+	if found {
+		result.OkData(pageInfo).Send(ctx)
+		return
+	}
+
+	res, err := SelectWebList(page, size)
 	if err != nil {
 		result.FailMsg(err.Error()).SendCode(http.StatusInternalServerError, ctx)
 		return
 	}
-	result.OkData(pageInfo).Send(ctx)
+
+	_ = cache.SetForever(ctx, cacheKey, res)
+	result.OkData(res).Send(ctx)
 }
 
 func HandleAdminList(ctx *gin.Context) {
@@ -39,22 +50,40 @@ func HandleDetail(ctx *gin.Context) {
 		return
 	}
 
-	article, err := SelectDetail(articleId)
+	cacheKey := GetDetailKey(articleId)
+	var articleDetail ArticleDetail
+	found, _ := cache.Get(ctx, cacheKey, &articleDetail)
+	if found {
+		result.OkData(articleDetail).Send(ctx)
+		return
+	}
+
+	res, err := SelectDetail(articleId)
 	if err != nil {
 		result.Fail().SendCode(http.StatusInternalServerError, ctx)
 		return
 	}
 
-	result.OkData(article).Send(ctx)
+	_ = cache.SetForever(ctx, cacheKey, res)
+	result.OkData(res).Send(ctx)
 }
 
 func HandleViewHot(ctx *gin.Context) {
-	viewsHostList, err := SelectViewHot()
+	var viewsHostList []ArticleViewHot
+	found, _ := cache.Get(ctx, GetHotKey(), &viewsHostList)
+	if found {
+		result.OkData(viewsHostList).Send(ctx)
+		return
+	}
+
+	res, err := SelectViewHot()
 	if err != nil {
 		result.Fail().SendCode(http.StatusInternalServerError, ctx)
 		return
 	}
-	result.OkData(viewsHostList).Send(ctx)
+
+	_ = cache.SetForever(ctx, GetHotKey(), res)
+	result.OkData(res).Send(ctx)
 }
 
 func HandleEditArticle(ctx *gin.Context) {
@@ -84,6 +113,10 @@ func HandleAddArticle(ctx *gin.Context) {
 		result.FailMsg(err.Error()).SendCode(http.StatusInternalServerError, ctx)
 		return
 	}
+
+	// 清除受影响的缓存
+	ClearArticleCache(ctx)
+
 	result.OkMsg("保存成功").Send(ctx)
 }
 
@@ -98,14 +131,27 @@ func HandleEditExist(ctx *gin.Context) {
 		result.FailMsg(err.Error()).SendCode(http.StatusInternalServerError, ctx)
 		return
 	}
+
+	// 清除受影响的缓存
+	ClearArticleCache(ctx)
+
 	result.OkMsg("操作成功").Send(ctx)
 }
 
 func HandleArticleCounts(ctx *gin.Context) {
-	counts, err := SelectArticleCountsByMonth()
+	var counts []map[string]interface{}
+	found, _ := cache.Get(ctx, GetMonthCountsKey(), &counts)
+	if found {
+		result.OkData(counts).Send(ctx)
+		return
+	}
+
+	res, err := SelectArticleCountsByMonth()
 	if err != nil {
 		result.FailMsg(err.Error()).SendCode(http.StatusInternalServerError, ctx)
 		return
 	}
-	result.OkData(counts).Send(ctx)
+
+	_ = cache.SetForever(ctx, GetMonthCountsKey(), res)
+	result.OkData(res).Send(ctx)
 }

@@ -41,7 +41,17 @@ func Init() {
 		pkgLogger.Logger.Fatal(err)
 	}
 
-	err = postgresqlDB.AutoMigrate(&article.Article{})
+	err = postgresqlDB.AutoMigrate(
+		&user.UserInfo{},
+		&article.Article{},
+		&article.ArticleTag{},
+		&category.Category{},
+		&tag.Tag{},
+		&image.Image{},
+		&folder.Folder{},
+		&draft.Draft{},
+		&visit.VisitLog{},
+	)
 
 	postgresqlDB = postgresqlDB.Debug()
 
@@ -78,7 +88,7 @@ func cacheTagCount() {
 		pkgLogger.Logger.Error("CacheTagCount failed", "err", err)
 		return
 	}
-	cache.SetForever(context.Background(), "tag:count", list)
+	cache.SetForever(context.Background(), article.GetTagCountKey(), list)
 }
 
 func cacheCategoryCount() {
@@ -87,7 +97,7 @@ func cacheCategoryCount() {
 		pkgLogger.Logger.Error("CacheCategoryCount failed", "err", err)
 		return
 	}
-	cache.SetForever(context.Background(), "category:count", list)
+	cache.SetForever(context.Background(), article.GetCategoryCountKey(), list)
 }
 
 func newGormLogger() gormLogger.Interface {

@@ -3,6 +3,7 @@ package visit
 import (
 	"context"
 	"deslrey-go/pkg/cache"
+	"fmt"
 	"strconv"
 	"time"
 
@@ -53,19 +54,20 @@ func SelectStats() (*VisitStats, error) {
 
 func IncrementVisitCount() error {
 	ctx := context.Background()
-	exists, err := cache.Exists(ctx, visitStatsKey)
+	_, err := cache.Incr(ctx, visitStatsKey)
 	if err != nil {
-		return err
-	}
-
-	if !exists {
-		if err := RefreshVisitStats(); err != nil {
+		// 如果 Incr 失败（例如 key 不是数字），重新刷新
+		err := RefreshVisitStats()
+		if err != nil {
+			fmt.Printf("IncrementVisitCount/Refresh error: %v\n", err)
 			return err
 		}
+		// 刷新后再尝试 Incr（或者 Refresh 已经设置了正确的值）
+		// 其实 Refresh 已经把最新的 DB Count 存进去了，如果 RefreshVisitStats 包含刚才插入的那条，就不需要再 Incr 了
+		// 在我们的 InsertVisitLog 中，顺序是 DB Create -> IncrementVisitCount
+		// 所以 RefreshVisitStats 会统计到最新的那条数据。
 	}
-
-	_, err = cache.Incr(ctx, visitStatsKey)
-	return err
+	return nil
 }
 
 func GetVisitCount() (int64, error) {

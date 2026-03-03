@@ -149,3 +149,16 @@ func Incr(ctx context.Context, key string) (int64, error) {
 	}
 	return client.Incr(ctx, key).Result()
 }
+func DelByPrefix(ctx context.Context, prefix string) error {
+	if client == nil {
+		return errors.New("redis client not initialized")
+	}
+
+	iter := client.Scan(ctx, 0, KeyPrefix+prefix+"*", 0).Iterator()
+	for iter.Next(ctx) {
+		if err := client.Del(ctx, iter.Val()).Err(); err != nil {
+			return err
+		}
+	}
+	return iter.Err()
+}

@@ -2,19 +2,21 @@ package visit
 
 import (
 	"deslrey-go/pkg/result"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func RecordVisitLog(ctx *gin.Context) {
+	ip := GetClientIP(ctx)
+	userAgent := ctx.GetHeader("User-Agent")
+	referer := ctx.GetHeader("Referer")
+	path := ctx.Request.URL.Path
+
 	go func() {
-		ip := GetClientIP(ctx)
-		userAgent := ctx.GetHeader("User-Agent")
-		referer := ctx.GetHeader("Referer")
 		location := QueryIPLocation(ip)
 		device := GetDeviceType(userAgent)
-		path := ctx.Request.URL.Path
 
 		log := &VisitLog{
 			IP:        ip,
@@ -25,7 +27,9 @@ func RecordVisitLog(ctx *gin.Context) {
 			Device:    device,
 		}
 
-		_ = InsertVisitLog(log)
+		if err := InsertVisitLog(log); err != nil {
+			fmt.Printf("RecordVisitLog background error: %v\n", err)
+		}
 	}()
 }
 
