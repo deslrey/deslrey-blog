@@ -5,6 +5,7 @@ import type { Article } from '../../types';
 import request from '../../utils/http';
 import { api } from '../../api';
 import BanterComponent from '../../loader/BanterComponent';
+import SEO from '../../components/SEO';
 
 // 异步加载 BytemdViewer
 const LazyBytemdViewer = lazy(() => import('../../components/Markdown/viewer'));
@@ -36,32 +37,24 @@ const ArticleDetailPage: React.FC = () => {
         fetchData();
     }, [id]);
 
-    // 修改 meta 信息
-    useEffect(() => {
-        if (!post) return;
-
-        document.title = post.title || "文章详情";
-
-        const description = document.querySelector('meta[name="description"]');
-        if (description) {
-            description.setAttribute("content", post.des || post.title || "");
-        } else {
-            const meta = document.createElement("meta");
-            meta.name = "description";
-            meta.content = post.des || post.title || "";
-            document.head.appendChild(meta);
-        }
-
-        const keywords = document.querySelector('meta[name="keywords"]');
-        if (keywords) {
-            keywords.setAttribute("content", post.category || post.title || "");
-        } else {
-            const meta = document.createElement("meta");
-            meta.name = "keywords";
-            meta.content = post.category || post.title || "";
-            document.head.appendChild(meta);
-        }
-    }, [post]);
+    const structuredData = post ? {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": post.title || "文章详情",
+        "description": post.des || post.title || "",
+        "author": {
+            "@type": "Person",
+            "name": "Deslrey"
+        },
+        "datePublished": post.createTime,
+        "dateModified": post.updateTime || post.createTime,
+        "image": carouseUrl || "",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": window.location.href
+        },
+        "keywords": post.category || (post.tags ? post.tags.join(",") : post.title) || ""
+    } : undefined;
 
     // 阅读进度条
     useEffect(() => {
@@ -79,19 +72,29 @@ const ArticleDetailPage: React.FC = () => {
 
     return (
         <div className={styles.blogBox}>
+            {post && (
+                <SEO
+                    title={post.title}
+                    description={post.des}
+                    keywords={post.category || (post.tags ? post.tags.join(",") : "")}
+                    image={carouseUrl}
+                    type="article"
+                    structuredData={structuredData}
+                />
+            )}
             {/* 阅读进度条 */}
             <div className={styles.readProgress} style={{ width: `${readProgress}%` }} />
 
             {/* 显示加载动画或文章 */}
-            <Suspense fallback={<BanterComponent />}>
-                {loading ? (
-                    <BanterComponent />
-                ) : post ? (
+            {loading ? (
+                <BanterComponent />
+            ) : post ? (
+                <Suspense fallback={<BanterComponent />}>
                     <LazyBytemdViewer article={post} carouseUrl={carouseUrl} />
-                ) : (
-                    <div className={styles.empty}>暂无数据</div>
-                )}
-            </Suspense>
+                </Suspense>
+            ) : (
+                <div className={styles.empty}>暂无数据</div>
+            )}
         </div>
     );
 };

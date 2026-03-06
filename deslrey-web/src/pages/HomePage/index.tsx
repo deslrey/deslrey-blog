@@ -17,6 +17,8 @@ const TYPING_SPEED = 120;
 const DELETING_SPEED = 80;
 const HOLD_TIME = 1500;
 
+import SEO from "../../components/SEO";
+
 const HomePage: React.FC = () => {
     const onlineAvatar =
         "https://i-blog.csdnimg.cn/direct/0fb3d4a54f1544d7b82d786fb88a7b8e.jpeg";
@@ -73,6 +75,11 @@ const HomePage: React.FC = () => {
 
     return (
         <div className={styles.homePage}>
+            <SEO 
+                title="Deslrey博客 - 一个前后端技术博客" 
+                description="Deslrey博客，分享前后端、Go、Java、React等技术，记录开发历程。" 
+                keywords="Deslrey, 博客, 技术分享, 全栈开发, Go, Java, React"
+            />
             <div className={styles.left}>
                 <p className={`${styles.hello} ${styles.fadeUp} ${styles.delay1}`}>
                     Hi, I'm Deslrey 👋

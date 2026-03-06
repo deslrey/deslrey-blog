@@ -12,10 +12,12 @@ import "./index.scss";
 import { useReadingTitle } from "../../hooks/useReadingTitle";
 import ValineComment from "../ValineComment";
 
-import ProfileCard from "../ArticleSidebar/ProfileCard";
-import NoticeCard from "../ArticleSidebar/NoticeCard";
+import { Suspense } from "react";
 
 const MarkdownToc = lazy(() => import("../MarkdownToc"));
+const ProfileCard = lazy(() => import("../ArticleSidebar/ProfileCard"));
+const NoticeCard = lazy(() => import("../ArticleSidebar/NoticeCard"));
+const LazyLoad = lazy(() => import("../LazyLoad"));
 
 const MemoMdViewer = memo(({ content }: { content: string }) => {
     return <MdViewer value={content} plugins={plugins} />;
@@ -202,13 +204,21 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
                         <MemoMdViewer content={content} />
                     </div>
                     <div className="comment-wrapper">
-                        <ValineComment article={article} />
+                        <Suspense fallback={<div className="comment-placeholder">评论加载中...</div>}>
+                            <LazyLoad threshold={0.01}>
+                                <ValineComment article={article} />
+                            </LazyLoad>
+                        </Suspense>
                     </div>
                 </main>
 
                 <aside className="article-sidebar">
-                    <ProfileCard />
-                    <NoticeCard />
+                    <Suspense fallback={<div className="sidebar-placeholder" style={{ height: '200px' }} />}>
+                        <ProfileCard />
+                    </Suspense>
+                    <Suspense fallback={<div className="sidebar-placeholder" style={{ height: '150px' }} />}>
+                        <NoticeCard />
+                    </Suspense>
                     <div className="sidebar-sticky">
                         <MarkdownToc
                             toc={toc}

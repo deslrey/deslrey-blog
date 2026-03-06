@@ -11,6 +11,7 @@ import {
     siDocker,
     siNginx,
 } from "simple-icons";
+import SEO from "../../components/SEO";
 
 const IconText = ({ icon, text }: { icon: any; text: string }) => (
     <div className={styles.iconText}>
@@ -33,6 +34,11 @@ const IconText = ({ icon, text }: { icon: any; text: string }) => (
 const AboutPage: React.FC = () => {
     return (
         <div className={styles.about}>
+            <SEO 
+                title="关于我 - Deslrey博客" 
+                description="了解更多关于Deslrey的信息，包括技能、爱好和联系方式。"
+                keywords="Deslrey, 关于我, 前端, 后端, React, Go, Java"
+            />
             <div className={styles.container}>
 
                 <div className={styles.content}>
