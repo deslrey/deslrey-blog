@@ -1,0 +1,39 @@
+# 开发环境配置
+# 调试模式
+debug: true
+
+# 允许跨域的域名
+domainName: "*"
+
+# 监听端口
+port: 8080
+
+# jwt密钥
+jwtSigningKey: "****************"
+
+# 静态资源路径
+custom:
+  staticSourcePath: D:\repository\images
+  staticUrl: /blog-static/staticSource/
+  url: http://localhost:8080/blog-static/staticSource/
+
+carousel:
+  sexApi: http://localhost:8080/blog-static/staticSource/bg/sex/
+  sceneryApi: http://localhost:8080/blog-static/staticSource/bg/scenery/
+
+# postgresql数据库
+postgresql:
+  host: "localhost"
+  user: "postgres"
+  password: 200381
+  dbName: "blog"
+  port: 5432
+
+# redis数据库
+redis:
+  host: "localhost"
+  user: ""
+  password: ""
+  dbName: 1
+  port: 6379
+  size: 10

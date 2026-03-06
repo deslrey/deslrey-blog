@@ -42,15 +42,15 @@ func Init() {
 	}
 
 	err = postgresqlDB.AutoMigrate(
-		&user.UserInfo{},
-		&article.Article{},
-		&article.ArticleTag{},
-		&category.Category{},
-		&tag.Tag{},
-		&image.Image{},
-		&folder.Folder{},
-		&draft.Draft{},
-		&visit.VisitLog{},
+	// &user.UserInfo{},
+	// &article.Article{},
+	// &article.ArticleTag{},
+	// &category.Category{},
+	// &tag.Tag{},
+	// &image.Image{},
+	// &folder.Folder{},
+	// &draft.Draft{},
+	// &visit.VisitLog{},
 	)
 
 	postgresqlDB = postgresqlDB.Debug()
