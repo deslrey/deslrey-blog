@@ -19,7 +19,7 @@ const CategoryPage: React.FC = () => {
         try {
             const res = await request.get(api.category.categoryCount);
             if (res.code === 200) {
-                setCategories(res.data);
+                setCategories(res.data || []);
             } else {
                 setError(res.message || "获取分类失败");
             }

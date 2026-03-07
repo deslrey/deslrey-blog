@@ -22,6 +22,9 @@ func HandleCounts(ctx *gin.Context) {
 	}
 
 	if found {
+		if list == nil {
+			list = []TitleCount{}
+		}
 		result.OkData(list).Send(ctx)
 		return
 	}
@@ -30,6 +33,10 @@ func HandleCounts(ctx *gin.Context) {
 	if err != nil {
 		result.Fail().SendCode(http.StatusInternalServerError, ctx)
 		return
+	}
+
+	if list == nil {
+		list = []TitleCount{}
 	}
 
 	if err := cache.SetForever(ctx, article.GetCategoryCountKey(), list); err != nil {

@@ -21,7 +21,7 @@ const TagPage: React.FC = () => {
         try {
             const res = await request.get(api.tag.tagCount);
             if (res.code === 200) {
-                setTags(res.data);
+                setTags(res.data || []);
             } else {
                 setError(res.message || "获取标签失败");
             }

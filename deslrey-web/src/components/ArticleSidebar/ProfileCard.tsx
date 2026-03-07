@@ -26,8 +26,8 @@ const ProfileCard: React.FC = () => {
 
                 setStats({
                     posts: postsRes?.data?.length || 0,
-                    tags: tagsRes?.data?.length || 0,
-                    categories: catsRes?.data?.length || 0
+                    tags: (tagsRes?.data || []).length,
+                    categories: (catsRes?.data || []).length
                 });
             } catch (error) {
                 console.error("Failed to fetch profile stats", error);

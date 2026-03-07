@@ -15,7 +15,7 @@ const Classify: React.FC = () => {
             try {
                 const res = await request.get(api.category.categoryCount)
                 if (res && res.code === 200) {
-                    setClassifys(res.data)
+                    setClassifys(res.data || [])
                 }
             } catch (error) {
                 setClassifys([])

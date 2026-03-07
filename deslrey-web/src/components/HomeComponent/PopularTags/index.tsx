@@ -16,7 +16,7 @@ const PopularTags: React.FC = () => {
             try {
                 const res = await request.get(api.tag.tagCount)
                 if (res && res.code === 200) {
-                    setTags(res.data)
+                    setTags(res.data || [])
                 }
             } catch (error) {
                 setTags([])
