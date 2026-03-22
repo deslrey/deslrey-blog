@@ -68,8 +68,10 @@ const EditArticle: React.FC = () => {
     const validateForm = (type: 'save' | 'draft') => {
         if (type === 'save') {
             if (!title.trim()) return Message.warning('请输入文章标题'), false;
-            if (!category) return Message.warning('请选择文章分类'), false;
-            if (selectedTagIds.length === 0) return Message.warning('请选择至少一个标签'), false;
+            if (operateType === OperateType.article) {
+                if (!category) return Message.warning('请选择文章分类'), false;
+                if (selectedTagIds.length === 0) return Message.warning('请选择至少一个标签'), false;
+            }
             if (!description.trim()) return Message.warning('请输入文章描述'), false;
             if (!content.trim()) return Message.warning('请输入文章内容'), false;
             return true;
@@ -89,50 +91,35 @@ const EditArticle: React.FC = () => {
     };
 
     const handleConfirm = async () => {
-        if (dialogType === 'save') {
-            const payload = {
-                id: '',
-                title,
-                content,
-                categoryId: category?.id || null,
-                tagIdList: selectedTagIds,
-                des: description,
-            };
-            if (operateType === OperateType.article && operateId) payload.id = operateId;
-
-            setSaving(true);
-            try {
-                const res = await request.post(editArticleApi.addArticle, payload);
-                if (res && res.code === 200) {
-                    Message.success(res.message);
-                    setOpenDialog(false);
-                } else {
-                    Message.error(res.message || '保存失败');
+        setSaving(true);
+        try {
+            if (dialogType === 'save') {
+                const payload: any = {
+                    title,
+                    content,
+                    des: description,
+                };
+                if (operateType === OperateType.article) {
+                    payload.categoryId = category?.id || null;
+                    payload.tagIdList = selectedTagIds;
+                    if (operateId) payload.id = Number(operateId);
                 }
-            } catch {
-                Message.error('保存失败');
-            } finally {
-                setSaving(false);
-            }
-        } else if (dialogType === 'draft') {
-            const payload = { id: '', title, content, des: description };
-            if (operateId) payload.id = operateId;
 
-            setSaving(true);
-            try {
+                const res = await request.post(editArticleApi.addArticle, payload);
+                Message.success(res.message);
+            } else if (dialogType === 'draft') {
+                const payload: any = { title, content, des: description };
+                if (operateId) payload.id = Number(operateId);
+
                 const api = operateId ? editArticleApi.updateDraft : editArticleApi.addDraft;
                 const res = await request.post(api, payload);
-                if (res && res.code === 200) {
-                    Message.success(res.message);
-                    setOpenDialog(false);
-                } else {
-                    Message.error(res.message || '草稿保存失败');
-                }
-            } catch {
-                Message.error('草稿保存失败');
-            } finally {
-                setSaving(false);
+                Message.success(res.message);
             }
+        } catch (error) {
+            Message.error('保存失败');
+        } finally {
+            setSaving(false);
+            setOpenDialog(false);
         }
     };
 

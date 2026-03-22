@@ -78,7 +78,9 @@ const DraftPage: React.FC = () => {
     // 确认跳转新增页
     const handleConfirmAdd = () => {
         setOpenConfirmAdd(false);
-        navigate('/admin/addArticle');
+        setTimeout(() => {
+            navigate('/admin/addArticle');
+        }, 100);
     };
 
     // 点击编辑图标 -> 打开确认弹窗
@@ -91,7 +93,9 @@ const DraftPage: React.FC = () => {
     const handleConfirmEdit = () => {
         if (!selectedEditId) return;
         setOpenConfirmEdit(false);
-        navigate(`/admin/editArticle?type=${OperateType.draft}&id=${selectedEditId}`);
+        setTimeout(() => {
+            navigate(`/admin/editArticle?type=${OperateType.draft}&id=${selectedEditId}`);
+        }, 100);
     };
 
     // 点击删除图标 -> 打开确认弹窗
@@ -197,7 +201,7 @@ const DraftPage: React.FC = () => {
             </Paper>
 
             {/* 新增确认弹窗 */}
-            <Dialog open={openConfirmAdd} onClose={() => setOpenConfirmAdd(false)}>
+            <Dialog open={openConfirmAdd} onClose={() => setOpenConfirmAdd(false)} disablePortal>
                 <DialogTitle sx={{ textAlign: 'center' }}>确认操作</DialogTitle>
                 <DialogContent sx={{ textAlign: 'center', mt: 1 }}>
                     确定要跳转到新增文章页面吗？未保存的操作将会丢失。
@@ -209,7 +213,7 @@ const DraftPage: React.FC = () => {
             </Dialog>
 
             {/* 编辑确认弹窗 */}
-            <Dialog open={openConfirmEdit} onClose={() => setOpenConfirmEdit(false)}>
+            <Dialog open={openConfirmEdit} onClose={() => setOpenConfirmEdit(false)} disablePortal>
                 <DialogTitle sx={{ textAlign: 'center' }}>确认操作</DialogTitle>
                 <DialogContent sx={{ textAlign: 'center', mt: 1 }}>
                     确定要进入编辑草稿页面吗？未保存的更改可能会丢失。
