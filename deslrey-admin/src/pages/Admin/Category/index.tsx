@@ -37,11 +37,11 @@ const CategoryPage: React.FC = () => {
         const res = await request.get(categoryApi.categoryList, {
             params: { page: pageNum, pageSize }
         });
-        const data = res.data;
-        setCategorys(data.list);
-        setTotal(data.total);
-        setPage(data.pageNum - 1);
-        setRowsPerPage(data.pageSize);
+        const data = res.data ?? {};
+        setCategorys(data.list ?? []);
+        setTotal(data.total ?? 0);
+        setPage(Math.max((data.pageNum ?? pageNum) - 1, 0));
+        setRowsPerPage(data.pageSize ?? pageSize);
     };
 
     useEffect(() => {
@@ -143,9 +143,9 @@ const CategoryPage: React.FC = () => {
                         <TableBody>
                             {sortedCategorys.map((category) => (
                                 <TableRow key={category.id} hover>
-                                    <TableCell sx={{ paddingLeft: 10 }}>{category.id}</TableCell>
-                                    <TableCell>{category.categoryTitle}</TableCell>
-                                    <TableCell>{dayjs(category.createTime).format("YYYY-MM-DD HH:mm")}</TableCell>
+                                    <TableCell sx={{ paddingLeft: 10 }}>{category.id ?? '—'}</TableCell>
+                                    <TableCell>{category.categoryTitle || '未命名'}</TableCell>
+                                    <TableCell>{category.createTime ? dayjs(category.createTime).format("YYYY-MM-DD HH:mm") : '—'}</TableCell>
                                     <TableCell>
                                         <SquarePen
                                             color="#000"

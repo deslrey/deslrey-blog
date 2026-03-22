@@ -41,11 +41,11 @@ const TagPage: React.FC = () => {
         const res = await request.get(tagApi.tagList, {
             params: { page: pageNum, pageSize }
         });
-        const data = res.data;
-        setTags(data.list);
-        setTotal(data.total);
-        setPage(data.pageNum - 1);
-        setRowsPerPage(data.pageSize);
+        const data = res.data ?? {};
+        setTags(data.list ?? []);
+        setTotal(data.total ?? 0);
+        setPage(Math.max((data.pageNum ?? pageNum) - 1, 0));
+        setRowsPerPage(data.pageSize ?? pageSize);
     };
 
     useEffect(() => {
@@ -154,9 +154,9 @@ const TagPage: React.FC = () => {
                         <TableBody>
                             {sortedTags.map((tag) => (
                                 <TableRow key={tag.id} hover>
-                                    <TableCell sx={{ paddingLeft: 10 }}>{tag.id}</TableCell>
-                                    <TableCell>{tag.tagTitle}</TableCell>
-                                    <TableCell>{dayjs(tag.createTime).format("YYYY-MM-DD HH:mm")}</TableCell>
+                                    <TableCell sx={{ paddingLeft: 10 }}>{tag.id ?? '—'}</TableCell>
+                                    <TableCell>{tag.tagTitle || '未命名'}</TableCell>
+                                    <TableCell>{tag.createTime ? dayjs(tag.createTime).format("YYYY-MM-DD HH:mm") : '—'}</TableCell>
                                     <TableCell>
                                         <SquarePen
                                             color="#000"

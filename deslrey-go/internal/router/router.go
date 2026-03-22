@@ -149,6 +149,7 @@ func Start() {
 		{
 			visitAdmin.GET("/stats", visit.HandleGetStats)
 			visitAdmin.GET("/weekly", visit.HandleGetWeeklyStats)
+			visitAdmin.GET("/logs", visit.HandleGetLogs)
 		}
 	}
 

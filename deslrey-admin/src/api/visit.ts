@@ -1,4 +1,5 @@
 export const visitApi = {
     stats: "/visit/stats",
-    weekly: "/visit/weekly"
+    weekly: "/visit/weekly",
+    logs: "/visit/logs"
 }

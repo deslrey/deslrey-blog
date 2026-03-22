@@ -93,12 +93,14 @@ const Home: React.FC = () => {
 
     const initTotalVisitsChart = (totalVisits: number) => {
         if (!totalVisitsRef.current) return
-        
+
+        const validVisits = typeof totalVisits === 'number' && !isNaN(totalVisits) ? totalVisits : 0;
+
         // 直接创建卡片HTML，不使用echarts
         totalVisitsRef.current.innerHTML = `
             <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; color: white; padding: 20px;">
                 <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: normal;">总访问量</h3>
-                <div style="font-size: 48px; font-weight: bold; margin-bottom: 10px;">${totalVisits.toLocaleString()}</div>
+                <div style="font-size: 48px; font-weight: bold; margin-bottom: 10px;">${validVisits.toLocaleString()}</div>
                 <div style="font-size: 14px; opacity: 0.9;">网站总访问次数</div>
             </div>
         `
@@ -325,42 +327,48 @@ const Home: React.FC = () => {
         try {
             const res = await request.get(articleApi.viewHot)
             console.log('res =====> ', res.data)
-            initChart(res.data)
+            const chartData = Array.isArray(res.data) ? res.data : []
+            initChart(chartData)
         } catch (err) {
             console.error('获取数据失败', err)
+            initChart([])
         }
     }
 
     const fetchTotalVisits = async () => {
         try {
             const res = await request.get(visitApi.stats)
-            const totalVisits = res.data.totalVisits
+            const totalVisits = res.data?.totalVisits ?? 0
             initTotalVisitsChart(totalVisits)
         } catch (err) {
             console.error('获取总访问量失败', err)
+            initTotalVisitsChart(0)
         }
     }
 
     const fetchWeekVisits = async () => {
         try {
             const res = await request.get(visitApi.weekly)
-            const weekData = res.data
+            const weekData = Array.isArray(res.data) ? res.data : []
             initWeekVisitsChart(weekData)
         } catch (err) {
             console.error('获取近七天访问量失败', err)
+            initWeekVisitsChart([])
         }
     }
 
     const fetchArticleCount = async () => {
         try {
             const res = await request.get(articleApi.counts)
-            const articleData = res.data.map((item: any) => ({
-                month: `${item.month}月`,
-                count: item.count
+            const rawData = Array.isArray(res.data) ? res.data : []
+            const articleData = rawData.map((item: any) => ({
+                month: `${item.month ?? '未知'}月`,
+                count: typeof item.count === 'number' ? item.count : 0
             }))
             initArticleCountChart(articleData)
         } catch (err) {
             console.error('获取文章发布数失败', err)
+            initArticleCountChart([])
         }
     }
 

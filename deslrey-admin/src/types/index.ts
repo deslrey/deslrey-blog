@@ -70,6 +70,17 @@ export interface Tag {
     createTime: Date
 }
 
+export interface VisitLog {
+    id: number;
+    ip: string;
+    location: string;
+    userAgent: string;
+    referer: string;
+    path: string;
+    visitTime: string;
+    device: string;
+}
+
 export const OperateType = {
     article: 'article',
     draft: 'draft'

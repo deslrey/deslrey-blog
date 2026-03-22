@@ -5,14 +5,14 @@ import (
 )
 
 type VisitLog struct {
-	ID        int       `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
-	IP        string    `gorm:"column:ip;type:varchar(50)" json:"ip"`
-	Location  string    `gorm:"column:location;type:varchar(100)" json:"location"`
-	UserAgent string    `gorm:"column:user_agent;type:varchar(255)" json:"user_agent"`
-	Referer   string    `gorm:"column:referer;type:varchar(255)" json:"referer"`
-	Path      string    `gorm:"column:path;type:varchar(255)" json:"path"`
-	VisitTime time.Time `gorm:"column:visit_time;not null;default:now()" json:"visit_time"`
-	Device    string    `gorm:"column:device;type:varchar(50)" json:"device"`
+	ID        uint      `gorm:"primaryKey" json:"id"`
+	IP        string    `json:"ip"`
+	Location  string    `json:"location"`
+	VisitTime time.Time `gorm:"column:visit_time" json:"visitTime"`
+	UserAgent string    `gorm:"column:user_agent" json:"userAgent"`
+	Referer   string    `json:"referer"`
+	Path      string    `json:"path"`
+	Device    string    `json:"device"`
 }
 
 func (VisitLog) TableName() string {
@@ -21,4 +21,11 @@ func (VisitLog) TableName() string {
 
 type VisitStats struct {
 	TotalVisits int64 `json:"totalVisits"`
+}
+
+type VisitLogFilter struct {
+	Keyword string     `json:"keyword"`
+	Device  string     `json:"device"`
+	Start   *time.Time `json:"-"`
+	End     *time.Time `json:"-"`
 }

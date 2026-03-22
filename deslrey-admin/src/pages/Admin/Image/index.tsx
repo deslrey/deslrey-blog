@@ -59,12 +59,12 @@ const ImageTable: React.FC = () => {
                 pageSize: pageSize
             }
         });
-        const data = res.data;
+        const data = res.data ?? {};
 
-        setImages(data.list);
-        setTotal(data.total);
-        setPage(data.pageNum - 1);
-        setRowsPerPage(data.pageSize);
+        setImages(data.list ?? []);
+        setTotal(data.total ?? 0);
+        setPage(Math.max((data.pageNum ?? pageNum) - 1, 0));
+        setRowsPerPage(data.pageSize ?? pageSize);
     };
 
     useEffect(() => {
@@ -254,12 +254,12 @@ const ImageTable: React.FC = () => {
                         <TableBody>
                             {sortedImages.map((image, index) => (
                                 <TableRow key={`${image.id}-${index}`} hover>
-                                    <TableCell sx={{ paddingLeft: 10 }}>{image.id}</TableCell>
-                                    <TableCell>{image.originalName}</TableCell>
-                                    <TableCell>{image.folderName}</TableCell>
-                                    <TableCell>{formatFileSize(image.size)}</TableCell>
-                                    <TableCell>{image.path}</TableCell>
-                                    <TableCell>{dayjs(image.createTime).format("YYYY-MM-DD HH:mm")}</TableCell>
+                                    <TableCell sx={{ paddingLeft: 10 }}>{image.id ?? '—'}</TableCell>
+                                    <TableCell>{image.originalName || '未命名'}</TableCell>
+                                    <TableCell>{image.folderName || '未分类'}</TableCell>
+                                    <TableCell>{formatFileSize(image.size ?? 0)}</TableCell>
+                                    <TableCell>{image.path || '—'}</TableCell>
+                                    <TableCell>{image.createTime ? dayjs(image.createTime).format("YYYY-MM-DD HH:mm") : '—'}</TableCell>
                                     <TableCell sx={{ display: "flex", gap: 1 }}>
                                         <Button onClick={() => handlePreview(image.url, image.path)}>
                                             <Eye color="#000" />

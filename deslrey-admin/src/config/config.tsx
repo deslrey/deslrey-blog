@@ -1,4 +1,4 @@
-import { House, Newspaper, Pencil, User, Image, Folder, Tag, ChartBarStacked } from "lucide-react";
+import { House, Newspaper, Pencil, User, Image, Folder, Tag, ChartBarStacked, MousePointerClick } from "lucide-react";
 import React, { lazy } from "react";
 
 export interface RouteType {
@@ -19,6 +19,7 @@ const ImagePage = lazy(() => import('../pages/Admin/Image'))
 const FolderPage = lazy(() => import('../pages/Admin/Folder'))
 const Draft = lazy(() => import('../pages/Admin/Draft'))
 const Home = lazy(() => import('../pages/Admin/Home'))
+const VisitLogPage = lazy(() => import('../pages/Admin/Visit'))
 
 export const useRoutes = (): RouteType[] => [
     {
@@ -27,6 +28,13 @@ export const useRoutes = (): RouteType[] => [
         title: '主页',
         element: <Home />,
         icon: <House color="#000000" />
+    },
+    {
+        path: 'visit',
+        disPlayName: '访问',
+        title: '访问日志',
+        element: <VisitLogPage />,
+        icon: <MousePointerClick color="#000000" />
     },
     {
         path: 'article',

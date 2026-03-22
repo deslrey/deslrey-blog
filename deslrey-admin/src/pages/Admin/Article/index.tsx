@@ -48,11 +48,11 @@ const Article: React.FC = () => {
             },
         });
 
-        const data = res.data;
-        setArticles(data.list);
-        setTotal(data.total);
-        setPage(data.pageNum - 1);
-        setRowsPerPage(data.pageSize);
+        const data = res.data ?? {};
+        setArticles(data.list ?? []);
+        setTotal(data.total ?? 0);
+        setPage(Math.max((data.pageNum ?? pageNum) - 1, 0));
+        setRowsPerPage(data.pageSize ?? pageSize);
     };
 
     useEffect(() => {
@@ -138,16 +138,16 @@ const Article: React.FC = () => {
                                     hover
                                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                                 >
-                                    <TableCell>{article.id}</TableCell>
-                                    <TableCell>{article.title}</TableCell>
-                                    <TableCell>{article.category}</TableCell>
-                                    <TableCell>{dayjs(article.createTime).format("YYYY-MM-DD HH:mm")}</TableCell>
+                                    <TableCell>{article.id ?? '—'}</TableCell>
+                                    <TableCell>{article.title || '无标题'}</TableCell>
+                                    <TableCell>{article.category || '未分类'}</TableCell>
+                                    <TableCell>{article.createTime ? dayjs(article.createTime).format("YYYY-MM-DD HH:mm") : '—'}</TableCell>
                                     <TableCell>
                                         {article.updateTime
                                             ? dayjs(article.updateTime).format("YYYY-MM-DD HH:mm")
                                             : "—"}
                                     </TableCell>
-                                    <TableCell>{article.views}</TableCell>
+                                    <TableCell>{typeof article.views === 'number' ? article.views : 0}</TableCell>
                                     <TableCell>{article.sticky ? "✅" : "❌"}</TableCell>
                                     <TableCell>{article.edit ? "✅" : "❌"}</TableCell>
                                     <TableCell>

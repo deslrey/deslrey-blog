@@ -1,0 +1,49 @@
+.visitPage {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.filterCard {
+    padding: 16px;
+}
+
+.filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    align-items: end;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    height: 40px;
+}
+
+.tableWrapper {
+    position: relative;
+}
+
+.table {
+    min-width: 960px;
+}
+
+.loadingOverlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.65);
+    z-index: 1;
+}
+
+.ellipsis {
+    display: inline-block;
+    max-width: 220px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

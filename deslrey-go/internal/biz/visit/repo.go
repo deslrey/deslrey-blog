@@ -3,6 +3,7 @@ package visit
 import (
 	"context"
 	"deslrey-go/pkg/cache"
+	"deslrey-go/pkg/util"
 	"fmt"
 	"strconv"
 	"time"
@@ -149,4 +150,44 @@ func SelectWeeklyStats() ([]map[string]interface{}, error) {
 	}
 
 	return stats, nil
+}
+
+func SelectVisitLogs(page, size int, filter VisitLogFilter) (*util.PageInfo[VisitLog], error) {
+	var logs []VisitLog
+
+	query := db.Model(&VisitLog{})
+
+	if filter.Keyword != "" {
+		like := "%" + filter.Keyword + "%"
+		query = query.Where(
+			"(ip ILIKE ? OR COALESCE(location, '') ILIKE ? OR COALESCE(path, '') ILIKE ? OR COALESCE(referer, '') ILIKE ?)",
+			like, like, like, like,
+		)
+	}
+
+	if filter.Device != "" {
+		query = query.Where("device = ?", filter.Device)
+	}
+
+	if filter.Start != nil {
+		query = query.Where("visit_time >= ?", *filter.Start)
+	}
+
+	if filter.End != nil {
+		query = query.Where("visit_time <= ?", *filter.End)
+	}
+
+	var count int64
+	if err := query.Count(&count).Error; err != nil {
+		return nil, err
+	}
+
+	if err := query.
+		Order("visit_time DESC").
+		Scopes(util.PaginateScope(page, size)).
+		Find(&logs).Error; err != nil {
+		return nil, err
+	}
+
+	return util.Paginate(count, logs, page, size), nil
 }
