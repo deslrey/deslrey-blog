@@ -82,12 +82,14 @@ const Article: React.FC = () => {
 
     // 确认弹窗点击
     const handleConfirm = () => {
-        if (dialogType === "add") {
-            navigate("/admin/addArticle");
-        } else if (dialogType === "edit" && editId !== null) {
-            navigate(`/admin/editArticle?type=${OperateType.article}&id=${editId}`);
-        }
         setOpenDialog(false);
+        setTimeout(() => {
+            if (dialogType === "add") {
+                navigate("/admin/addArticle");
+            } else if (dialogType === "edit" && editId !== null) {
+                navigate(`/admin/editArticle?type=${OperateType.article}&id=${editId}`);
+            }
+        }, 100);
     };
 
     // 切换文章可见状态
@@ -188,7 +190,7 @@ const Article: React.FC = () => {
             </Paper>
 
             {/* 确认弹窗 */}
-            <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+            <Dialog open={openDialog} onClose={() => setOpenDialog(false)} disablePortal>
                 <DialogTitle>确认操作</DialogTitle>
                 <DialogContent sx={{ textAlign: "center", fontSize: 16, mt: 1 }}>
                     {dialogType === "add"
