@@ -18,7 +18,7 @@ import {
     siSass,
     siDocker,
     siNeo4j,
-} from 'simple-icons';
+} from '../simpleIcons';
 import { Message } from '../ui';
 
 

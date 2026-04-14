@@ -10,7 +10,7 @@ import {
     siGo,
     siDocker,
     siNginx,
-} from "simple-icons";
+} from "../../utils/simpleIcons";
 import SEO from "../../components/SEO";
 
 const IconText = ({ icon, text }: { icon: any; text: string }) => (

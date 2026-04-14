@@ -13,7 +13,7 @@ import {
     siMysql,
     siSpring,
     siSpringboot
-} from 'simple-icons';
+} from '../simpleIcons';
 
 type IconInfo = {
     svg: string;
