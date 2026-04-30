@@ -53,3 +53,11 @@ func GetCategoryCountKey() string {
 func GetTagCountKey() string {
 	return cache.KeyPrefix + "tag:count"
 }
+
+func GetCategoryArticlesKey(categoryID, page, size int) string {
+	return fmt.Sprintf("%scategory:articles:%d:%d:%d", cache.KeyPrefix, categoryID, page, size)
+}
+
+func GetTagArticlesKey(tagID, page, size int) string {
+	return fmt.Sprintf("%stag:articles:%d:%d:%d", cache.KeyPrefix, tagID, page, size)
+}

@@ -6,7 +6,6 @@ import (
 	"deslrey-go/pkg/logger"
 	"deslrey-go/pkg/result"
 	"deslrey-go/pkg/util"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -55,10 +54,13 @@ func HandleArticles(ctx *gin.Context) {
 	}
 
 	page, size := util.GetPageParams(ctx)
-	cacheKey := fmt.Sprintf("tag:articles:%d:%d:%d", tagId, page, size)
+	cacheKey := article.GetTagArticlesKey(tagId, page, size)
 
 	var pageInfo util.PageInfo[ArticleListItem]
-	found, _ := cache.Get(ctx, cacheKey, &pageInfo)
+	found, err := cache.Get(ctx, cacheKey, &pageInfo)
+	if err != nil {
+		logger.Logger.Warn("redis get tag articles failed", "err", err, "key", cacheKey)
+	}
 	if found {
 		result.OkData(pageInfo).Send(ctx)
 		return
@@ -70,7 +72,9 @@ func HandleArticles(ctx *gin.Context) {
 		return
 	}
 
-	_ = cache.SetForever(ctx, cacheKey, res)
+	if err := cache.SetForever(ctx, cacheKey, res); err != nil {
+		logger.Logger.Warn("redis set tag articles failed", "err", err, "key", cacheKey)
+	}
 	result.OkData(res).Send(ctx)
 }
 

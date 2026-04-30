@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
     Table,
     TableBody,
@@ -25,49 +25,28 @@ import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { articleApi } from "../../../api";
 import { Message } from "../../../utils/message";
+import { usePagedQuery } from "../../../hooks/usePagedQuery";
 
 const Article: React.FC = () => {
     const navigate = useNavigate();
 
-    const [articles, setArticles] = useState<ArticleTpye[]>([]);
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [total, setTotal] = useState(0);
+    const {
+        list: articles,
+        page,
+        rowsPerPage,
+        total,
+        fetchPage,
+        onPageChange,
+        onRowsPerPageChange,
+    } = usePagedQuery<ArticleTpye>({
+        apiPath: articleApi.list,
+        initialRowsPerPage: 5,
+    });
 
     // 弹窗控制
     const [openDialog, setOpenDialog] = useState(false);
     const [dialogType, setDialogType] = useState<"add" | "edit" | null>(null);
     const [editId, setEditId] = useState<number | null>(null);
-
-    // 拉取数据
-    const fetchData = async (pageNum = 1, pageSize = rowsPerPage) => {
-        const res = await request.get(articleApi.list, {
-            params: {
-                page: pageNum,
-                pageSize: pageSize,
-            },
-        });
-
-        const data = res.data ?? {};
-        setArticles(data.list ?? []);
-        setTotal(data.total ?? 0);
-        setPage(Math.max((data.pageNum ?? pageNum) - 1, 0));
-        setRowsPerPage(data.pageSize ?? pageSize);
-    };
-
-    useEffect(() => {
-        fetchData(1, rowsPerPage);
-    }, []);
-
-    const handleChangePage = (_: unknown, newPage: number) => {
-        fetchData(newPage + 1, rowsPerPage);
-    };
-
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newSize = parseInt(event.target.value, 10);
-        setRowsPerPage(newSize);
-        fetchData(1, newSize);
-    };
 
     const handlerAdd = () => {
         setDialogType("add");
@@ -102,7 +81,7 @@ const Article: React.FC = () => {
 
             Message.success(res.message)
 
-            fetchData(page + 1, rowsPerPage);
+            fetchPage(page + 1, rowsPerPage);
 
         } catch (error) {
             console.error("更新可见状态失败", error);
@@ -178,9 +157,9 @@ const Article: React.FC = () => {
                     component="div"
                     count={total}
                     page={page}
-                    onPageChange={handleChangePage}
+                    onPageChange={onPageChange}
                     rowsPerPage={rowsPerPage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    onRowsPerPageChange={onRowsPerPageChange}
                     rowsPerPageOptions={[5, 10, 25]}
                     labelRowsPerPage="每页行数"
                     labelDisplayedRows={({ from, to, count }) =>

@@ -1,22 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useLocation } from "react-router";
 import { useWebRoutes } from "../../router/config";
+import SEO from "../SEO";
 
 const TitleSyncComponent:React.FC = () => {
     const location = useLocation();
     const routes = useWebRoutes();
 
-    useEffect(() => {
-        const route = routes.find((r: any) => r.path === location.pathname);
+    const route = routes.find((r: any) => r.path === location.pathname);
+    const title = route ? `${route.title} - deslrey博客` : "deslrey博客";
 
-        if (route) {
-            document.title = route.title + " - deslrey博客";
-        } else {
-            document.title = "deslrey博客";
-        }
-    }, [location.pathname]);
-
-    return null;
+    return <SEO title={title} />;
 };
 
 export default TitleSyncComponent;
