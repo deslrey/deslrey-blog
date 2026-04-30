@@ -3,9 +3,10 @@ package visit
 import (
 	"context"
 	"deslrey-go/pkg/cache"
+	"deslrey-go/pkg/logger"
 	"deslrey-go/pkg/util"
-	"fmt"
 	"strconv"
+	"sync"
 	"time"
 
 	"gorm.io/gorm"
@@ -14,9 +15,61 @@ import (
 var db *gorm.DB
 
 var visitStatsKey = cache.KeyPrefix + "stats:visits"
+var visitQueue = make(chan VisitPayload, 2048)
+var startWorkerOnce sync.Once
+
+type VisitPayload struct {
+	IP        string
+	UserAgent string
+	Referer   string
+	Path      string
+}
 
 func InitDB(database *gorm.DB) {
 	db = database
+	startWorkerOnce.Do(startVisitWorkers)
+}
+
+func startVisitWorkers() {
+	workerCount := 4
+	for i := 0; i < workerCount; i++ {
+		go func() {
+			for payload := range visitQueue {
+				processVisitPayload(payload)
+			}
+		}()
+	}
+}
+
+func EnqueueVisitLog(payload VisitPayload) bool {
+	select {
+	case visitQueue <- payload:
+		return true
+	default:
+		return false
+	}
+}
+
+func processVisitPayload(payload VisitPayload) {
+	location := QueryIPLocation(payload.IP)
+	device := GetDeviceType(payload.UserAgent)
+
+	logItem := &VisitLog{
+		IP:        payload.IP,
+		Location:  location,
+		UserAgent: payload.UserAgent,
+		Referer:   payload.Referer,
+		Path:      payload.Path,
+		Device:    device,
+	}
+
+	if err := InsertVisitLog(logItem); err != nil {
+		logger.Logger.Warn("insert visit log failed", "err", err, "path", payload.Path)
+		return
+	}
+	if err := IncrementVisitCount(); err != nil {
+		logger.Logger.Warn("increment visit stats failed", "err", err)
+	}
 }
 
 func InsertVisitLog(log *VisitLog) error {
@@ -57,16 +110,9 @@ func IncrementVisitCount() error {
 	ctx := context.Background()
 	_, err := cache.Incr(ctx, visitStatsKey)
 	if err != nil {
-		// 如果 Incr 失败（例如 key 不是数字），重新刷新
-		err := RefreshVisitStats()
-		if err != nil {
-			fmt.Printf("IncrementVisitCount/Refresh error: %v\n", err)
+		if err := RefreshVisitStats(); err != nil {
 			return err
 		}
-		// 刷新后再尝试 Incr（或者 Refresh 已经设置了正确的值）
-		// 其实 Refresh 已经把最新的 DB Count 存进去了，如果 RefreshVisitStats 包含刚才插入的那条，就不需要再 Incr 了
-		// 在我们的 InsertVisitLog 中，顺序是 DB Create -> IncrementVisitCount
-		// 所以 RefreshVisitStats 会统计到最新的那条数据。
 	}
 	return nil
 }

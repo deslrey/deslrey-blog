@@ -1,16 +1,24 @@
 package middleware
 
 import (
-	"context"
 	"deslrey-go/internal/biz/visit"
 	"deslrey-go/pkg/cache"
+	"regexp"
 	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
-var visitKeyPrefix = cache.KeyPrefix + "visit:"
+var (
+	visitKeyPrefix        = cache.KeyPrefix + "visit:"
+	articleDetailPathExpr = regexp.MustCompile(`^/blog-api/web/article/(\d+)$`)
+)
+
+const (
+	defaultVisitTTL = 10 * time.Minute
+	articleVisitTTL = time.Minute
+)
 
 func VisitLog() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -58,11 +66,27 @@ func isExcludedPath(path string) bool {
 	return false
 }
 
-func shouldRecordVisit(ctx context.Context, ip string) bool {
-	key := visitKeyPrefix + ip
-	ok, err := cache.SetNX(ctx, key, "1", 10*time.Minute)
+func shouldRecordVisit(ctx *gin.Context, ip string) bool {
+	cacheCtx := ctx.Request.Context()
+	key, ttl := buildVisitCacheKey(ip, ctx.Request.URL.Path)
+	ok, err := cache.SetNX(cacheCtx, key, "1", ttl)
 	if err != nil {
 		return true
 	}
 	return ok
+}
+
+func buildVisitCacheKey(ip, path string) (string, time.Duration) {
+	if articleID := extractArticleID(path); articleID != "" {
+		return visitKeyPrefix + ip + ":article:" + articleID, articleVisitTTL
+	}
+	return visitKeyPrefix + ip, defaultVisitTTL
+}
+
+func extractArticleID(path string) string {
+	matches := articleDetailPathExpr.FindStringSubmatch(path)
+	if len(matches) == 2 {
+		return matches[1]
+	}
+	return ""
 }

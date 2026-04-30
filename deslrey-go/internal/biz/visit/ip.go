@@ -1,6 +1,7 @@
 package visit
 
 import (
+	"deslrey-go/pkg/logger"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -45,14 +46,14 @@ func QueryIPLocation(ip string) string {
 
 	resp, err := client.Get(url)
 	if err != nil {
-		fmt.Printf("QueryIPLocation error: %v\n", err)
+		logger.Logger.Debug("query ip location failed", "err", err, "ip", ip)
 		return "未知位置"
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Printf("Read IP response body error: %v\n", err)
+		logger.Logger.Debug("read ip response failed", "err", err, "ip", ip)
 		return "未知位置"
 	}
 
@@ -63,7 +64,7 @@ func QueryIPLocation(ip string) string {
 	}
 
 	if err := json.Unmarshal(body, &result); err != nil {
-		fmt.Printf("Unmarshal IP response error: %v\n", err)
+		logger.Logger.Debug("unmarshal ip response failed", "err", err, "ip", ip)
 		return "未知位置"
 	}
 

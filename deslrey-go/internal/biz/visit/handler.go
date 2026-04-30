@@ -1,9 +1,9 @@
 package visit
 
 import (
+	"deslrey-go/pkg/logger"
 	"deslrey-go/pkg/result"
 	"deslrey-go/pkg/util"
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -17,23 +17,14 @@ func RecordVisitLog(ctx *gin.Context) {
 	referer := ctx.GetHeader("Referer")
 	path := ctx.Request.URL.Path
 
-	go func() {
-		location := QueryIPLocation(ip)
-		device := GetDeviceType(userAgent)
-
-		log := &VisitLog{
-			IP:        ip,
-			Location:  location,
-			UserAgent: userAgent,
-			Referer:   referer,
-			Path:      path,
-			Device:    device,
-		}
-
-		if err := InsertVisitLog(log); err != nil {
-			fmt.Printf("RecordVisitLog background error: %v\n", err)
-		}
-	}()
+	if !EnqueueVisitLog(VisitPayload{
+		IP:        ip,
+		UserAgent: userAgent,
+		Referer:   referer,
+		Path:      path,
+	}) {
+		logger.Logger.Warn("visit queue full, drop log", "path", path, "ip", ip)
+	}
 }
 
 func HandleGetStats(ctx *gin.Context) {

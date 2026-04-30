@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"deslrey-go/pkg/logger"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -14,34 +15,40 @@ const (
 )
 
 var (
-	endpointsLantencyMonitor = prometheus.NewHistogramVec(
+	endpointsLatencyMonitor = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
 			Namespace: PrometheusNamespace,
 			Subsystem: EndpointsDataSubsystem,
-			Name:      "lantency_statistic",
+			Name:      "latency_statistic",
 			Help:      "统计接口耗时(ms)",
 			Buckets:   []float64{1, 5, 10, 20, 50, 100, 500, 1000, 5000, 10000},
 		},
-		[]string{"path"},
+		[]string{"path", "method", "status"},
 	)
 )
 
 func init() {
-	prometheus.MustRegister(endpointsLantencyMonitor)
+	prometheus.MustRegister(endpointsLatencyMonitor)
 }
 
-func HandleEndpointLantency() gin.HandlerFunc {
+func HandleEndpointLatency() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		endpoint := c.Request.URL.Path
 		start := time.Now()
 
 		c.Next()
 
 		latency := time.Since(start)
 		latencyMs := float64(latency.Milliseconds())
+		path := c.FullPath()
+		if path == "" {
+			path = c.Request.URL.Path
+		}
+		statusCode := c.Writer.Status()
 
-		logger.Logger.Infof("接口 %s 耗时 %fms", endpoint, latencyMs)
+		if latencyMs >= 300 {
+			logger.Logger.Warn("slow endpoint", "path", path, "method", c.Request.Method, "status", statusCode, "latency_ms", latencyMs)
+		}
 
-		endpointsLantencyMonitor.WithLabelValues(endpoint).Observe(latencyMs)
+		endpointsLatencyMonitor.WithLabelValues(path, c.Request.Method, strconv.Itoa(statusCode)).Observe(latencyMs)
 	}
 }

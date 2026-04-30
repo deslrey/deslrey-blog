@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useUserStore } from "../../store";
 import { Message } from "../../utils/message";
+import { onAuthExpired } from "../../utils/authEvents";
 
 const AuthWatcher = () => {
     const location = useLocation();
@@ -12,29 +13,36 @@ const AuthWatcher = () => {
         clearUser();
         Message.error("请重新登陆");
         navigate("/login", { replace: true });
-    }
+    };
 
     useEffect(() => {
         try {
-            console.log(location.pathname);
-            const userInfo = sessionStorage.getItem("userInfo")
+            const userInfo = sessionStorage.getItem("userInfo");
             if (!userInfo) {
-                loginOut()
-                return
+                loginOut();
+                return;
             }
             const stored = JSON.parse(userInfo);
-            const token = stored?.state?.user?.token
+            const token = stored?.state?.user?.token;
             if (location.pathname.startsWith("/admin")) {
                 if (!token) {
-                    loginOut()
-                    return
+                    loginOut();
+                    return;
                 }
             }
-        } catch (error) {
-            loginOut()
-            return
+        } catch {
+            loginOut();
+            return;
         }
     }, [location.pathname, navigate, clearUser]);
+
+    useEffect(() => {
+        return onAuthExpired((message) => {
+            clearUser();
+            Message.error(message);
+            navigate("/login", { replace: true });
+        });
+    }, [clearUser, navigate]);
 
     return null;
 };

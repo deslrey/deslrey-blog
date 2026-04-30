@@ -49,7 +49,6 @@ func SelectArticles(categoryId, page, size int) (*util.PageInfo[ArticleListItem]
 		a.update_time,
 		c.title AS category
 		`).
-		Joins("JOIN article_tag at ON at.article_id = a.id").
 		Joins("LEFT JOIN category c ON c.id = a.category_id").
 		Order("a.create_time DESC").
 		Scopes(util.PaginateScope(page, size)).

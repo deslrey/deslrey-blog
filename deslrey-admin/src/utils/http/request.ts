@@ -2,6 +2,7 @@ import axios from "axios";
 import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import { Message } from "../ui";
 import { useUserStore } from "../../store";
+import { emitAuthExpired } from "../authEvents";
 
 export interface Results<T = any> {
     code: number;
@@ -51,9 +52,7 @@ class Request {
                 }
 
                 if (res?.code === 401) {
-                    Message.error("登录超时，请重新登录");
-                    useUserStore.getState().clearUser();
-                    window.location.href = "/login";
+                    emitAuthExpired("登录超时，请重新登录");
                     return Promise.reject(res);
                 }
 
@@ -65,10 +64,11 @@ class Request {
                 return response;
             },
             (error) => {
+                if (axios.isCancel(error)) {
+                    return Promise.reject(error);
+                }
                 if (error.response?.status === 401) {
-                    Message.error("登录超时，请重新登录");
-                    useUserStore.getState().clearUser();
-                    window.location.href = "/login";
+                    emitAuthExpired("登录超时，请重新登录");
                 } else {
                     Message.error("请求异常");
                 }

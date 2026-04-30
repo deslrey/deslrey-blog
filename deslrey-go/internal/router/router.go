@@ -23,7 +23,7 @@ func Start() {
 	engine := gin.Default()
 
 	// 全局中间件
-	engine.Use(middleware.HandleEndpointLantency())
+	engine.Use(middleware.HandleEndpointLatency())
 	engine.Use(middleware.Cors())
 	engine.Use(middleware.VisitLog())
 
