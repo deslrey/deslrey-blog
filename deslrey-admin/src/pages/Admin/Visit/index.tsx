@@ -83,7 +83,6 @@ const VisitLogPage: React.FC = () => {
 
     useEffect(() => {
         fetchLogs(1, rowsPerPage, defaultFilters);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleChangePage = (_: unknown, newPage: number) => {

@@ -19,6 +19,9 @@ export const TabLocationProvider: React.FC<{ path: string; search: string; child
 /** 在标签页内渲染时返回当前标签的 search 解析成的 URLSearchParams；否则返回 null，调用方用 useSearchParams() 兜底 */
 export function useTabSearchParams(): URLSearchParams | null {
   const ctx = useContext(TabLocationContext)
-  if (!ctx?.search) return null
-  return useMemo(() => new URLSearchParams(ctx.search), [ctx.search])
+  const search = ctx?.search || ''
+  return useMemo(() => {
+    if (!search) return null
+    return new URLSearchParams(search)
+  }, [search])
 }

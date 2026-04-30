@@ -17,7 +17,7 @@ const Classify: React.FC = () => {
                 if (res && res.code === 200) {
                     setClassifys(res.data || [])
                 }
-            } catch (error) {
+            } catch (_error) {
                 setClassifys([])
             }
         }

@@ -114,7 +114,7 @@ const DraftPage: React.FC = () => {
             } else {
                 Message.error(res.message);
             }
-        } catch (error) {
+        } catch (_error) {
             Message.error("草稿删除失败");
         } finally {
             setOpenConfirmDelete(false);

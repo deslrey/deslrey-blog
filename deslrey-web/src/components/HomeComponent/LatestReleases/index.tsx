@@ -21,7 +21,7 @@ const LatestReleases: React.FC = () => {
                 if (res && res.code === 200) {
                     setArticles(res.data)
                 }
-            } catch (error) {
+            } catch (_error) {
                 setArticles([])
             }
         }

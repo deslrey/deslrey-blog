@@ -87,7 +87,7 @@ const RegisterPage: React.FC = () => {
                 Message.success('跳转至登陆页面进行登陆')
                 naviagte('/')
             }
-        } catch (error) {
+        } catch (_error) {
             Message.error("注册失败")
         }
     };

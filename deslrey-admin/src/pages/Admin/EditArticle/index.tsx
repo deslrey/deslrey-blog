@@ -115,7 +115,7 @@ const EditArticle: React.FC = () => {
                 const res = await request.post(api, payload);
                 Message.success(res.message);
             }
-        } catch (error) {
+        } catch (_error) {
             Message.error('保存失败');
         } finally {
             setSaving(false);
@@ -129,7 +129,7 @@ const EditArticle: React.FC = () => {
             if (res.code === 200 && Array.isArray(res.data)) {
                 setCategories(res.data);
             }
-        } catch (error) {
+        } catch (_error) {
             setCategories([]);
         }
     };
@@ -140,7 +140,7 @@ const EditArticle: React.FC = () => {
             if (res.code === 200) {
                 setTags(res.data);
             }
-        } catch (error) {
+        } catch (_error) {
             setTags([]);
         }
     };

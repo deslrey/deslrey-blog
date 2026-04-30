@@ -57,6 +57,31 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
         return () => document.removeEventListener('click', handleClick);
     }, []);
 
+    const updateHighlightStyle = (activeTheme: ActiveTheme) => {
+        const existingLight = document.querySelector('link[data-hljs="light"]');
+        const existingDark = document.querySelector('link[data-hljs="dark"]');
+
+        if (activeTheme === 'dark') {
+            if (!existingDark) {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = '/highlight/github-dark.min.css';
+                link.setAttribute('data-hljs', 'dark');
+                document.head.appendChild(link);
+            }
+            if (existingLight) existingLight.remove();
+        } else {
+            if (!existingLight) {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = '/highlight/vs.css';
+                link.setAttribute('data-hljs', 'light');
+                document.head.appendChild(link);
+            }
+            if (existingDark) existingDark.remove();
+        }
+    };
+
     useEffect(() => {
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
         const savedMode = (localStorage.getItem('themeMode') as ThemeMode) || 'system';
@@ -91,31 +116,6 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
         prefersDark.addEventListener('change', handleSystemChange);
         return () => prefersDark.removeEventListener('change', handleSystemChange);
     }, [mode]);
-
-    const updateHighlightStyle = (activeTheme: ActiveTheme) => {
-        const existingLight = document.querySelector('link[data-hljs="light"]');
-        const existingDark = document.querySelector('link[data-hljs="dark"]');
-
-        if (activeTheme === 'dark') {
-            if (!existingDark) {
-                const link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = '/highlight/github-dark.min.css';
-                link.setAttribute('data-hljs', 'dark');
-                document.head.appendChild(link);
-            }
-            if (existingLight) existingLight.remove();
-        } else {
-            if (!existingLight) {
-                const link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = '/highlight/vs.css';
-                link.setAttribute('data-hljs', 'light');
-                document.head.appendChild(link);
-            }
-            if (existingDark) existingDark.remove();
-        }
-    };
 
     const toggleMode = () => {
         const nextMode: ThemeMode =

@@ -45,7 +45,6 @@ const Admin: React.FC = () => {
         const label = route?.title ?? path
         const closable = path !== 'home'
         addOrActivateTab(path, search, label, closable)
-        // eslint-disable-next-line react-hooks/exhaustive-deps -- sideList 内容稳定，仅用于取 label
     }, [path, search, addOrActivateTab])
 
     // 同步 当前激活标签 -> URL：仅当「点击标签/关闭标签」导致 activeTabId 变化时导航；若本次是侧栏 NavLink 触发的 location 变化，则跳过（避免用旧 activeTabId 导航回去造成死循环）

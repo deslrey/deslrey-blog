@@ -18,7 +18,7 @@ const PopularTags: React.FC = () => {
                 if (res && res.code === 200) {
                     setTags(res.data || [])
                 }
-            } catch (error) {
+            } catch (_error) {
                 setTags([])
             }
         }

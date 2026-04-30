@@ -1,4 +1,4 @@
-const titles = {
+export const titles = {
     Articles: '文章',
     About: '关于',
     Drafts: '草稿箱',

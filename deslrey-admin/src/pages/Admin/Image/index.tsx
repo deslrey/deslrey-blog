@@ -101,7 +101,7 @@ const ImageTable: React.FC = () => {
             }
             setOpenDialog(false);
             fetchData(page + 1, rowsPerPage);
-        } catch (error) {
+        } catch (_error) {
             Message.error("上传失败");
         }
     };
@@ -122,8 +122,8 @@ const ImageTable: React.FC = () => {
                 Message.success('查找成功')
                 return
             }
-        } catch (error) {
-
+        } catch (_error) {
+            Message.error("查找失败");
         }
     }
 
@@ -171,7 +171,7 @@ const ImageTable: React.FC = () => {
             } else {
                 Message.error(res.message || "删除失败");
             }
-        } catch (error) {
+        } catch (_error) {
             Message.error("删除失败");
         }
 

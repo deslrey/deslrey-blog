@@ -51,7 +51,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         setBgUrl(theme === 'dark' ? '/images/bg0.webp' : '/images/bg1.webp');
                     }
                 }
-            } catch (error) {
+            } catch (_error) {
                 if (series === 'pure') {
                     setBgUrl('');
                 } else {

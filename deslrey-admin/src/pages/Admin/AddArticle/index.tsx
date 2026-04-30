@@ -78,7 +78,7 @@ const AddArticle: React.FC = () => {
             }
             resetForm();
             Message.success(res.message);
-        } catch (error) {
+        } catch (_error) {
             Message.error('保存失败');
         } finally {
             setSaving(false);
@@ -97,7 +97,7 @@ const AddArticle: React.FC = () => {
             }
             resetForm();
             Message.success(res.message);
-        } catch (error) {
+        } catch (_error) {
             Message.error('保存草稿失败');
         } finally {
             setSaving(false);

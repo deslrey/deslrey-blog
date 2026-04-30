@@ -58,8 +58,8 @@ const LoginPage: React.FC = () => {
 
                 navigator("/admin")
             }
-        } catch (error) {
-            // Message.error('登陆失败')
+        } catch (_error) {
+            Message.error('登陆失败')
         }
     };
 
