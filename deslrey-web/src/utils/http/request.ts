@@ -55,7 +55,10 @@ class Request {
                 return response;
             },
             (error) => {
-                // Message.error("请求异常");
+                if (axios.isCancel(error)) {
+                    return Promise.reject(error);
+                }
+                Message.error("请求异常");
                 return Promise.reject(error);
             }
         );

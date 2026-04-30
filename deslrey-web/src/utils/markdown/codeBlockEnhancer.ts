@@ -29,6 +29,8 @@ type CodeBlockEnhancerOptions = {
 export class CodeBlockEnhancer {
     private container: HTMLElement;
     private langMap: Record<string, any>;
+    private timerMap: Map<HTMLElement, number>;
+    private cleanupMap: WeakMap<HTMLElement, () => void>;
 
     constructor(options: CodeBlockEnhancerOptions) {
         this.container = options.container;
@@ -58,6 +60,8 @@ export class CodeBlockEnhancer {
             dockerfile: siDocker,
             cypher: siNeo4j
         };
+        this.timerMap = new Map();
+        this.cleanupMap = new WeakMap();
     }
 
     public enhance() {
@@ -140,7 +144,7 @@ export class CodeBlockEnhancer {
         btn.innerHTML = copyIcon;
 
         const getCodeText = () => codeEl.textContent ?? '';
-        btn.addEventListener('click', async () => {
+        const onClick = async () => {
             const text = getCodeText();
             try {
                 await navigator.clipboard.writeText(text);
@@ -158,11 +162,36 @@ export class CodeBlockEnhancer {
             btn.innerHTML = successIcon;
             Message.success('复制成功');
 
-            setTimeout(() => {
+            const oldTimer = this.timerMap.get(pre);
+            if (oldTimer) {
+                window.clearTimeout(oldTimer);
+            }
+            const timer = window.setTimeout(() => {
                 btn.innerHTML = copyIcon;
             }, 5000);
-        });
+            this.timerMap.set(pre, timer);
+        };
+        btn.addEventListener('click', onClick);
 
         pre.appendChild(btn);
+        this.cleanupMap.set(pre, () => {
+            const timer = this.timerMap.get(pre);
+            if (timer) {
+                window.clearTimeout(timer);
+                this.timerMap.delete(pre);
+            }
+            btn.removeEventListener('click', onClick);
+        });
+    }
+
+    public dispose() {
+        const blocks = Array.from(this.container.querySelectorAll('pre[data-enhanced="true"]')) as HTMLElement[];
+        blocks.forEach((pre) => {
+            const cleanup = this.cleanupMap.get(pre);
+            if (cleanup) {
+                cleanup();
+            }
+        });
+        this.timerMap.clear();
     }
 }

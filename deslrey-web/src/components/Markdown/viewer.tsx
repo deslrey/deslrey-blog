@@ -40,7 +40,7 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
 
     useReadingTitle(article.title, toc, activeId);
 
-    // 生成 TOC
+    // 内容后处理：生成 TOC + 图片加载态
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
@@ -49,8 +49,7 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
             container.querySelectorAll("h1, h2, h3, h4")
         );
 
-        setToc(
-            headings.map(el => {
+        const nextToc = headings.map(el => {
                 const level = Number(el.tagName[1]);
 
                 if (!el.id) {
@@ -59,7 +58,7 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
                             ?.trim()
                             .toLowerCase()
                             .replace(/\s+/g, "-")
-                            .replace(/[^\w\-]/g, "") ?? "";
+                            .replace(/[^\w-]/g, "") ?? "";
                 }
 
                 return {
@@ -67,13 +66,27 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
                     text: el.textContent ?? "",
                     level,
                 };
-            })
-        );
-    }, [content]);
+            });
+        setToc(nextToc);
 
-    // IntersectionObserver
-    useEffect(() => {
-        if (!toc.length) return;
+        const imgs = container.querySelectorAll("img");
+        imgs.forEach(img => {
+            img.classList.add("img-loading");
+
+            if (img.complete) {
+                img.classList.remove("img-loading");
+                img.classList.add("img-loaded");
+            } else {
+                img.addEventListener(
+                    "load",
+                    () => {
+                        img.classList.remove("img-loading");
+                        img.classList.add("img-loaded");
+                    },
+                    { once: true }
+                );
+            }
+        });
 
         const observer = new IntersectionObserver(
             entries => {
@@ -95,37 +108,11 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
             }
         );
 
-        toc.forEach(item => {
+        nextToc.forEach(item => {
             const el = document.getElementById(item.id);
             if (el) observer.observe(el);
         });
-
         return () => observer.disconnect();
-    }, [toc]);
-
-    //  图片加载状态
-    useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
-
-        const imgs = container.querySelectorAll("img");
-        imgs.forEach(img => {
-            img.classList.add("img-loading");
-
-            if (img.complete) {
-                img.classList.remove("img-loading");
-                img.classList.add("img-loaded");
-            } else {
-                img.addEventListener(
-                    "load",
-                    () => {
-                        img.classList.remove("img-loading");
-                        img.classList.add("img-loaded");
-                    },
-                    { once: true }
-                );
-            }
-        });
     }, [content]);
 
     //  图片点击预览
@@ -150,25 +137,32 @@ const BytemdViewer = ({ article, carouseUrl }: BytemdViewerProps) => {
         if (!container) return;
 
         const enhancer = new CodeBlockEnhancer({ container });
-        enhancer.enhance();
-
-        const highlight = () => {
+        let rafId = 0;
+        const runPipeline = () => {
+            enhancer.enhance();
             container
                 .querySelectorAll("pre code:not([data-highlighted])")
                 .forEach(block =>
                     hljs.highlightElement(block as HTMLElement)
                 );
         };
-
-        requestAnimationFrame(highlight);
-
+        rafId = requestAnimationFrame(runPipeline);
+        let queued = false;
         const observer = new MutationObserver(() => {
-            enhancer.enhance();
-            highlight();
+            if (queued) return;
+            queued = true;
+            rafId = requestAnimationFrame(() => {
+                queued = false;
+                runPipeline();
+            });
         });
 
         observer.observe(container, { childList: true, subtree: true });
-        return () => observer.disconnect();
+        return () => {
+            observer.disconnect();
+            cancelAnimationFrame(rafId);
+            enhancer.dispose();
+        };
     }, [content]);
 
     //  TOC 打开时锁滚动

@@ -14,27 +14,34 @@ const ArticleDetailPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
 
     const [post, setPost] = useState<Article | null>(null);
-    const [carouseUrl, _setCarouseUrl] = useState("");
+    const [carouseUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [readProgress, setReadProgress] = useState(0);
 
     // 请求文章数据
     useEffect(() => {
+        const controller = new AbortController();
         const fetchData = async () => {
             setLoading(true);
             try {
-                const res = await request.get(`${api.article.articleDetail}${id}`);
+                const res = await request.get(`${api.article.articleDetail}${id}`, {
+                    signal: controller.signal,
+                });
                 if (res && res.code === 200) {
                     setPost(res.data);
                 }
             } catch (error) {
+                if (controller.signal.aborted) return;
                 console.error(error);
             } finally {
-                setLoading(false);
+                if (!controller.signal.aborted) {
+                    setLoading(false);
+                }
             }
         };
 
         fetchData();
+        return () => controller.abort();
     }, [id]);
 
     const structuredData = post ? {
